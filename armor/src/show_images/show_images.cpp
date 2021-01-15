@@ -21,67 +21,40 @@ void drawLightBlobs(cv::Mat &src, const LightBlobs &blobs) {
     }
 }
 
-void drawPoints4(cv::Mat &src,const std::vector<Point2f> &points,Scalar color = Scalar(128,0,128)){
-    for(int i = 0;i < 4;++i){
-        cv::line(src,points[i],points[(i + 1) % 4],color,1);
+void drawPoints4(cv::Mat &src, const std::vector<Point2f> &points,
+                 Scalar color = Scalar(128, 0, 128)) {
+    for (int i = 0; i < 4; ++i) {
+        cv::line(src, points[i], points[(i + 1) % 4], color, 1);
     }
 }
 
 /**************************
- *     显示多个装甲板区域    *
+ *     显示多个装甲板区域（YOLOV5 NET）    *
  **************************/
-void showArmorBoxes(std::string windows_name, const cv::Mat &src,
-                    const ArmorBoxes &armor_boxes) {
+void showNetBoxes(std::string windows_name, const cv::Mat &src,
+                  const std::vector<ArmorInfo> &armors) {
     static Mat image2show;
     if (src.type() == CV_8UC1) {  // 黑白图像
         cvtColor(src, image2show, COLOR_GRAY2RGB);
     } else if (src.type() == CV_8UC3) {  // RGB 彩色
         image2show = src.clone();
     }
-    for (auto &box : armor_boxes) {
-        if (box.box_color == BOX_BLUE) {
-            rectangle(image2show, box.rect, Scalar(0, 255, 0), 1);
-            drawLightBlobs(image2show, box.light_blobs);
-        } else if (box.box_color == BOX_RED) {
-            rectangle(image2show, box.rect, Scalar(0, 255, 0), 1);
-            drawLightBlobs(image2show, box.light_blobs);
+    for (auto &box : armors) {
+        if (name2color[id2name[box.id]] == BOX_BLUE) {
+            rectangle(image2show, box.bbox, Scalar(0, 255, 0), 1);
+            putText(image2show, id2name[box.id],
+                    Point(box.bbox.x + 2, box.bbox.y + 2),
+                    cv::FONT_HERSHEY_TRIPLEX, 1, Scalar(255, 0, 0));
+        } else if (name2color[id2name[box.id]] == BOX_RED) {
+            rectangle(image2show, box.bbox, Scalar(0, 255, 0), 1);
+            putText(image2show, id2name[box.id],
+                    Point(box.bbox.x + 2, box.bbox.y + 2),
+                    cv::FONT_HERSHEY_TRIPLEX, 1, Scalar(0, 0, 255));
+        } else {
+            LOG(INFO) << "Invalid box id:" << box.id << "!";
         }
     }
     imshow(windows_name, image2show);
-}
-
-/**************************
- * 显示多个装甲板区域及其类别 *
- **************************/
-void showArmorBoxesClass(std::string window_names, const cv::Mat &src,
-                         const ArmorBoxes &boxes) {
-    static Mat image2show;
-    if (src.type() == CV_8UC1) {  // 黑白图像
-        cvtColor(src, image2show, COLOR_GRAY2RGB);
-    } else if (src.type() == CV_8UC3) {  // RGB 彩色
-        image2show = src.clone();
-    }
-    for (const auto &box : boxes) {
-        if (box.id != 0) {
-            rectangle(image2show, box.rect, Scalar(0, 255, 0), 1);
-            drawLightBlobs(image2show, box.light_blobs);
-            if (box.id == -1)
-                putText(image2show, id2name[box.id],
-                        Point(box.rect.x + 2, box.rect.y + 2),
-                        cv::FONT_HERSHEY_TRIPLEX, 1, Scalar(0, 255, 0));
-            else if (1 <= box.id && box.id <= 8)
-                putText(image2show, id2name[box.id],
-                        Point(box.rect.x + 2, box.rect.y + 2),
-                        cv::FONT_HERSHEY_TRIPLEX, 1, Scalar(255, 0, 0));
-            else if (9 <= box.id && box.id <= 16)
-                putText(image2show, id2name[box.id],
-                        Point(box.rect.x + 2, box.rect.y + 2),
-                        cv::FONT_HERSHEY_TRIPLEX, 1, Scalar(0, 0, 255));
-            else if (box.id != 0)
-                LOG(INFO) << "Invalid box id:" << box.id << "!";
-        }
-    }
-    imshow(window_names, image2show);
 }
 
 /**************************
@@ -99,33 +72,27 @@ void showArmorBox(std::string windows_name, const cv::Mat &src,
         image2show = src.clone();
     }
     drawLightBlobs(image2show, box.light_blobs);
-    //    static FILE *fp = fopen(PROJECT_DIR"/ratio.txt", "w");
-    //    if(box.light_blobs.size() == 2)
-    //        fprintf(fp, "%lf %lf %lf\n", box.light_blobs[0].length,
-    //        box.light_blobs[1].length, box.getBlobsDistance())
-    //    cout << box.lengthDistanceRatio() << endl;
 
     rectangle(image2show, box.rect, Scalar(0, 255, 0), 1);
-    drawPoints4(image2show,box.getArmorPoints());
+    drawPoints4(image2show, box.getArmorPoints());
     char dist[10];
     sprintf(dist, "%.1f", box.getBoxDistance());
-    if (box.id == -1)
-        putText(image2show, id2name[box.id] + " " + dist,
-                Point(box.rect.x + 2, box.rect.y + 2), cv::FONT_HERSHEY_TRIPLEX,
-                1, Scalar(0, 255, 0));
-    else if (1 <= box.id && box.id <= 8)
+    if (name2color[id2name[box.id]] == BOX_BLUE) {
+        rectangle(image2show, box.rect, Scalar(0, 255, 0), 1);
         putText(image2show, id2name[box.id] + " " + dist,
                 Point(box.rect.x + 2, box.rect.y + 2), cv::FONT_HERSHEY_TRIPLEX,
                 1, Scalar(255, 0, 0));
-    else if (9 <= box.id && box.id <= 16)
+    } else if (name2color[id2name[box.id]] == BOX_RED) {
+        rectangle(image2show, box.rect, Scalar(0, 255, 0), 1);
         putText(image2show, id2name[box.id] + " " + dist,
                 Point(box.rect.x + 2, box.rect.y + 2), cv::FONT_HERSHEY_TRIPLEX,
                 1, Scalar(0, 0, 255));
-    else if (box.id != 0)
+    } else {
         LOG(INFO) << "Invalid box id:" << box.id << "!";
+    }
     imshow(windows_name, image2show);
     if (config.save_video) {
-        saveVideos(image2show,"ArmorBox");
+        saveVideos(image2show, "ArmorBox");
     }
 }
 

@@ -38,19 +38,19 @@ ArmorDetector::ArmorDetector() {
     assert(inputIndex == 0);
     assert(outputIndex == 1);
     // Create GPU buffers on device
-    CHECK(cudaMalloc(&buffers[inputIndex],
+    NVCHECK(cudaMalloc(&buffers[inputIndex],
                      BATCH_SIZE * 3 * INPUT_H * INPUT_W * sizeof(float)));
-    CHECK(cudaMalloc(&buffers[outputIndex],
+    NVCHECK(cudaMalloc(&buffers[outputIndex],
                      BATCH_SIZE * OUTPUT_SIZE * sizeof(float)));
 
-    CHECK(cudaStreamCreate(&stream));
+    NVCHECK(cudaStreamCreate(&stream));
 }
 
 ArmorDetector::~ArmorDetector() {
     // Release stream and buffers
     cudaStreamDestroy(stream);
-    CHECK(cudaFree(buffers[inputIndex]));
-    CHECK(cudaFree(buffers[outputIndex]));
+    NVCHECK(cudaFree(buffers[inputIndex]));
+    NVCHECK(cudaFree(buffers[outputIndex]));
     // Destroy the engine
     context->destroy();
     engine->destroy();
@@ -62,17 +62,17 @@ void ArmorDetector::doInference(IExecutionContext& context,
                                 float* input, float* output, int batchSize) {
     // DMA input batch data to device, infer on the batch asynchronously, and
     // DMA output back to host
-    CHECK(cudaMemcpyAsync(buffers[0], input,
+    NVCHECK(cudaMemcpyAsync(buffers[0], input,
                           batchSize * 3 * INPUT_H * INPUT_W * sizeof(float),
                           cudaMemcpyHostToDevice, stream));
     context.enqueue(batchSize, buffers, stream, nullptr);
-    CHECK(cudaMemcpyAsync(output, buffers[1],
+    NVCHECK(cudaMemcpyAsync(output, buffers[1],
                           batchSize * OUTPUT_SIZE * sizeof(float),
                           cudaMemcpyDeviceToHost, stream));
     cudaStreamSynchronize(stream);
 }
 
-std::vector<ArmorInfo> ArmorDetector::detect(cv::Mat& img) {
+std::vector<ArmorInfo> ArmorDetector::detect(const cv::Mat& img) {
     auto start = std::chrono::system_clock::now();
     // cv::Mat pr_img = preprocess_img(img);
     cv::Mat pr_img;
@@ -121,4 +121,8 @@ cv::Mat ArmorDetector::draw_output(cv::Mat& img,
                     cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(0xFF, 0xFF, 0xFF), 2);
     }
     return out;
+}
+
+cv::Point2f ArmorInfo::getCenter(){
+    return cv::Point2f(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
 }

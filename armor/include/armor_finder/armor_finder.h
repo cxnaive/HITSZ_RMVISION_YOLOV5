@@ -9,11 +9,11 @@
 #include <armor_finder/light_blobs.h>
 #include <rmserial.h>
 #include <runtime.h>
+#include <functional>
 #include <ArmorDetector.h>
 #include <string>
 #include <map>
 #include <opencv2/core.hpp>
-#include <opencv2/tracking.hpp>
 
 #define BLOB_RED ENEMY_RED
 #define BLOB_BLUE ENEMY_BLUE
@@ -25,6 +25,7 @@ extern std::map<int, std::string> id2name;  //装甲板id到名称的map
 extern std::map<std::string, int> name2id;  //装甲板名称到id的map
 extern std::map<std::string, int> prior_blue;
 extern std::map<std::string, int> prior_red;
+extern std::map<std::string, int> name2color; //装甲板名称到颜色的map
 
 /********************* 自瞄类定义 **********************/
 class ArmorFinder {
@@ -33,7 +34,6 @@ class ArmorFinder {
     ~ArmorFinder() = default;
 
    private:
-    typedef cv::TrackerKCF TrackerToUse;  // Tracker类型定义
 
     typedef enum {
         SEARCHING_STATE,
@@ -47,7 +47,6 @@ class ArmorFinder {
     State state;             // 自瞄状态对象实例
     ArmorBox target_box, last_box;  // 目标装甲板
     int anti_switch_cnt;            // 防止乱切目标计数器
-    cv::Ptr<cv::Tracker> tracker;   // tracker对象实例
     ArmorDetector netDetector; //YOLOV5 多目标识别寻找装甲版
     int contour_area;  // 装甲区域亮点个数，用于数字识别未启用时判断是否跟丢（已弃用）
     int tracking_cnt;  // 记录追踪帧数，用于定时退出追踪
@@ -63,7 +62,7 @@ class ArmorFinder {
     bool locateArmorBox(const cv::Mat &src, const ArmorInfo & target); //根据多目标识别的结果寻找灯条信息，精确定位装甲版
     bool matchArmorBoxes(const cv::Mat &src, const LightBlobs &light_blobs,
                          ArmorBoxes &armor_boxes);
-
+    std::vector<ArmorInfo> filterArmorInfoByColor(const std::vector<ArmorInfo>& armors,const cv::Mat &src); //根据颜色过滤装甲板信息
     bool stateSearchingTarget(cv::Mat &src);  // searching state主函数
     bool stateTrackingTarget(cv::Mat &src);   // tracking state主函数
     bool stateStandBy();  // stand by state主函数（已弃用）

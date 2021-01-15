@@ -30,6 +30,7 @@ void RmConfig::init_from_file() {
     show_armor_box = config["show_armor_box"].asBool();
     show_light_box = config["show_light_bo"].asBool();
     show_class_id = config["show_class_id"].asBool();
+    show_net_box = config["show_net_box"].asBool();
     wait_uart = config["wait_uart"].asBool();
     save_video = config["save_video"].asBool();
     show_light_blobs = config["show_light_blobs"].asBool();
@@ -80,6 +81,7 @@ void RmConfig::write_to_file() {
     config["show_origin"] = show_origin;
     config["show_armor_box"] = show_armor_box;
     config["show_light_box"] = show_light_box;
+    config["show_net_box"] = show_net_box;
     config["show_class_id"] = show_class_id;
     config["wait_uart"] = wait_uart;
     config["save_video"] = save_video;

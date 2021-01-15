@@ -27,6 +27,7 @@
 		"show_info" : false,
 		"show_light_blobs" : false,
 		"show_light_box" : false,
+		"show_net_box" : true,
 		"show_origin" : true,
 		"show_pnp_axies" : false,
 		"show_process" : false,

@@ -2,8 +2,9 @@
 
 PROJECT(HITSZ-RM-CV)
 SET(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -D_MWAITXINTRIN_H_INCLUDED -O3")
 # cuda
+find_package(CUDA REQUIRED)
 include_directories(/usr/local/cuda/include)
 link_directories(/usr/local/cuda/lib64)
 
@@ -37,12 +38,3 @@ link_directories(${OpenCV_LIBRARY_DIRS})
 
 target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)
 target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi  -lpthread)
-
-# if(WITH_TINY_TENSORRT)
-# add_definitions("-DWITH_TINY_TENSORRT")
-# target_link_libraries(rmcv libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
-# target_link_libraries(calibrate libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
-# else()
-# target_link_libraries(rmcv libMNN.so)
-# target_link_libraries(rmcv libMNN.so)
-# endif()

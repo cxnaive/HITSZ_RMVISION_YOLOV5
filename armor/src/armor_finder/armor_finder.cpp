@@ -27,6 +27,14 @@ std::map<std::string, int> name2id = {
     {"R4", 6},   {"B4", 7},   {"R5", 8},   {"B5", 9},  {"R7", 10}, {"B7", 11},
     {"R10", 12}, {"B10", 13}, {"R11", 14}, {"B11", 15}};
 
+std::map<std::string, int> name2color = {
+    {"R1", ENEMY_RED},  {"B1", ENEMY_BLUE},  {"R2", ENEMY_RED},
+    {"B2", ENEMY_BLUE}, {"R3", ENEMY_RED},   {"B3", ENEMY_BLUE},
+    {"R4", ENEMY_RED},  {"B4", ENEMY_BLUE},  {"R5", ENEMY_RED},
+    {"B5", ENEMY_BLUE}, {"R7", ENEMY_RED},   {"B7", ENEMY_BLUE},
+    {"R10", ENEMY_RED}, {"B10", ENEMY_BLUE}, {"R11", ENEMY_RED},
+    {"B11", ENEMY_BLUE}};
+
 std::map<std::string, int> prior_blue = {
     {"B10", 0}, {"B1", 1}, {"B3", 2}, {"B4", 2}, {"B5", 2},
     {"B7", 3},  {"B2", 4}, {"R8", 5}, {"R1", 6}, {"R3", 7},
@@ -48,6 +56,19 @@ ArmorFinder::ArmorFinder(const int &color, RmSerial &u, const int &anti_top)
           0),  //装甲区域亮点个数，用于数字识别未启用时判断是否跟丢（已弃用）
       tracking_cnt(0) {  // 记录追踪帧数，用于定时退出追踪
 }
+std::vector<ArmorInfo> ArmorFinder::filterArmorInfoByColor(
+    const std::vector<ArmorInfo> &armors, const cv::Mat &src) {
+    if (config.show_net_box) {
+        showNetBoxes("net boxes", src, armors);
+    }
+    std::vector<ArmorInfo> res;
+    for (auto it : armors) {
+        if (name2color[id2name[it.id]] == enemy_color) {
+            res.push_back(it);
+        }
+    }
+    return res;
+}
 
 void ArmorFinder::run(cv::Mat &src) {    // 自瞄主函数
     frame_time = rmTime.milliseconds();  //　获取当前帧时间(c++11 chrono)
@@ -57,9 +78,6 @@ void ArmorFinder::run(cv::Mat &src) {    // 自瞄主函数
             if (stateSearchingTarget(src)) {
                 if ((target_box.rect & cv::Rect2d(0, 0, 640, 480)) ==
                     target_box.rect) {  // 判断装甲板区域是否脱离图像区域
-                    tracker = TrackerToUse::
-                        create();  // 成功搜寻到装甲板，创建tracker对象
-                    tracker->init(src, target_box.rect);
                     send = true;
                     state = TRACKING_STATE;  // 自瞄状态对象实例
                     tracking_cnt = 0;  // 记录追踪帧数，用于定时退出追踪
@@ -69,7 +87,7 @@ void ArmorFinder::run(cv::Mat &src) {    // 自瞄主函数
             break;
         case TRACKING_STATE:
             if (!stateTrackingTarget(src) ||
-                ++tracking_cnt > 100) {  // 最多追踪100帧图像
+                ++tracking_cnt > 300) {  // 最多追踪300帧图像
                 state = SEARCHING_STATE;
                 LOG(INFO) << "into search!";
             } else

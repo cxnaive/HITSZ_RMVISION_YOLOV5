@@ -30,7 +30,6 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay,double dist) {
     }
     static int fps_cnt = 0;
     static double last_time = 0;
-    auto rect = target_box.rect;
     if(dist == -1) {
         auto pnp_result = target_box.armorSolvePnP();
         cv::Point3d trans = pnp_result.second;

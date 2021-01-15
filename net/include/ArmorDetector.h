@@ -8,15 +8,20 @@
 #include "logging.h"
 
 #define NMS_THRESH 0.4
-#define CONF_THRESH 0.3
+#define CONF_THRESH 0.6
 #define BATCH_SIZE 1
 #define DEVICE 0
 #define ENGINE_NAME "yolov5s.engine"
 
-struct ArmorInfo {
+class ArmorInfo {
+   public:
     cv::Rect bbox;
     int id;
     double conf;
+    ArmorInfo():bbox(cv::Rect()),id(0),conf(0){};
+    ArmorInfo(cv::Rect _bbox, int _id, double _conf)
+        : bbox(_bbox), id(_id), conf(_conf) {}
+    cv::Point2f getCenter();
 };
 
 class ArmorDetector {
@@ -48,7 +53,7 @@ class ArmorDetector {
     ~ArmorDetector();
     double total_time = 0;
     double total_cnt = 0;
-    std::vector<ArmorInfo> detect(cv::Mat& img);
+    std::vector<ArmorInfo> detect(const cv::Mat& img);
     cv::Mat draw_output(cv::Mat& img, std::vector<ArmorInfo>& armors);
 };
 #endif

@@ -12,7 +12,7 @@
 #include "NvInfer.h"
 #include "yololayer.h"
 
-#define CHECK(status)                                          \
+#define NVCHECK(status)                                          \
     do {                                                       \
         auto ret = (status);                                   \
         if (ret != 0) {                                        \
@@ -25,7 +25,7 @@ using namespace nvinfer1;
 
 cv::Mat preprocess_img(cv::Mat& img);
 
-cv::Rect get_rect(cv::Mat& img, float bbox[4]);
+cv::Rect get_rect(const cv::Mat& img, float bbox[4]);
 
 float iou(float lbox[4], float rbox[4]);
 

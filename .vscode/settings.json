@@ -76,6 +76,13 @@
         "ios": "cpp",
         "locale": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "codecvt": "cpp",
+        "forward_list": "cpp",
+        "unordered_set": "cpp",
+        "filesystem": "cpp",
+        "typeindex": "cpp",
+        "variant": "cpp",
+        "*.inc": "cpp"
     }
 }

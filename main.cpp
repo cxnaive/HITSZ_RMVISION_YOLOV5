@@ -43,15 +43,13 @@ static void OnInit(const char* cmd) {
 
     config.init_from_file();
 
-    rmSerial.init();
+    //rmSerial.init();
 
     cam = new Camera(1, config.camConfig);
     cam->init();
     cam->setParam(config.ARMOR_CAMERA_EXPOSURE, config.ARMOR_CAMERA_GAIN);
     cam->start();
- #ifdef WITH_TINY_TENSORRT
-    LOG(WARNING) << "CUDA TENSORRT MODE!!";
-#endif   
+
     armor_finder =
         new ArmorFinder(config.ENEMY_COLOR, rmSerial, config.ANTI_TOP);
     energy = new Energy(rmSerial, config.ENEMY_COLOR);
@@ -89,8 +87,6 @@ void check_mode_and_run(cv::Mat &src) {
 int main(int argc, char** argv) {
     signal(SIGINT, sig_handler);
     OnInit(argv[0]);
-    int frame_cnt = 0;
-    double stime = rmTime.seconds();
     while (keepRunning) {
         cam->read(src);
         config.camConfig.undistort(src);

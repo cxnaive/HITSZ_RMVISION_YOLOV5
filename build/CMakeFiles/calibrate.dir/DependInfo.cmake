@@ -4,14 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/calibrate_get_imgs.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/calibrate_get_imgs.cpp.o"
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/src/rmconfig.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/config/src/rmconfig.cpp.o"
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/cam_wrapper.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/camera/cam_wrapper.cpp.o"
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/video_wrapper.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/camera/video_wrapper.cpp.o"
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_reader.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/lib_json/json_reader.cpp.o"
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_value.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/lib_json/json_value.cpp.o"
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_writer.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/lib_json/json_writer.cpp.o"
-  "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/rmtime.cpp" "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/rmtime.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/calibrate_get_imgs.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/calibrate_get_imgs.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/config/src/rmconfig.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/config/src/rmconfig.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/others/src/camera/cam_wrapper.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/camera/cam_wrapper.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/others/src/camera/video_wrapper.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/camera/video_wrapper.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_reader.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/lib_json/json_reader.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_value.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/lib_json/json_value.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_writer.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/lib_json/json_writer.cpp.o"
+  "/home/andychen/HITSZ_RMVISION_YOLOV5/others/src/rmtime.cpp" "/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir/others/src/rmtime.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -25,7 +25,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../config/include"
   "../com/include"
   "/usr/local/cuda-10.2/include"
-  "/usr/local/include/opencv4"
+  "/opt/intel/openvino_2020.1.023/opencv/include"
   )
 
 # Targets to which this target links.

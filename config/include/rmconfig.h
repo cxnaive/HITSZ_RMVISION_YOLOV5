@@ -37,6 +37,7 @@ public:
     bool show_armor_box = false;
     bool show_light_box = false;
     bool show_class_id = false;
+    bool show_net_box = false;
     bool wait_uart = false;
     bool save_video = false;
     bool show_light_blobs = false;

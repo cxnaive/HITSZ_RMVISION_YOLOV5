@@ -25,7 +25,7 @@ cv::Mat preprocess_img(cv::Mat& img) {
     return out;
 }
 
-cv::Rect get_rect(cv::Mat& img, float bbox[4]) {
+cv::Rect get_rect(const cv::Mat& img, float bbox[4]) {
     int l, r, t, b;
     float r_w = Yolo::INPUT_W / (img.cols * 1.0);
     float r_h = Yolo::INPUT_H / (img.rows * 1.0);

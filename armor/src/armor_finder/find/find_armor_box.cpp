@@ -72,7 +72,7 @@ static bool isCoupleLight(const LightBlob &light_blob_i, const LightBlob &light_
            lengthJudge(light_blob_i, light_blob_j) &&
            //           heightJudge(light_blob_i, light_blob_j) &&
            angelJudge(light_blob_i, light_blob_j) &&
-           boxAngleJudge(light_blob_i, light_blob_j) &&
+           // boxAngleJudge(light_blob_i, light_blob_j) &&
            CuoWeiDuJudge(light_blob_i, light_blob_j);
 
 }
@@ -125,11 +125,8 @@ bool ArmorFinder::findAccurateArmorBox(const cv::Mat &src, ArmorBox &box) {
     }
 // 对灯条进行匹配得出装甲板候选区
     if (!matchArmorBoxes(src, light_blobs, armor_boxes)) {
+        //LOG(INFO) << "no match found!";
         return false;
-    }
-    if (config.show_armor_box && state==SEARCHING_STATE) {
-        showArmorBoxes("boxes", src, armor_boxes);
-        cv::waitKey(1);
     }
     box = armor_boxes[0];
     return true;
