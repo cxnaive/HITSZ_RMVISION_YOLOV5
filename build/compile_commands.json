@@ -1,0 +1,307 @@
+[
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/calibrate_get_imgs.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/calibrate_get_imgs.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/calibrate_get_imgs.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/others/src/camera/cam_wrapper.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/cam_wrapper.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/cam_wrapper.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/others/src/camera/video_wrapper.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/video_wrapper.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/video_wrapper.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/others/src/lib_json/json_reader.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_reader.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_reader.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/others/src/lib_json/json_value.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_value.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_value.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/others/src/lib_json/json_writer.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_writer.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_writer.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/others/src/rmtime.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/rmtime.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/rmtime.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/calibrate.dir/config/src/rmconfig.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/src/rmconfig.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/src/rmconfig.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/main.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/main.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/main.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/others/src/camera/cam_wrapper.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/cam_wrapper.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/cam_wrapper.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/others/src/camera/video_wrapper.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/video_wrapper.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/camera/video_wrapper.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/others/src/lib_json/json_reader.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_reader.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_reader.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/others/src/lib_json/json_value.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_value.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_value.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/others/src/lib_json/json_writer.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_writer.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/lib_json/json_writer.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/others/src/rmtime.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/rmtime.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/src/rmtime.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/calibrate/split.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/calibrate/split.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/calibrate/split.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/calibrate/structing.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/calibrate/structing.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/calibrate/structing.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/change/mode_change.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/change/mode_change.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/change/mode_change.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/change/multiple_mode.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/change/multiple_mode.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/change/multiple_mode.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/change/target_change.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/change/target_change.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/change/target_change.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/clear/clear.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/clear/clear.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/clear/clear.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/clear/energy_init.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/clear/energy_init.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/clear/energy_init.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/energy.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/energy.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/energy.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/find/energy_finder.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/find/energy_finder.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/find/energy_finder.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/find/target_finder.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/find/target_finder.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/find/target_finder.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/get/get_aim_point.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_aim_point.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_aim_point.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/get/get_center.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_center.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_center.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/get/get_guess_point.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_guess_point.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_guess_point.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/get/get_polar_angle.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_polar_angle.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_polar_angle.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/get/get_predict_point.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_predict_point.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/get/get_predict_point.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/judge/judge_contour.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_contour.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_contour.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/judge/judge_mode.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_mode.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_mode.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/judge/judge_shoot.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_shoot.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_shoot.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/judge/judge_time.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_time.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/judge/judge_time.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/mark/mark.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/mark/mark.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/mark/mark.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/run.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/run.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/run.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/send/send.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/send/send.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/send/send.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/show/show.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/show/show.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/show/show.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/energy/src/tool/tool.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/tool/tool.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/src/tool/tool.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/net/src/ArmorDetector.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/src/ArmorDetector.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/src/ArmorDetector.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/net/src/common.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/src/common.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/src/common.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/config/src/rmconfig.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/src/rmconfig.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/src/rmconfig.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/config/src/runtime.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/src/runtime.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/src/runtime.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/com/src/rmserial.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/rmserial.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/rmserial.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/com/src/impl/list_ports/list_ports_linux.cc.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/list_ports/list_ports_linux.cc",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/list_ports/list_ports_linux.cc"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/com/src/impl/list_ports/list_ports_osx.cc.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/list_ports/list_ports_osx.cc",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/list_ports/list_ports_osx.cc"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/com/src/impl/list_ports/list_ports_win.cc.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/list_ports/list_ports_win.cc",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/list_ports/list_ports_win.cc"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/com/src/impl/unix.cc.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/unix.cc",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/unix.cc"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/com/src/impl/win.cc.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/win.cc",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/impl/win.cc"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/com/src/serial.cc.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/serial.cc",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/src/serial.cc"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/anti_top/anti_top.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/anti_top/anti_top.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/anti_top/anti_top.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/armor_box/armor_box.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/armor_box/armor_box.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/armor_box/armor_box.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/armor_finder.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/armor_finder.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/armor_finder.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/find/find_armor_box.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/find/find_armor_box.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/find/find_armor_box.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/find/find_light_blobs.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/find/find_light_blobs.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/find/find_light_blobs.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/find/locate_armor_box.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/find/locate_armor_box.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/find/locate_armor_box.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/searching_state/searching_state.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/searching_state/searching_state.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/searching_state/searching_state.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/send_target/send_target.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/send_target/send_target.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/send_target/send_target.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/standby_state/standby_state.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/standby_state/standby_state.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/standby_state/standby_state.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/armor_finder/tracking_state/tracking_state.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/tracking_state/tracking_state.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/armor_finder/tracking_state/tracking_state.cpp"
+},
+{
+  "directory": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/build",
+  "command": "/usr/bin/g++-7   -I/usr/local/cuda/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/energy/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/net/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/others/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/config/include -I/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/com/include -I/usr/local/cuda-10.2/include -isystem /usr/local/include/opencv4   -std=c++14 -Wall -Ofast -Wfatal-errors -D_MWAITXINTRIN_H_INCLUDED -O3 -g   -std=gnu++14 -o CMakeFiles/rmcv.dir/armor/src/show_images/show_images.cpp.o -c /home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/show_images/show_images.cpp",
+  "file": "/home/ubuntu/data/HITSZ_RMVISION_YOLOV5/armor/src/show_images/show_images.cpp"
+}
+]
