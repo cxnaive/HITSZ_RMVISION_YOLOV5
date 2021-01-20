@@ -74,7 +74,7 @@ sudo ./rmcv
 │   └── src                     // others源码
 ├── cam_calibrate               // 相机标定、内参计算相关相关
 │   ├── cam_pre.py              // 标定内参计算程序
-│   └── cam_run.py                     // 去除畸变效果展示程序
+│   └── cam_run.py              // 去除畸变效果展示程序
 ```
 ## 四、关键类解析
 
