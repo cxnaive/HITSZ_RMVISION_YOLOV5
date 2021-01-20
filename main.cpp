@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
             cv::imshow("origin", src);
         }
         check_mode_and_run(src);
-        cv::waitKey(10);
+        // cv::waitKey(10);
         if (config.has_show) cv::waitKey(1);
     }
     LOG(INFO) << "exiting...";
