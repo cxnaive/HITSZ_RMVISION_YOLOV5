@@ -83,6 +83,9 @@
         "filesystem": "cpp",
         "typeindex": "cpp",
         "variant": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "__functional_03": "cpp",
+        "__node_handle": "cpp",
+        "*.ipp": "cpp"
     }
 }

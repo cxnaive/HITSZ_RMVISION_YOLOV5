@@ -8,7 +8,7 @@ double getPointLength(const cv::Point2f &p) {
 cv::VideoWriter initVideoWriter(const std::string &filename_prefix) {
     cv::VideoWriter video;
     std::string file_name = filename_prefix + ".avi";
-    video.open(file_name, cv::VideoWriter::fourcc('P', 'I', 'M', 'I'), 90, cv::Size(640, 480), true);
+    video.open(file_name, cv::VideoWriter::fourcc('P', 'I', 'M', 'I'), 90, cv::Size(640, 640), true);
     return video;
 }
 std::map<std::string,cv::VideoWriter> video_writers;

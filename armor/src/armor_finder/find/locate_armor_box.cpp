@@ -12,7 +12,7 @@ bool ArmorFinder::locateArmorBox(const cv::Mat &src, const ArmorInfo &target) {
     bigger_rect.y = target.bbox.y - target.bbox.height / 2.0;
     bigger_rect.height = target.bbox.height * 2;
     bigger_rect.width = target.bbox.width * 2;
-    bigger_rect &= cv::Rect2d(0, 0, 640, 480);
+    bigger_rect &= cv::Rect2d(0, 0, 640, 640);
     cv::Mat roi = src(bigger_rect).clone();
 
     ArmorBox box;

@@ -84,7 +84,7 @@ int Energy::findArmors(const cv::Mat &src) {
     }
 
     if (config.show_info) {
-        //        if (armors.size() < 1)cout << "no armors!" << endl;
+        if (armors.size() < 1) LOG(INFO) << "no armors!";
     }
 
     return static_cast<int>(armors.size());
@@ -121,7 +121,7 @@ bool Energy::findCenterR(const cv::Mat &src) {
             target_length / 7.5;  //实际最小二乘得到的中心在R的下方
         return true;
     }
-    if (config.show_info) cout << "find center R false!" << endl;
+    if (config.show_info) LOG(INFO) << "find center R false!";
     return false;
 }
 
@@ -156,7 +156,7 @@ bool Energy::findFlowStripFan(const cv::Mat &src) {
         flow_strip_fans.emplace_back(cv::minAreaRect(flow_strip_fan_contour));
     }
     if (flow_strip_fans.empty()) {
-        if (config.show_info) cout << "flow strip fan false!" << endl;
+        if (config.show_info) LOG(INFO) << "flow strip fan false!";
         return false;
     }
     return true;
@@ -224,10 +224,10 @@ bool Energy::findFlowStrip(const cv::Mat &src) {
         }
     }
     if (flow_strips.empty()) {
-        if (config.show_info) cout << "flow strip false!" << endl;
+        if (config.show_info) LOG(INFO) << "flow strip false!";
         return false;
     } else if (flow_strips.size() > 1) {
-        if (config.show_info) cout << "Too many flow strips!" << endl;
+        if (config.show_info) LOG(INFO) << "Too many flow strips!";
         return false;
     } else {
         flow_strip = flow_strips.at(0);
@@ -303,8 +303,7 @@ bool Energy::findFlowStripWeak(const cv::Mat &src) {
         flow_strips.emplace_back(cv::minAreaRect(flow_strip_contour));
     }
     if (flow_strips.empty()) {
-        if (config.show_info) cout << "weak flow strip false1!" << endl;
-        //   waitKey(0);
+        if (config.show_info) LOG(INFO) << "weak flow strip false1!";
         return false;
 
     } else {
@@ -338,7 +337,7 @@ bool Energy::findFlowStripWeak(const cv::Mat &src) {
                 return true;
             }
         }
-        if (config.show_info) cout << "weak flow strip false2!" << endl;
+        if (config.show_info) LOG(INFO) << "weak flow strip false2!";
         return false;
     }
 }

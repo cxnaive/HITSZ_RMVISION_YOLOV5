@@ -30,7 +30,7 @@ def calibrate_single(imgNums, CheckerboardSize, Nx_cor, Ny_cor, saveFile=False, 
  
     for i in range(imgNums):
         frame = cv2.imread(str(i)+'.jpg')
-        frame = cv2.resize(frame, (640,480))
+        # frame = cv2.resize(frame, (640,640))
         cv2.imshow('frame', frame)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # 寻找棋盘格模板的角点
@@ -89,4 +89,4 @@ def calibrate_single(imgNums, CheckerboardSize, Nx_cor, Ny_cor, saveFile=False, 
     return mtx, dist, K, D
 
 if __name__ == "__main__":
-    mtx, dist, K,D = calibrate_single(30,20,9,6,True)
+    mtx, dist, K,D = calibrate_single(40,20,11,8,True)

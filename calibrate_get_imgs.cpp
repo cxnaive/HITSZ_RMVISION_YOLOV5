@@ -4,7 +4,7 @@
 #include<string>
 #include <rmconfig.h>
 
-int img_cnt = 30;
+int img_cnt = 40;
 
 int main(int argc, char** argv){
     FLAGS_alsologtostderr = true;

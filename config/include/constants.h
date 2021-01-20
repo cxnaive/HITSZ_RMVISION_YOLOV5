@@ -29,7 +29,7 @@
 const int BIG = 1;
 const int SMALL = 0;
 const int SRC_WIDTH = 320;
-const int SRC_HEIGHT = 240;
+const int SRC_HEIGHT = 320;
 const int CLOCKWISE = 1;
 const int ANTICLOCKWISE = -1;
 // const float ATTACK_DISTANCE = 718.0;//cm

@@ -47,18 +47,15 @@ void Energy::sendTarget(RmSerial &serial, float x, float y, float z, uint16_t u)
     short x_tmp, y_tmp, z_tmp;
     uint8_t buff[10];
 
-#ifdef WITH_COUNT_FPS
-    static auto last_time = time(nullptr);
-    static int fps = 0;
-    time_t t = time(nullptr);
-    if (last_time != t) {
-        last_time = t;
-        cout << "Energy: fps:" << fps << ", (" << x << "," << y << "," << z << "," << u << ")" << endl;
-        curr_fps = fps;
-        fps = 0;
+    static double last_time = rmTime.seconds();
+    static int fps_cnt = 0;
+    double now_time = rmTime.seconds();
+    fps_cnt += 1;
+    if(now_time - last_time > 2){
+        LOG(INFO) << "energy fps:" << fps_cnt / (now_time - last_time);
+        fps_cnt = 0;
+        last_time = now_time;
     }
-    fps += 1;
-#endif
 
     x_tmp = static_cast<short>(x * (32768 - 1) / 100);
     y_tmp = static_cast<short>(y * (32768 - 1) / 100);

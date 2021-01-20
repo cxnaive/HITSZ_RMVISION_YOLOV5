@@ -4806,6 +4806,7 @@ CMakeFiles/rmcv.dir/main.cpp.o
  ../others/include/camera/DxImageProc.h
  ../others/include/camera/GxIAPI.h
  ../others/include/camera/cam_wrapper.h
+ ../others/include/camera/video_wrapper.h
  ../others/include/camera/wrapper_head.h
  ../others/include/json/allocator.h
  ../others/include/json/config.h
@@ -4893,8 +4894,10 @@ CMakeFiles/rmcv.dir/main.cpp.o
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/flann/saving.h
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/flann/timer.h
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/highgui.hpp
+ /opt/intel/openvino_2020.1.023/opencv/include/opencv2/highgui/highgui.hpp
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/imgcodecs.hpp
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/imgproc.hpp
+ /opt/intel/openvino_2020.1.023/opencv/include/opencv2/imgproc/imgproc.hpp
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/ml.hpp
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/ml/ml.inl.hpp
  /opt/intel/openvino_2020.1.023/opencv/include/opencv2/objdetect.hpp

@@ -75,11 +75,11 @@ void ArmorDetector::doInference(IExecutionContext& context,
 std::vector<ArmorInfo> ArmorDetector::detect(const cv::Mat& img) {
     auto start = std::chrono::system_clock::now();
     // cv::Mat pr_img = preprocess_img(img);
-    cv::Mat pr_img;
-    cv::copyMakeBorder(img,pr_img,80,80,0,0,cv::BORDER_CONSTANT,cv::Scalar(128,128,128));
+    // cv::Mat pr_img;
+    // cv::copyMakeBorder(img,pr_img,80,80,0,0,cv::BORDER_CONSTANT,cv::Scalar(128,128,128));
     int i = 0;
     for (int row = 0; row < INPUT_H; ++row) {
-        uchar* uc_pixel = pr_img.data + row * pr_img.step;
+        uchar* uc_pixel = img.data + row * img.step;
         for (int col = 0; col < INPUT_W; ++col) {
             data[i] = (float)uc_pixel[2] / 255.0;
             data[i + INPUT_H * INPUT_W] = (float)uc_pixel[1] / 255.0;

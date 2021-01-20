@@ -151,12 +151,12 @@ void Energy::initRotation() {
     //由于刚开始圆心判断不准，角度变化可能计算有误，因此需要在角度正向或逆向变化足够大时才可确定是否为顺逆时针
     if (clockwise_rotation_init_cnt == 15) {
         energy_rotation_direction = CLOCKWISE;  //顺时针变化30次，确定为顺时针
-        cout << "rotation: " << energy_rotation_direction << endl;
+        LOG(INFO) << "rotation: " << energy_rotation_direction;
         energy_rotation_init = false;
     } else if (anticlockwise_rotation_init_cnt == 15) {
         energy_rotation_direction =
             ANTICLOCKWISE;  //逆时针变化30次，确定为顺时针
-        cout << "rotation: " << energy_rotation_direction << endl;
+        LOG(INFO) << "rotation: " << energy_rotation_direction;
         energy_rotation_init = false;
     }
     last_target_polar_angle_judge_rotation = target_polar_angle;

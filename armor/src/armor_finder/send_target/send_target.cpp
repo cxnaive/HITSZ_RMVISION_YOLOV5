@@ -1,9 +1,11 @@
 #include <armor_finder/armor_finder.h>
-#include <runtime.h>
-#include <cmath>
 #include <rmserial.h>
+#include <runtime.h>
 
-static bool sendTarget(RmSerial &serial, double x, double y, double z, uint16_t shoot_delay,double y_offset = 0) {
+#include <cmath>
+
+static bool sendTarget(RmSerial &serial, double x, double y, double z,
+                       uint16_t shoot_delay, double y_offset = 0) {
     static short x_tmp, y_tmp, z_tmp;
     uint8_t buff[10];
     x_tmp = static_cast<short>(x);
@@ -23,32 +25,45 @@ static bool sendTarget(RmSerial &serial, double x, double y, double z, uint16_t 
     //   cout << (short)(buff[3]<<8 | buff[4]) << endl;
     return serial.send_data(buff, sizeof(buff));
 }
-bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay,double dist) {
+bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay, double dist) {
     if (dist == -1 && target_box.rect == cv::Rect2d()) return false;
     if (shoot_delay) {
         LOG(INFO) << "next box" << shoot_delay << " ms";
     }
     static int fps_cnt = 0;
     static double last_time = 0;
-    if(dist == -1) {
-        auto pnp_result = target_box.armorSolvePnP();
-        cv::Point3d trans = pnp_result.second;
-        dist = trans.z;
-        if (config.log_send_target){
+
+    if (dist == -1) {
+        cv::Point3d trans;
+        double yaw,pitch;
+        if (config.use_pnp) {
+            auto pnp_result = target_box.armorSolvePnP();
+            trans = pnp_result.second;
+            dist = trans.z;
+            yaw = atan(trans.x / trans.z) * 180 / PI;
+            pitch = atan(trans.y / trans.z) * 180 / PI;
+        }
+        else{
+            dist = target_box.getBoxDistance();
+            cv::Point2f center = target_box.getCenter();
+            yaw = atan((center.x - config.IMAGE_CENTER_X) / config.camConfig.fx) * 180 / PI;
+            pitch = atan((center.y - config.IMAGE_CENTER_Y) / config.camConfig.fy) * 180 / PI;
+        }
+
+        if (config.log_send_target) {
             LOG(INFO) << "PNP: " << trans;
         }
-        //calc_fps
+        // calc_fps
         ++fps_cnt;
         double now_time = rmTime.seconds();
-        if(now_time - last_time > 2){
+        if (now_time - last_time > 2) {
             LOG(INFO) << "Armor fps: " << fps_cnt / (now_time - last_time);
             last_time = now_time;
             fps_cnt = 0;
         }
         double y_offset = 0;
-        double yaw = atan(trans.x / trans.z) * 180 / PI;        
-        double pitch = atan(trans.y / trans.z) * 180 / PI;
-        return sendTarget(serial, yaw, -pitch, dist, shoot_delay,y_offset);
+        
+        return sendTarget(serial, yaw, -pitch, dist, shoot_delay, y_offset);
     }
     return sendTarget(serial, 0, 0, 0, shoot_delay, 0);
 }

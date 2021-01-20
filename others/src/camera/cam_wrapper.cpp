@@ -103,11 +103,12 @@ void getRGBImage(Camera *p_cam) {
 
         memcpy(temp.data, p_cam->g_pRGBframeData, 3 * (p_cam->nPayLoadSize));
 
+        cv::resize(temp,temp,cv::Size(640,640));
         std::vector<cv::Mat> channels;
         split(temp, channels);
-        std::swap(channels[0], channels[2]);
+        //std::swap(channels[0], channels[2]);
+        cv::swap(channels[0],channels[2]);
         merge(channels,temp);
-        cv::resize(temp,temp,cv::Size(640,480));
         mtx.lock();
         temp.copyTo(p_cam->p_img);
         mtx.unlock();
@@ -121,7 +122,7 @@ Camera::Camera(int idx,CameraConfig config):
       thread_running(false),
       camConfig(config),
       init_success(false){
-          p_img = cv::Mat(480,640,CV_8UC3);
+          p_img = cv::Mat(640,640,CV_8UC3);
       };
 
 Camera::~Camera() {
@@ -216,7 +217,8 @@ bool Camera::init_is_successful() { return init_success; }
 
 bool Camera::read(cv::Mat &src){
     mtx.lock();
-    p_img.copyTo(src);
+    // p_img.copyTo(src);
+    cv::swap(p_img,src);
     mtx.unlock();
     return true;
 }

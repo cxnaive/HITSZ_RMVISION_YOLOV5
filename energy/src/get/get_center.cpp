@@ -16,7 +16,7 @@ void Energy::getCenter() {
         compensate_pitch = BLUE_COMPENSATE_PITCH;
     }
     double dx = -(circle_center_point.x - 320 - compensate_yaw);
-    double dy = -(circle_center_point.y - 240 - compensate_pitch);
+    double dy = -(circle_center_point.y - 320 - compensate_pitch);
 
     yaw_rotation = atan(dx / config.camConfig.fx) * 180 / PI;
     pitch_rotation = atan(dy / config.camConfig.fy) * 180 / PI;

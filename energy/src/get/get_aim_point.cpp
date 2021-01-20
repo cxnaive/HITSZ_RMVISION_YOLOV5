@@ -13,8 +13,9 @@ using namespace cv;
 void Energy::getAimPoint(cv::Point target_point_) {
     float target_polar_angle_ =
         static_cast<float>(180 / PI *
-                           atan2(-1 * (target_point_.y - circle_center_point.y),
+                           atan2(-1.0 * (target_point_.y - circle_center_point.y),
                                  (target_point_.x - circle_center_point.x)));
+    if(config.show_info) LOG(INFO) << "AimTarget polar angle:" << target_polar_angle_;
 
     if (target_polar_angle_ > 0 && target_polar_angle_ <= 90) {
         extra_delta_x = EXTRA_DELTA_X * (90 - target_polar_angle_) / 90;
@@ -38,7 +39,7 @@ void Energy::getAimPoint(cv::Point target_point_) {
 
     double dx = -(target_point_.x - 320 - compensate_yaw - config.MCU_DELTA_X -
                   config.MANUAL_DELTA_X - extra_delta_x);
-    double dy = -(target_point_.y - 240 - compensate_pitch - config.MCU_DELTA_Y -
+    double dy = -(target_point_.y - 320 - compensate_pitch - config.MCU_DELTA_Y -
                   config.MANUAL_DELTA_Y - extra_delta_y);
     yaw_rotation = atan(dx / config.camConfig.fx) * 180 / PI;
     pitch_rotation = atan(dy / config.camConfig.fy) * 180 / PI;

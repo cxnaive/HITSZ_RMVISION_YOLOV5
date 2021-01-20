@@ -76,7 +76,7 @@ void ArmorFinder::run(cv::Mat &src) {    // 自瞄主函数
     switch (state) {
         case SEARCHING_STATE:
             if (stateSearchingTarget(src)) {
-                if ((target_box.rect & cv::Rect2d(0, 0, 640, 480)) ==
+                if ((target_box.rect & cv::Rect2d(0, 0, 640, 640)) ==
                     target_box.rect) {  // 判断装甲板区域是否脱离图像区域
                     send = true;
                     state = TRACKING_STATE;  // 自瞄状态对象实例
@@ -117,6 +117,5 @@ void ArmorFinder::run(cv::Mat &src) {    // 自瞄主函数
     if (config.show_armor_box &&
         target_box.rect != cv::Rect2d()) {  // 根据条件显示当前目标装甲板
         showArmorBox("box", src, target_box);
-        cv::waitKey(1);
     }
 }

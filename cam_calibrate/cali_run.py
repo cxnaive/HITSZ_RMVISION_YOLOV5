@@ -10,7 +10,7 @@ mtx = calidata['mtx']
 K = calidata['K']
 D = calidata['D']
 w = 640
-h = 480
+h = 640
 p = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(K,D,(w,h),None)
 mapx2,mapy2 = cv2.fisheye.initUndistortRectifyMap(K,D,None,p,(w,h),cv2.CV_32F)
 def undistort(rawimg):

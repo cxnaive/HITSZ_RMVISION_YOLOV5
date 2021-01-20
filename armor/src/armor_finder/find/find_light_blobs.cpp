@@ -94,7 +94,7 @@ bool ArmorFinder::findLightBlobs(const cv::Mat &src, LightBlobs &light_blobs) {
     if (src_bin_dim.empty()) return false;
     imagePreProcess(src_bin_dim);                                  // 开闭运算
 
-    if (src_bin_light.size() == cv::Size(640, 480) && config.show_light_blobs) {         //显示图像函数
+    if (src_bin_light.size() == cv::Size(640, 640) && config.show_light_blobs) {         //显示图像函数
         imshow("bin_light", src_bin_light);
         imshow("bin_dim", src_bin_dim);
     }

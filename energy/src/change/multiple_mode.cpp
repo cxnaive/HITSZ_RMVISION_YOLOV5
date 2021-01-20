@@ -18,10 +18,10 @@ void Energy::multipleMode(cv::Mat &src) {
         sendEnergy();
     } else if (is_guessing && stayGuessing()) {
         findFans(src);
-        if (config.show_energy) showFans("fans", src);
+        if (config.show_energy_extra) showFans("fans", src);
         if (config.save_mark) writeDownMark(src);
         guessTarget();
-        if (config.show_energy) showGuessTarget("guess", src);
+        if (config.show_energy_extra) showGuessTarget("guess", src);
         getPredictPoint(guess_point);
         getAimPoint(predict_point);
         sendEnergy();

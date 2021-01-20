@@ -1,19 +1,19 @@
 {
 	"camera" : 
 	{
-		"cx" : 312.01362242426615,
-		"cy" : 256.25157378825793,
-		"fx" : 647.06040618266832,
-		"fy" : 652.69196496380891,
-		"k1" : -0.082304726882989329,
-		"k2" : -0.82289362891586693,
-		"k3" : 1.8192668949172401,
-		"p1" : 0.0041940254476855073,
-		"p2" : -0.0033172694277445697,
-		"roi_height" : 960,
-		"roi_offset_x" : 0,
-		"roi_offset_y" : 32,
-		"roi_width" : 1280
+		"cx" : 303.92727183847512,
+		"cy" : 307.00937071223274,
+		"fx" : 811.72293646509797,
+		"fy" : 812.08878700531454,
+		"k1" : -0.23008069888906263,
+		"k2" : 0.53017452547602162,
+		"k3" : -1.2392524907626943,
+		"p1" : -0.0044045373220139242,
+		"p2" : -0.0026143012397772166,
+		"roi_height" : 1024,
+		"roi_offset_x" : 128,
+		"roi_offset_y" : 0,
+		"roi_width" : 1024
 	},
 	"config" : 
 	{
@@ -23,7 +23,8 @@
 		"save_video" : false,
 		"show_armor_box" : true,
 		"show_class_id" : false,
-		"show_energy" : false,
+		"show_energy" : true,
+		"show_energy_extra" : false,
 		"show_info" : false,
 		"show_light_blobs" : false,
 		"show_light_box" : false,
@@ -32,6 +33,9 @@
 		"show_pnp_axies" : false,
 		"show_process" : false,
 		"uart_port" : "/dev/ttyTHS0",
+		"use_pnp" : false,
+		"use_video" : true,
+		"video_path" : "../red.mp4",
 		"wait_uart" : false
 	},
 	"config_data" : 
@@ -39,9 +43,9 @@
 		"ANTI_TOP" : 0,
 		"ARMOR_CAMERA_EXPOSURE" : 4000,
 		"ARMOR_CAMERA_GAIN" : 3,
-		"ENEMY_COLOR" : 0,
-		"ENERGY_CAMERA_EXPOSURE" : 4000,
-		"ENERGY_CAMERA_GAIN" : 5,
+		"ENEMY_COLOR" : 1,
+		"ENERGY_CAMERA_EXPOSURE" : 1000,
+		"ENERGY_CAMERA_GAIN" : 1,
 		"MANUAL_DELTA_X" : 0.0,
 		"MANUAL_DELTA_Y" : 0.0
 	}

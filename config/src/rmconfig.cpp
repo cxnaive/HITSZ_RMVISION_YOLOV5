@@ -4,7 +4,7 @@ void CameraConfig::init() {
     mtx = (cv::Mat_<double>(3, 3) << fx, 0, cx, 0, fy, cy, 0, 0, 1);
     dist = (cv::Mat_<double>(1, 5) << k1, k2, p1, p2, k3);
     cv::initUndistortRectifyMap(mtx, dist, cv::noArray(), mtx,
-                                cv::Size(640, 480), CV_32FC1, mapx, mapy);
+                                cv::Size(640, 640), CV_32FC1, mapx, mapy);
     FOCUS_PIXEL = (fx + fy) / 2;
 }
 
@@ -32,17 +32,23 @@ void RmConfig::init_from_file() {
     show_class_id = config["show_class_id"].asBool();
     show_net_box = config["show_net_box"].asBool();
     wait_uart = config["wait_uart"].asBool();
+    use_pnp = config["use_pnp"].asBool();
+    use_video = config["use_video"].asBool();
     save_video = config["save_video"].asBool();
     show_light_blobs = config["show_light_blobs"].asBool();
     save_labelled_boxes = config["save_labelled_boxes"].asBool();
     show_pnp_axies = config["show_pnp_axies"].asBool();
     log_send_target = config["log_send_target"].asBool();
+    show_energy_extra = config["show_energy_extra"].asBool();
     show_energy = config["show_energy"].asBool();
     save_mark = config["save_mark"].asBool();
     show_process = config["show_process"].asBool();
     show_info = config["show_info"].asBool();
     uart_port = config["uart_port"].asString();
-
+    video_path = config["video_path"].asString();
+    has_show = show_origin || show_armor_box || show_light_box ||
+               show_light_blobs || (show_pnp_axies && use_pnp) || show_energy ||
+               show_energy_extra || show_process;
     // data
     Json::Value data = root["config_data"];
     ARMOR_CAMERA_GAIN = data["ARMOR_CAMERA_GAIN"].asInt();
@@ -84,16 +90,20 @@ void RmConfig::write_to_file() {
     config["show_net_box"] = show_net_box;
     config["show_class_id"] = show_class_id;
     config["wait_uart"] = wait_uart;
+    config["use_pnp"] = use_pnp;
+    config["use_video"] = use_video;
     config["save_video"] = save_video;
     config["show_light_blobs"] = show_light_blobs;
     config["save_labelled_boxes"] = save_labelled_boxes;
     config["show_pnp_axies"] = show_pnp_axies;
     config["log_send_target"] = log_send_target;
+    config["show_energy_extra"] = show_energy_extra;
     config["show_energy"] = show_energy;
     config["save_mark"] = save_mark;
     config["show_process"] = show_process;
     config["show_info"] = show_info;
     config["uart_port"] = uart_port;
+    config["video_path"] = video_path;
 
     // data
     Json::Value data;
@@ -121,7 +131,7 @@ void RmConfig::write_to_file() {
     camera["roi_width"] = camConfig.roi_width;
     camera["roi_offset_x"] = camConfig.roi_offset_x;
     camera["roi_offset_y"] = camConfig.roi_offset_y;
-    
+
     root["config"] = config;
     root["config_data"] = data;
     root["camera"] = camera;
