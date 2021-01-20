@@ -16,9 +16,9 @@
 
 | 硬件设备                                             | 操作系统                                     | 运行库                                                       | ToolChain                                                  |
 | ---------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
-| Nvidia Xavier NX<br />大恒工业相机×１<br />USB转TTL×１ | Ubuntu18.04<br />Ubuntu18.04 | OpenCV4.5.1<br />opencv_contrib4.5.1<br />大恒相机驱动 <br /> GLOG <br /> TensorRT | Ubuntu18/20 : cmake3.16 + build-essential <br />|
+| Nvidia Xavier NX<br />大恒工业相机×１<br />USB转TTL×１ | Ubuntu20.04<br />Ubuntu18.04 | OpenCV4.5.1<br />opencv_contrib4.5.1<br />大恒相机驱动 <br /> GLOG <br /> TensorRT | Ubuntu18/20 : cmake3.16 + build-essential <br />|
 
-**实际装载在步兵和哨兵上的运行环境为Ubuntu20.04。**
+**实际装载在步兵和哨兵上的运行环境为Ubuntu18.04(JetPack 4.4.1)。**
 
 相机驱动下载地址：[相机驱动](https://www.daheng-imaging.com/)
 
