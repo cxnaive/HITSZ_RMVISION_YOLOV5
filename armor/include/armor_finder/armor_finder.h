@@ -69,7 +69,8 @@ class ArmorFinder {
 
     void antiTop();  // 反小陀螺
 
-    bool sendBoxPosition(uint16_t shoot, double dist = -1);  // 和主控板通讯
+    bool sendBoxPosition(uint16_t shoot);  // 和主控板通讯
+    bool sendLostBox();
    public:
     void run(cv::Mat &src);  // 自瞄主函数
 };

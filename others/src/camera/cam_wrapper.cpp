@@ -127,6 +127,7 @@ Camera::Camera(int idx,CameraConfig config):
 
 Camera::~Camera() {
     if (init_success) {
+        stop();
         if (g_frameData.pImgBuf != NULL) {
             free(g_frameData.pImgBuf);
         }
@@ -208,8 +209,9 @@ void Camera::start() {
 
 void Camera::stop() {
     if (init_success) {
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
         thread_running = false;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
     }
 }
 

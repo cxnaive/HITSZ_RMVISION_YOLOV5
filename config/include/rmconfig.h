@@ -53,8 +53,10 @@ public:
     bool save_mark = false;
     bool show_process = false;
     bool show_info = false;
-    //
+    //serial
+    bool show_mcu_info = false;
     std::string uart_port = "/dev/ttyUSB0";
+    //graphic
     bool has_show = false;
     //DATA
     int ARMOR_CAMERA_EXPOSURE = 4000;
@@ -67,12 +69,12 @@ public:
     int ARMOR_W = 230;
     int IMAGE_CENTER_X = 320;
     int IMAGE_CENTER_Y = 320;
-    char RUNMODE = BIG_ENERGY_STATE;
+    char RUNMODE = ARMOR_STATE;
     double MCU_DELTA_X = 0;
     double MCU_DELTA_Y = 0;
     double MANUAL_DELTA_X = 0;
     double MANUAL_DELTA_Y = 0;
-    
+    float BULLET_SPEED = 0;
     //Camera
     CameraConfig camConfig;
 

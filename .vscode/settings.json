@@ -86,6 +86,7 @@
         "*.inc": "cpp",
         "__functional_03": "cpp",
         "__node_handle": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "cfenv": "cpp"
     }
 }

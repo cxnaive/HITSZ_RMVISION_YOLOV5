@@ -1,5 +1,0 @@
-/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/rebuild_cache.dir
-/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/calibrate.dir
-/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/edit_cache.dir
-/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/myplugins.dir
-/home/andychen/HITSZ_RMVISION_YOLOV5/build/CMakeFiles/rmcv.dir

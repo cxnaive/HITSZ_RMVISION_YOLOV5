@@ -34,8 +34,8 @@ public:
 private:
     EnergyPartParam energy_part_param_;//能量机关的参数设置
 
-    bool is_guessing;//当前处于发弹到新目标出现的过程，则为true，此时猜测下一个目标
-    bool is_predicting;//当前处于新目标出现到发弹的过程，则为true，此时正常击打
+    bool is_guessing; //当前处于发弹到新目标出现的过程，则为true，此时猜测下一个目标
+    bool is_predicting; //当前处于新目标出现到发弹的过程，则为true，此时正常击打
     bool energy_mode_init;//大小符状态判断
     bool energy_rotation_init;//若仍在判断风车旋转方向，则为true
     bool start_guess;//进入猜测状态的标志

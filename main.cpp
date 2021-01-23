@@ -6,7 +6,6 @@
 #include <rmconfig.h>
 #include <rmserial.h>
 #include <rmtime.h>
-
 #include <csignal>
 #include <opencv2/opencv.hpp>
 
@@ -46,7 +45,7 @@ static void OnInit(const char* cmd) {
 
     config.init_from_file();
 
-    // rmSerial.init();
+    rmSerial.init();
     if (config.use_video) {
         video = new VideoWrapper(config.video_path);
         video->init();
@@ -65,6 +64,16 @@ static void OnInit(const char* cmd) {
 
 static void OnClose() { config.write_to_file(); }
 
+void update_config(){
+    receive_mtx.lock();
+    config.RUNMODE = receive_config_data.state;
+    config.ENEMY_COLOR = receive_config_data.enemy_color;
+    config.ANTI_TOP = receive_config_data.anti_top;
+    config.MCU_DELTA_X = receive_config_data.delta_x;
+    config.MCU_DELTA_Y = receive_config_data.delta_y;
+    config.BULLET_SPEED = receive_config_data.bullet_speed;
+    receive_mtx.unlock();
+}
 void check_mode_and_run(cv::Mat& src) {
     if (lastRunMode == ARMOR_STATE && (config.RUNMODE == SMALL_ENERGY_STATE ||
                                        config.RUNMODE == BIG_ENERGY_STATE)) {
@@ -108,6 +117,7 @@ int main(int argc, char** argv) {
         }
         if (config.show_origin) {
             cv::imshow("origin", src);
+            // cv::waitKey(1);
         }
         check_mode_and_run(src);
         // cv::waitKey(10);

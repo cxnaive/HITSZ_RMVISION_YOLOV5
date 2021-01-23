@@ -44,6 +44,7 @@ void RmConfig::init_from_file() {
     save_mark = config["save_mark"].asBool();
     show_process = config["show_process"].asBool();
     show_info = config["show_info"].asBool();
+    show_mcu_info = config["show_mcu_info"].asBool();
     uart_port = config["uart_port"].asString();
     video_path = config["video_path"].asString();
     has_show = show_origin || show_armor_box || show_light_box ||
@@ -102,6 +103,7 @@ void RmConfig::write_to_file() {
     config["save_mark"] = save_mark;
     config["show_process"] = show_process;
     config["show_info"] = show_info;
+    config["show_mcu_info"] = show_mcu_info;
     config["uart_port"] = uart_port;
     config["video_path"] = video_path;
 

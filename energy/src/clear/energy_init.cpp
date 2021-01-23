@@ -141,7 +141,7 @@ void Energy::initRotation() {
         last_target_polar_angle_judge_rotation >= -180 &&
         fabs(target_polar_angle - last_target_polar_angle_judge_rotation) <
             30) {
-        // target_polar_angle和last_target_polar_angle_judge_rotation的初值均为1000，大于-180表示刚开始几帧不要
+        // target_polar_angle和last_target_polar_angle_judge_rotation的初值均为-1000，大于-180表示刚开始几帧不要
         //若两者比较接近，则说明没有切换目标，因此可以用于顺逆时针的判断
         if (target_polar_angle < last_target_polar_angle_judge_rotation)
             clockwise_rotation_init_cnt++;

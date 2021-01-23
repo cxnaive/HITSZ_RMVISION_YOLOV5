@@ -15,7 +15,7 @@ include_directories(${PROJECT_SOURCE_DIR}/net/include)
 include_directories(${PROJECT_SOURCE_DIR}/others/include)
 include_directories(${PROJECT_SOURCE_DIR}/config/include)
 include_directories(${PROJECT_SOURCE_DIR}/com/include)
-find_package(OpenCV 4 REQUIRED)
+find_package(OpenCV 4.5 REQUIRED)
 # find_package(glog REQUIRED)
 #Src
 file(GLOB_RECURSE sourcefiles 
@@ -23,18 +23,19 @@ file(GLOB_RECURSE sourcefiles
 "energy/**/*.h" "energy/**/*.cpp" 
 "net/**/*.cpp" "net/**/*.h" 
 "config/**/*.cpp" "config/**/*.h" 
-"com/**/*.h"  "com/**/*.cpp" "com/**/*.cc"
+"com/**/*.h"  "com/**/*.cpp" "com/**/*.cc" "com/**/*.c"
 "armor/**/*.h" "armor/**/*.cpp"
 )
 
 file(GLOB_RECURSE camfiles "others/**/*.h" "others/**/*.cpp" "config/src/rmconfig.cpp" "config/include/rmconfig.h")
-
 cuda_add_library(myplugins SHARED net/src/yololayer.cu)
 target_link_libraries(myplugins nvinfer cudart)
 
 add_executable(rmcv main.cpp ${sourcefiles})
 add_executable(calibrate calibrate_get_imgs.cpp ${camfiles})
+add_executable(mcusend test_mcu_send.cpp ${sourcefiles})
 link_directories(${OpenCV_LIBRARY_DIRS})
 
 target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)
 target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi  -lpthread)
+target_link_libraries(mcusend  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)

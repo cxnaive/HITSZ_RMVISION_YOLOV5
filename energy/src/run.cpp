@@ -10,8 +10,8 @@ using namespace cv;
 // 此函数为能量机关模式主控制流函数，且步兵仅拥有云台摄像头
 // 距离设置在econstants.h中
 // ---------------------------------------------------------------------------------------------------------------------
-void Energy::run(cv::Mat &src) {
-    // LOG(INFO) << "energy run!";
+void Energy::run(cv::Mat &raw_src) {
+    Mat src = raw_src.clone();
     clearAll();
     initImage(src);
     if (findArmors(src) < 1) return;
@@ -35,7 +35,6 @@ void Energy::run(cv::Mat &src) {
 
     changeTarget();
     getTargetPolarAngle();
-
     if (is_big && energy_rotation_init) {
         initRotation();
         return;

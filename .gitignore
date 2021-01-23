@@ -1,0 +1,4 @@
+*.o
+/build/.cmake
+/build/CMakeFiles
+/CMakeFiles
