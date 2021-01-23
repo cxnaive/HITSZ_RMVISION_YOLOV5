@@ -1,4 +1,7 @@
 *.o
-/build/.cmake
-/build/CMakeFiles
+/build
 /CMakeFiles
+!/build/rmconfig.json
+!/build/rmconfig.json.bak1
+!/build/yolov5s.engine
+!/build/init.jpg
