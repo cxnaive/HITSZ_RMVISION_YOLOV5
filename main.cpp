@@ -75,11 +75,13 @@ void update_config(){
     receive_mtx.unlock();
 }
 void check_mode_and_run(cv::Mat& src) {
+    update_config();
     if (lastRunMode == ARMOR_STATE && (config.RUNMODE == SMALL_ENERGY_STATE ||
                                        config.RUNMODE == BIG_ENERGY_STATE)) {
         if (!config.use_video)
             cam->setParam(config.ENERGY_CAMERA_EXPOSURE,
                           config.ENERGY_CAMERA_GAIN);
+        LOG(WARNING) << "Change to Energy mode:" << config.RUNMODE;
     }
     if ((lastRunMode == SMALL_ENERGY_STATE ||
          lastRunMode == BIG_ENERGY_STATE) &&
@@ -87,6 +89,7 @@ void check_mode_and_run(cv::Mat& src) {
         if (!config.use_video)
             cam->setParam(config.ARMOR_CAMERA_EXPOSURE,
                           config.ARMOR_CAMERA_GAIN);
+        LOG(WARNING) << "Change to Armor mode:" << config.RUNMODE;
     }
     lastRunMode = config.RUNMODE;
     if (config.RUNMODE == ARMOR_STATE) {

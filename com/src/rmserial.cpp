@@ -43,8 +43,8 @@ void proccess_data(uint8_t* s, uint8_t* e) {
             if (config.show_mcu_info)
                 LOG(INFO) << "Recieve Mcu Config: "
                           << "State: " << receive_config_data.state
-                          << " Pitch: " << receive_config_data.anti_top
-                          << " Enemy color:" << receive_config_data.enemy_color;
+                          << " Anti top: " << (int)receive_config_data.anti_top
+                          << " Enemy color:" << (int)receive_config_data.enemy_color;
             break;
         case MCU_ENERGY_TYPE:
             readEnergyMcuData(&mcu_data, &receive_config_data.delta_x,
@@ -104,6 +104,13 @@ bool RmSerial::init() {
     active_port = new serial::Serial(config.uart_port, 115200,
                                      serial::Timeout::simpleTimeout(1000));
     init_success = true;
+    //初始化数据接受结构体
+    receive_config_data.anti_top = config.ANTI_TOP;
+    receive_config_data.bullet_speed = config.BULLET_SPEED;
+    receive_config_data.delta_x = config.MCU_DELTA_X;
+    receive_config_data.delta_y = config.MCU_DELTA_Y;
+    receive_config_data.enemy_color = config.ENEMY_COLOR;
+    receive_config_data.state = config.RUNMODE;
     //开启数据接受线程
     start_thread();
     if (active_port->isOpen()) {
