@@ -57,10 +57,12 @@ void Energy::sendTarget(RmSerial &serial, float x, float y, float z,
         fps_cnt = 0;
         last_time = now_time;
     }
+    data.start_flag = 's';
     data.x = static_cast<float>(x);
     data.y = static_cast<float>(y);
     data.z = static_cast<float>(z);
     data.u = u;
+    data.end_flag = 'e';
     serial.send_data(data);
     send_cnt += 1;
     // x_tmp = static_cast<short>(x * (32768 - 1) / 100);

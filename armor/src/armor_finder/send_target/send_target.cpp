@@ -9,10 +9,12 @@ static bool sendTarget(RmSerial &serial, double x, double y, double z,
     static short x_tmp, y_tmp, z_tmp;
     // uint8_t buff[10];
     SendData data;
+    data.start_flag = 's';
     data.x = static_cast<float>(x);
     data.y = static_cast<float>(y);
     data.z = static_cast<float>(z);
     data.u = shoot_delay;
+    data.end_flag = 'e';
     return serial.send_data(data);
     // buff[0] = 's';
     // buff[1] = static_cast<char>((x_tmp >> 8) & 0xFF);
