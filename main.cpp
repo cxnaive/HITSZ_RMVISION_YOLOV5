@@ -6,6 +6,7 @@
 #include <rmconfig.h>
 #include <rmserial.h>
 #include <rmtime.h>
+
 #include <csignal>
 #include <opencv2/opencv.hpp>
 
@@ -41,10 +42,9 @@ static void OnInit(const char* cmd) {
     FLAGS_alsologtostderr = true;
     FLAGS_colorlogtostderr = true;
     google::InitGoogleLogging(cmd);
+
     rmTime.init();
-
     config.init_from_file();
-
     rmSerial.init();
     if (config.use_video) {
         video = new VideoWrapper(config.video_path);
@@ -64,7 +64,7 @@ static void OnInit(const char* cmd) {
 
 static void OnClose() { config.write_to_file(); }
 
-void update_config(){
+void update_config() {
     receive_mtx.lock();
     config.RUNMODE = receive_config_data.state;
     config.ENEMY_COLOR = receive_config_data.enemy_color;
@@ -112,7 +112,7 @@ int main(int argc, char** argv) {
     OnInit(argv[0]);
     while (keepRunning) {
         if (config.use_video) {
-            if(!video->read(src)) break;
+            if (!video->read(src)) break;
             cv::resize(src, src, cv::Size(640, 360));
         } else {
             cam->read(src);

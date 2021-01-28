@@ -29,7 +29,15 @@ void Energy::sendEnergy() {
 
     last_yaw = tmp_yaw;
     last_pitch = tmp_pitch;
-
+    static double last_time = rmTime.seconds();
+    static int fps_cnt = 0;
+    double now_time = rmTime.seconds();
+    fps_cnt += 1;
+    if (now_time - last_time > 2) {
+        LOG(INFO) << "energy fps:" << fps_cnt / (now_time - last_time);
+        fps_cnt = 0;
+        last_time = now_time;
+    }
     if (change_target) {
         sendTarget(serial, yaw_rotation, pitch_rotation, 3, 0);  //表示目标切换
     } else if (is_guessing) {
@@ -48,15 +56,6 @@ void Energy::sendTarget(RmSerial &serial, float x, float y, float z,
     // short x_tmp, y_tmp, z_tmp;
     // uint8_t buff[10];
     SendData data;
-    static double last_time = rmTime.seconds();
-    static int fps_cnt = 0;
-    double now_time = rmTime.seconds();
-    fps_cnt += 1;
-    if (now_time - last_time > 2) {
-        LOG(INFO) << "energy fps:" << fps_cnt / (now_time - last_time);
-        fps_cnt = 0;
-        last_time = now_time;
-    }
     data.start_flag = 's';
     data.x = static_cast<float>(x);
     data.y = static_cast<float>(y);

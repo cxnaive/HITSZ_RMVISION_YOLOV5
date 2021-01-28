@@ -5,22 +5,20 @@
 double getPointLength(const cv::Point2f &p) {
     return sqrt(p.x * p.x + p.y * p.y);
 }
-cv::VideoWriter initVideoWriter(const std::string &filename_prefix) {
-    cv::VideoWriter video;
+cudaVideoWriter initVideoWriter(const std::string &filename_prefix) {
     std::string file_name = filename_prefix + ".avi";
-    video.open(file_name, cv::VideoWriter::fourcc('P', 'I', 'M', 'I'), 90, cv::Size(640, 640), true);
-    return video;
+    cudaVideoWriter video = cv::cudacodec::createVideoWriter(file_name,cv::Size(640,640),60);
 }
-std::map<std::string,cv::VideoWriter> video_writers;
-cv::VideoWriter getVideoWriter(std::string prefix){
+std::map<std::string,cudaVideoWriter> video_writers;
+cudaVideoWriter getVideoWriter(std::string prefix){
     auto iter = video_writers.find(prefix);
     if(iter != video_writers.end()) return iter->second;
-    cv::VideoWriter now = initVideoWriter("/video/"+prefix);
+    cudaVideoWriter now = initVideoWriter("video/"+prefix);
     video_writers[prefix] = now;
     return now;
 }
 void saveVideos(cv::Mat& img,std::string prefix){
     if(img.empty()) return;
-    cv::VideoWriter writer = getVideoWriter(prefix);
-    writer.write(img);
+    cudaVideoWriter writer = getVideoWriter(prefix);
+    writer->write(img);
 }

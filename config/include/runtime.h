@@ -8,7 +8,8 @@
 #include <constants.h>
 #include <opencv2/opencv.hpp>
 #include <armor_finder/armor_box.h>
-
+#include <opencv2/cudacodec.hpp>
+typedef cv::Ptr<cv::cudacodec::VideoWriter> cudaVideoWriter;
 
 void saveVideos(cv::Mat& img,std::string prefix);
 double getPointLength(const cv::Point2f &p);

@@ -14,21 +14,36 @@ void Energy::run(cv::Mat &raw_src) {
     Mat src = raw_src.clone();
     clearAll();
     initImage(src);
-    if (findArmors(src) < 1) return;
-    
+    if (findArmors(src) < 1) {
+        sendEnergyLost();
+        return;
+    }
+
     if (config.show_energy_extra) showArmors("armor", src);
 
     if (!findFlowStripFan(src)) {
-        if (!findFlowStripWeak(src)) return;
+        if (!findFlowStripWeak(src)) {
+            sendEnergyLost();
+            return;
+        }
     } else {
         if (config.show_energy_extra) showFlowStripFan("strip fan", src);
-        if (!findTargetInFlowStripFan())
+        if (!findTargetInFlowStripFan()) {
+            sendEnergyLost();
             return;  //// 在在流动条区域内寻找不到装甲板就返回
-        if (!findFlowStrip(src)) return;  //找不到流动条就返回
+        }
+        if (!findFlowStrip(src)) {
+            sendEnergyLost();
+            return;  //找不到流动条就返回
+        }
     }
     findCenterROI(src);
-    if (config.show_energy_extra || config.show_energy) showFlowStrip("strip", src);
-    if (!findCenterR(src)) return;
+    if (config.show_energy_extra || config.show_energy)
+        showFlowStrip("strip", src);
+    if (!findCenterR(src)) {
+        sendEnergyLost();
+        return;
+    }
     if (config.show_energy_extra) showCenterR("R", src);
     fans_cnt = findFans(src);
     if (config.show_energy_extra) showFans("fans", src);
@@ -37,6 +52,7 @@ void Energy::run(cv::Mat &raw_src) {
     getTargetPolarAngle();
     if (is_big && energy_rotation_init) {
         initRotation();
+        sendEnergyLost();
         return;
     }
     getPredictPoint(target_point);

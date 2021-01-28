@@ -37,9 +37,9 @@ void Energy::getAimPoint(cv::Point target_point_) {
         compensate_pitch = BLUE_COMPENSATE_PITCH;
     }
 
-    double dx = -(target_point_.x - 320 - compensate_yaw - config.MCU_DELTA_X -
+    double dx = (target_point_.x - config.camConfig.cx - compensate_yaw - config.MCU_DELTA_X -
                   config.MANUAL_DELTA_X - extra_delta_x);
-    double dy = -(target_point_.y - 320 - compensate_pitch - config.MCU_DELTA_Y -
+    double dy = -(target_point_.y - config.camConfig.cy - compensate_pitch - config.MCU_DELTA_Y -
                   config.MANUAL_DELTA_Y - extra_delta_y);
     yaw_rotation = atan(dx / config.camConfig.fx) * 180 / PI;
     pitch_rotation = atan(dy / config.camConfig.fy) * 180 / PI;

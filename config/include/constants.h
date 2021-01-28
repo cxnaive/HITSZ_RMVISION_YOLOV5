@@ -13,12 +13,12 @@
 #define SMALL_ENERGY_STATE 's'
 #define ARMOR_STATE 'a'
 
-#define RED_COMPENSATE_YAW (5)
+#define RED_COMPENSATE_YAW (0)
 #define RED_COMPENSATE_PITCH (74)
-#define BLUE_COMPENSATE_YAW (5)
+#define BLUE_COMPENSATE_YAW (0)
 #define BLUE_COMPENSATE_PITCH (74)
 #define EXTRA_DELTA_X (0)
-#define EXTRA_DELTA_Y (10)
+#define EXTRA_DELTA_Y (-10)
 #define YAW_AIM_KD (0.4)
 #define YAW_AIM_KP (0.75)
 #define YAW_AIM_KI (0.01)

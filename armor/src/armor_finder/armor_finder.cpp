@@ -108,6 +108,8 @@ void ArmorFinder::run(cv::Mat &src) {    // 自瞄主函数
             sendBoxPosition(0);
         else
             sendLostBox();
+    } else {
+        sendLostBox();
     }
 
     if (target_box.rect != cv::Rect2d()) {

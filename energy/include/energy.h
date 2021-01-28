@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include "param_struct_define.h"
 #include <rmserial.h>
+#include <runtime.h>
 using std::vector;
 
 class Energy {
@@ -28,6 +29,7 @@ public:
     RmSerial &serial;//串口
     void setEnergyInit();//设置能量机关初始化
     void sendEnergy();//发送能量机关数据
+    void sendEnergyLost();
     void sendTarget(RmSerial& serial, float x, float y, float z, uint16_t u);//发送数据
 
 
