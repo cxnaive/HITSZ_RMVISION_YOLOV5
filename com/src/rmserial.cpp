@@ -44,7 +44,8 @@ void proccess_data(uint8_t* s, uint8_t* e) {
                 LOG(INFO) << "Recieve Mcu Config: "
                           << "State: " << receive_config_data.state
                           << " Anti top: " << (int)receive_config_data.anti_top
-                          << " Enemy color:" << (int)receive_config_data.enemy_color;
+                          << " Enemy color:"
+                          << (int)receive_config_data.enemy_color;
             break;
         case MCU_ENERGY_TYPE:
             readEnergyMcuData(&mcu_data, &receive_config_data.delta_x,
@@ -52,12 +53,13 @@ void proccess_data(uint8_t* s, uint8_t* e) {
             if (config.show_mcu_info)
                 LOG(INFO) << "Recieve Mcu Energy: "
                           << "Delta x: " << receive_config_data.delta_x
-                          << " Delta y: " << receive_config_data.delta_y;         
+                          << " Delta y: " << receive_config_data.delta_y;
             break;
         case MCU_SPEED_TYPE:
             readSpeedMcuData(&mcu_data, &receive_config_data.bullet_speed);
             if (config.show_mcu_info)
-                LOG(INFO) << "Recieve Mcu Bullet Speed: " << receive_config_data.bullet_speed; 
+                LOG(INFO) << "Recieve Mcu Bullet Speed: "
+                          << receive_config_data.bullet_speed;
             break;
         default:
             break;
@@ -73,12 +75,22 @@ void recieve_data(RmSerial* rm_serial) {
     while (rm_serial->thread_running) {
         size_t wait_in_buffer = port->available();
         if (wait_in_buffer) {
-            port->read(buffer_tail, wait_in_buffer);
-            buffer_tail += wait_in_buffer;
-            if (buffer_tail[-1] == 'e') {
-                *buffer_tail = 0;
-                proccess_data(buff, buffer_tail);
+            port->read(buffer_tail, 1);
+            buffer_tail += 1;
+            if (buff[0] != 's') {
                 buffer_tail = buff;
+            }
+            if (buffer_tail - buff < sizeof(McuData)) {
+                continue;
+            } else {
+                if (buffer_tail[-1] == 'e') {
+                    *buffer_tail = 0;
+                    proccess_data(buff, buffer_tail);
+                    buffer_tail = buff;
+                }
+                else{
+                    buffer_tail = buff;
+                }
             }
         }
     }

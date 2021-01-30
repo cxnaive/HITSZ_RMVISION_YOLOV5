@@ -33,7 +33,7 @@
 		"show_origin" : true,
 		"show_pnp_axies" : false,
 		"show_process" : false,
-		"uart_port" : "/dev/ttyUSB0",
+		"uart_port" : "/dev/ttyACM0",
 		"use_pnp" : false,
 		"use_video" : false,
 		"video_path" : "../red.mp4",

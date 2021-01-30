@@ -163,6 +163,7 @@ bool Camera::init() {
             return false;
         }
         GX_OPEN_PARAM stOpenParam;
+        stOpenParam.accessMode = GX_ACCESS_EXCLUSIVE;
         stOpenParam.openMode = GX_OPEN_SN;
         stOpenParam.pszContent = const_cast<char*>(sn.c_str());
         status = GXOpenDevice(&stOpenParam,&g_hDevice);
