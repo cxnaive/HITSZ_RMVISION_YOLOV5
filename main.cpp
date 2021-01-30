@@ -52,6 +52,11 @@ static void OnInit(const char* cmd) {
     } else {
         cam = new Camera(config.camera_sn, config.camConfig);
         cam->init();
+        if(!cam->init_is_successful()){
+            LOG(ERROR) << "Camera Init Failed!";
+            keepRunning = false;
+            return;
+        }
         cam->setParam(config.ARMOR_CAMERA_EXPOSURE, config.ARMOR_CAMERA_GAIN);
         cam->start();
     }
