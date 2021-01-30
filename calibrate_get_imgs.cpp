@@ -12,7 +12,7 @@ int main(int argc, char** argv){
     google::InitGoogleLogging(argv[0]);
     RmConfig config;
     config.init_from_file();
-    Camera cam(1,config.camConfig);
+    Camera cam(config.camera_sn,config.camConfig);
     cam.init();
     if(!cam.init_is_successful()){
         LOG(ERROR) << "unable to open camera";

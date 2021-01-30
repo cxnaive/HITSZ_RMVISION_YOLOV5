@@ -17,7 +17,7 @@
 class Camera:public WrapperHead{
     friend void getRGBImage(Camera *p_cam);
 private:
-    int index;
+    std::string sn;
     int exposure, gain;
     GX_STATUS status;
 
@@ -38,7 +38,7 @@ private:
     bool init_success;
 
 public:
-    Camera(int idx,CameraConfig config);			        // constructor, p_img is a pointer towards a 640*640 8uc3 Mat type
+    Camera(std::string sn,CameraConfig config);			        // constructor, p_img is a pointer towards a 640*640 8uc3 Mat type
     ~Camera();
     
     bool init() final;                                        // init camera lib and do settings, be called firstly

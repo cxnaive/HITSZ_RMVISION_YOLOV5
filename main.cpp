@@ -50,7 +50,7 @@ static void OnInit(const char* cmd) {
         video = new VideoWrapper(config.video_path);
         video->init();
     } else {
-        cam = new Camera(1, config.camConfig);
+        cam = new Camera(config.camera_sn, config.camConfig);
         cam->init();
         cam->setParam(config.ARMOR_CAMERA_EXPOSURE, config.ARMOR_CAMERA_GAIN);
         cam->start();

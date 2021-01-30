@@ -47,6 +47,7 @@ public:
     bool log_send_target = false;
     bool use_video = false;
     std::string video_path = "video.mp4";
+    std::string camera_sn = "NULL";
     //energy config
     bool show_energy_extra = false;
     bool show_energy = false;
@@ -77,6 +78,7 @@ public:
     float BULLET_SPEED = 0;
     //Camera
     CameraConfig camConfig;
+    
 
     void init_from_file();
     void write_to_file();

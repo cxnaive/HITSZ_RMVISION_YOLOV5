@@ -47,9 +47,10 @@ void RmConfig::init_from_file() {
     show_mcu_info = config["show_mcu_info"].asBool();
     uart_port = config["uart_port"].asString();
     video_path = config["video_path"].asString();
+    camera_sn = config["camera_sn"].asString();
     has_show = show_origin || show_armor_box || show_light_box ||
                show_light_blobs || (show_pnp_axies && use_pnp) || show_energy ||
-               show_energy_extra || show_process;
+               show_energy_extra || show_process || show_net_box;
     // data
     Json::Value data = root["config_data"];
     ARMOR_CAMERA_GAIN = data["ARMOR_CAMERA_GAIN"].asInt();
@@ -106,6 +107,7 @@ void RmConfig::write_to_file() {
     config["show_mcu_info"] = show_mcu_info;
     config["uart_port"] = uart_port;
     config["video_path"] = video_path;
+    config["camera_sn"] = camera_sn;
 
     // data
     Json::Value data;

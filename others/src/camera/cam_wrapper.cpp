@@ -2,10 +2,11 @@
 // Created by erc on 1/3/20.
 //
 
+#include <camera/cam_wrapper.h>
+#include <glog/logging.h>
+
 #include <mutex>
 #include <thread>
-#include <glog/logging.h>
-#include <camera/cam_wrapper.h>
 
 //#include <opencv2/opencv.hpp>
 
@@ -99,31 +100,32 @@ void getRGBImage(Camera *p_cam) {
                     p_cam->g_frameData.nHeight, p_cam->g_nPixelFormat,
                     p_cam->g_nColorFilter);
 
-        cv::Mat temp(p_cam->camConfig.roi_height, p_cam->camConfig.roi_width, CV_8UC3);
+        cv::Mat temp(p_cam->camConfig.roi_height, p_cam->camConfig.roi_width,
+                     CV_8UC3);
 
         memcpy(temp.data, p_cam->g_pRGBframeData, 3 * (p_cam->nPayLoadSize));
 
-        cv::resize(temp,temp,cv::Size(640,640));
+        cv::resize(temp, temp, cv::Size(640, 640));
         std::vector<cv::Mat> channels;
         split(temp, channels);
-        //std::swap(channels[0], channels[2]);
-        cv::swap(channels[0],channels[2]);
-        merge(channels,temp);
+        // std::swap(channels[0], channels[2]);
+        cv::swap(channels[0], channels[2]);
+        merge(channels, temp);
         mtx.lock();
         temp.copyTo(p_cam->p_img);
         mtx.unlock();
     }
 }
 
-Camera::Camera(int idx,CameraConfig config):
-      index(idx),
+Camera::Camera(std::string sn, CameraConfig config)
+    : sn(sn),
       exposure(5000),
       gain(0),
       thread_running(false),
       camConfig(config),
-      init_success(false){
-          p_img = cv::Mat(640,640,CV_8UC3);
-      };
+      init_success(false) {
+    p_img = cv::Mat(640, 640, CV_8UC3);
+};
 
 Camera::~Camera() {
     if (init_success) {
@@ -139,16 +141,36 @@ Camera::~Camera() {
 
     GXCloseLib();
 }
-
+std::string gc_device_typename[5] = {
+    "GX_DEVICE_CLASS_UNKNOWN", "GX_DEVICE_CLASS_USB2", "GX_DEVICE_CLASS_GEV",
+    "GX_DEVICE_CLASS_U3V", "GX_DEVICE_CLASS_SMART"};
 bool Camera::init() {
     GXInitLib();
     GXUpdateDeviceList(&nDeviceNum, 1000);
     if (nDeviceNum >= 1) {
-        GXOpenDeviceByIndex(index, &g_hDevice);
-        
-        GXGetInt(g_hDevice,GX_INT_SENSOR_WIDTH,&g_SensorWidth);
-        GXGetInt(g_hDevice,GX_INT_SENSOR_HEIGHT,&g_SensorHeight);
-        LOG(WARNING) << "Camera Sensor: " << g_SensorWidth << " X " << g_SensorHeight; 
+        GX_DEVICE_BASE_INFO pBaseinfo[nDeviceNum];
+        size_t nSize = nDeviceNum * sizeof(GX_DEVICE_BASE_INFO);
+        status = GXGetAllDeviceBaseInfo(pBaseinfo, &nSize);
+        bool found_device = false;
+        for (int i = 0; i < nDeviceNum; ++i) {
+            LOG(INFO) << "device: SN:" << pBaseinfo[i].szSN
+                      << " NAME:" << pBaseinfo[i].szDisplayName << " TYPE:"
+                      << gc_device_typename[pBaseinfo[i].deviceClass];
+            if(std::string(pBaseinfo[i].szSN) == sn) found_device = true; 
+        }
+        if(!found_device) {
+            LOG(ERROR) << "No device found with SN:" << sn;
+            return false;
+        }
+        GX_OPEN_PARAM stOpenParam;
+        stOpenParam.openMode = GX_OPEN_SN;
+        stOpenParam.pszContent = const_cast<char*>(sn.c_str());
+        status = GXOpenDevice(&stOpenParam,&g_hDevice);
+
+        GXGetInt(g_hDevice, GX_INT_SENSOR_WIDTH, &g_SensorWidth);
+        GXGetInt(g_hDevice, GX_INT_SENSOR_HEIGHT, &g_SensorHeight);
+        LOG(WARNING) << "Camera Sensor: " << g_SensorWidth << " X "
+                     << g_SensorHeight;
 
         GXSetEnum(g_hDevice, GX_ENUM_EXPOSURE_AUTO, GX_EXPOSURE_AUTO_OFF);
         GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF);
@@ -160,7 +182,7 @@ bool Camera::init() {
 
         GXSetEnum(g_hDevice, GX_ENUM_ACQUISITION_MODE, GX_ACQ_MODE_CONTINUOUS);
         GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4);
-        
+
         GXSetInt(g_hDevice, GX_INT_OFFSET_X, camConfig.roi_offset_x);
         GXSetInt(g_hDevice, GX_INT_OFFSET_Y, camConfig.roi_offset_y);
         GXSetInt(g_hDevice, GX_INT_WIDTH, camConfig.roi_width);
@@ -174,7 +196,8 @@ bool Camera::init() {
         //获取实际增益范围
         GX_FLOAT_RANGE gainRange;
         GXGetFloatRange(g_hDevice, GX_FLOAT_GAIN, &gainRange);
-        LOG(WARNING) << "Camera Gain Range: " <<gainRange.dMin << "~" << gainRange.dMax <<" step size:"<<gainRange.dInc;
+        LOG(WARNING) << "Camera Gain Range: " << gainRange.dMin << "~"
+                     << gainRange.dMax << " step size:" << gainRange.dInc;
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
 
         g_frameData.pImgBuf = malloc(nPayLoadSize);
@@ -217,10 +240,10 @@ void Camera::stop() {
 
 bool Camera::init_is_successful() { return init_success; }
 
-bool Camera::read(cv::Mat &src){
+bool Camera::read(cv::Mat &src) {
     mtx.lock();
     // p_img.copyTo(src);
-    cv::swap(p_img,src);
+    cv::swap(p_img, src);
     mtx.unlock();
     return true;
 }
