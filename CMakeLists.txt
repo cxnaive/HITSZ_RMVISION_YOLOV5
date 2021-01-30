@@ -16,6 +16,13 @@ include_directories(${PROJECT_SOURCE_DIR}/others/include)
 include_directories(${PROJECT_SOURCE_DIR}/config/include)
 include_directories(${PROJECT_SOURCE_DIR}/com/include)
 find_package(OpenCV 4.5 REQUIRED)
+
+# Resources
+
+file(GLOB_RECURSE resources "${PROJECT_SOURCE_DIR}/resources/*")
+message(STATUS "Copying resources file(s): ${resources}")
+file(COPY ${resources} DESTINATION ${CMAKE_BINARY_DIR}/ FOLLOW_SYMLINK_CHAIN)
+
 # find_package(glog REQUIRED)
 #Src
 file(GLOB_RECURSE sourcefiles 
