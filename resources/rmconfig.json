@@ -17,6 +17,7 @@
 	},
 	"config" : 
 	{
+		"camera_sn" : "KE0200070452",
 		"log_send_target" : false,
 		"save_labelled_boxes" : false,
 		"save_mark" : false,
