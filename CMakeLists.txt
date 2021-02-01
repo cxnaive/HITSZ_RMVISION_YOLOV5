@@ -3,6 +3,9 @@
 PROJECT(HITSZ-RM-CV)
 SET(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -D_MWAITXINTRIN_H_INCLUDED -O3")
+set(use_u2_camera true)
+
+
 # cuda
 find_package(CUDA REQUIRED)
 include_directories(/usr/local/cuda/include)
@@ -16,6 +19,15 @@ include_directories(${PROJECT_SOURCE_DIR}/others/include)
 include_directories(${PROJECT_SOURCE_DIR}/config/include)
 include_directories(${PROJECT_SOURCE_DIR}/com/include)
 find_package(OpenCV 4.5 REQUIRED)
+
+if (use_u2_camera)
+    message(STATUS "Linking u2 camera lib on linux...")
+    message(STATUS "u2_camera_root $ENV{GENICAM_ROOT_V2_3}")
+    link_directories($ENV{GENICAM_ROOT_V2_3}/bin/Linux64_x64)
+    link_directories($ENV{GENICAM_ROOT_V2_3}/bin/Linux64_x64/GenApi/Generic)
+    link_libraries(-ldhgentl -lpthread)
+    link_libraries(-ldx_image_proc -lGCBase_gcc40_v2_3 -lGenApi_gcc40_v2_3 -llog4cpp_gcc40_v2_3 -lLog_gcc40_v2_3 -lMathParser_gcc40_v2_3)
+endif ()
 
 # Resources
 

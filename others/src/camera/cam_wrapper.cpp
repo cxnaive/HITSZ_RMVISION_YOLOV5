@@ -88,6 +88,30 @@ void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
     }
 }
 
+void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
+    if (pFrame->status == GX_FRAME_STATUS_SUCCESS) {
+        Camera *cam = (Camera *)pFrame->pUserParam;
+        ProcessData((void *)pFrame->pImgBuf, cam->g_pRaw8Buffer,
+                    cam->g_pRGBframeData, pFrame->nWidth, pFrame->nHeight,
+                    pFrame->nPixelFormat, cam->g_nColorFilter);
+        cv::Mat temp(cam->camConfig.roi_height, cam->camConfig.roi_width,
+                     CV_8UC3);
+
+        memcpy(temp.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+
+        cv::resize(temp, temp, cv::Size(640, 640));
+        std::vector<cv::Mat> channels;
+        split(temp, channels);
+        // std::swap(channels[0], channels[2]);
+        cv::swap(channels[0], channels[2]);
+        merge(channels, temp);
+        mtx.lock();
+        temp.copyTo(cam->p_img);
+        mtx.unlock();
+    }
+    return;
+}
+
 void getRGBImage(Camera *p_cam) {
     while (1) {
         GX_STATUS status;
@@ -156,17 +180,17 @@ bool Camera::init() {
             LOG(INFO) << "device: SN:" << pBaseinfo[i].szSN
                       << " NAME:" << pBaseinfo[i].szDisplayName << " TYPE:"
                       << gc_device_typename[pBaseinfo[i].deviceClass];
-            if(std::string(pBaseinfo[i].szSN) == sn) found_device = true; 
+            if (std::string(pBaseinfo[i].szSN) == sn) found_device = true;
         }
-        if(!found_device) {
+        if (!found_device) {
             LOG(ERROR) << "No device found with SN:" << sn;
             return false;
         }
         GX_OPEN_PARAM stOpenParam;
         stOpenParam.accessMode = GX_ACCESS_EXCLUSIVE;
         stOpenParam.openMode = GX_OPEN_SN;
-        stOpenParam.pszContent = const_cast<char*>(sn.c_str());
-        status = GXOpenDevice(&stOpenParam,&g_hDevice);
+        stOpenParam.pszContent = const_cast<char *>(sn.c_str());
+        status = GXOpenDevice(&stOpenParam, &g_hDevice);
 
         GXGetInt(g_hDevice, GX_INT_SENSOR_WIDTH, &g_SensorWidth);
         GXGetInt(g_hDevice, GX_INT_SENSOR_HEIGHT, &g_SensorHeight);
@@ -224,18 +248,20 @@ void Camera::setParam(int exposureInput, int gainInput) {
 }
 void Camera::start() {
     if (init_success) {
+        GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
-        thread_running = true;
-        std::thread task(getRGBImage, this);
-        task.detach();
+        // thread_running = true;
+        // std::thread task(getRGBImage, this);
+        // task.detach();
     }
 }
 
 void Camera::stop() {
     if (init_success) {
-        thread_running = false;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // thread_running = false;
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100));
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
+        GXUnregisterCaptureCallback(g_hDevice);
     }
 }
 

@@ -16,6 +16,7 @@
 
 class Camera:public WrapperHead{
     friend void getRGBImage(Camera *p_cam);
+    friend void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame);
 private:
     std::string sn;
     int exposure, gain;
