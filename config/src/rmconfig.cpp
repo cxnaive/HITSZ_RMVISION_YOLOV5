@@ -61,6 +61,9 @@ void RmConfig::init_from_file() {
     ANTI_TOP = data["ANTI_TOP"].asInt();
     MANUAL_DELTA_X = data["MANUAL_DELTA_X"].asDouble();
     MANUAL_DELTA_Y = data["MANUAL_DELTA_Y"].asDouble();
+    ARMOR_DELTA_X = data["ARMOR_DELTA_X"].asDouble();
+    ARMOR_PITCH_K = data["ARMOR_PITCH_K"].asDouble();
+    ARMOR_PITCH_B = data["ARMOR_PITCH_B"].asDouble();
 
     // camera
     Json::Value camera = root["camera"];
@@ -119,6 +122,9 @@ void RmConfig::write_to_file() {
     data["ANTI_TOP"] = ANTI_TOP;
     data["MANUAL_DELTA_X"] = MANUAL_DELTA_X;
     data["MANUAL_DELTA_Y"] = MANUAL_DELTA_Y;
+    data["ARMOR_DELTA_X"] = ARMOR_DELTA_X;
+    data["ARMOR_PITCH_K"] = ARMOR_PITCH_K;
+    data["ARMOR_PITCH_B"] = ARMOR_PITCH_B;
 
     // camera
     Json::Value camera;

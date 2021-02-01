@@ -76,6 +76,9 @@ public:
     double MANUAL_DELTA_X = 0;
     double MANUAL_DELTA_Y = 0;
     float BULLET_SPEED = 0;
+    double ARMOR_DELTA_X = 0;
+    double ARMOR_PITCH_K = 0;
+    double ARMOR_PITCH_B = 0;
     //Camera
     CameraConfig camConfig;
     
