@@ -52,6 +52,10 @@ ArmorFinder::ArmorFinder(const int &color, RmSerial &u, const int &anti_top)
       state(SEARCHING_STATE),  //默认为searching模式
       netDetector(),           // YOLOV5 多目标识别
       anti_switch_cnt(0),      // 防止乱切目标计数器
+      YawPID(config.ARMOR_YAW_KP, config.ARMOR_YAW_KI,
+             config.ARMOR_YAW_KD),  // YAW轴PID控制
+      PitchPID(config.ARMOR_PITCH_KP, config.ARMOR_PITCH_KI,
+               config.ARMOR_PITCH_KD),  // PITCH轴PID控制
       contour_area(
           0),  //装甲区域亮点个数，用于数字识别未启用时判断是否跟丢（已弃用）
       tracking_cnt(0) {  // 记录追踪帧数，用于定时退出追踪

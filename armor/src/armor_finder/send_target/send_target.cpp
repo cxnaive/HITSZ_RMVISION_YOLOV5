@@ -54,7 +54,7 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
         pitch = atan((center.y - config.IMAGE_CENTER_Y) / config.camConfig.fy) *
                 180 / PI;
     }
-    double dpitch = config.ARMOR_PITCH_K * dist + config.ARMOR_PITCH_B;
+    double dpitch = config.ARMOR_PITCH_DELTA_K * dist + config.ARMOR_PITCH_DELTA_B;
     pitch -= dpitch;
 
     if (config.log_send_target) {
@@ -68,9 +68,15 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
         last_time = now_time;
         fps_cnt = 0;
     }
-    double y_offset = 0;
+    //使用PID控制
+    yaw = YawPID.updateError(yaw);
+    pitch = PitchPID.updateError(pitch);
 
     return sendTarget(serial, yaw, -pitch, 1, shoot_delay);
 }
 
-bool ArmorFinder::sendLostBox() { return sendTarget(serial, 0, 0, 0, 0); }
+bool ArmorFinder::sendLostBox() { 
+    PitchPID.clear();
+    YawPID.clear();
+    return sendTarget(serial, 0, 0, 0, 0); 
+}

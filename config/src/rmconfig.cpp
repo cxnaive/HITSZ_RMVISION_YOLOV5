@@ -62,8 +62,14 @@ void RmConfig::init_from_file() {
     MANUAL_DELTA_X = data["MANUAL_DELTA_X"].asDouble();
     MANUAL_DELTA_Y = data["MANUAL_DELTA_Y"].asDouble();
     ARMOR_DELTA_X = data["ARMOR_DELTA_X"].asDouble();
-    ARMOR_PITCH_K = data["ARMOR_PITCH_K"].asDouble();
-    ARMOR_PITCH_B = data["ARMOR_PITCH_B"].asDouble();
+    ARMOR_PITCH_DELTA_K = data["ARMOR_PITCH_DELTA_K"].asDouble();
+    ARMOR_PITCH_DELTA_B = data["ARMOR_PITCH_DELTA_B"].asDouble();
+    ARMOR_YAW_KP = data["ARMOR_YAW_KP"].asDouble();
+    ARMOR_YAW_KI = data["ARMOR_YAW_KI"].asDouble();
+    ARMOR_YAW_KD = data["ARMOR_YAW_KD"].asDouble();
+    ARMOR_PITCH_KP = data["ARMOR_PITCH_KP"].asDouble();
+    ARMOR_PITCH_KI = data["ARMOR_PITCH_KI"].asDouble();
+    ARMOR_PITCH_KD = data["ARMOR_PITCH_KD"].asDouble();
 
     // camera
     Json::Value camera = root["camera"];
@@ -123,8 +129,14 @@ void RmConfig::write_to_file() {
     data["MANUAL_DELTA_X"] = MANUAL_DELTA_X;
     data["MANUAL_DELTA_Y"] = MANUAL_DELTA_Y;
     data["ARMOR_DELTA_X"] = ARMOR_DELTA_X;
-    data["ARMOR_PITCH_K"] = ARMOR_PITCH_K;
-    data["ARMOR_PITCH_B"] = ARMOR_PITCH_B;
+    data["ARMOR_PITCH_DELTA_K"] = ARMOR_PITCH_DELTA_K;
+    data["ARMOR_PITCH_DELTA_B"] = ARMOR_PITCH_DELTA_B;
+    data["ARMOR_YAW_KP"] = ARMOR_YAW_KP;
+    data["ARMOR_YAW_KI"] = ARMOR_YAW_KI;
+    data["ARMOR_YAW_KD"] = ARMOR_YAW_KD;
+    data["ARMOR_PITCH_KP"] = ARMOR_PITCH_KP;
+    data["ARMOR_PITCH_KI"] = ARMOR_PITCH_KI;
+    data["ARMOR_PITCH_KD"] = ARMOR_PITCH_KD;
 
     // camera
     Json::Value camera;

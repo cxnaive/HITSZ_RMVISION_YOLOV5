@@ -87,8 +87,7 @@ void recieve_data(RmSerial* rm_serial) {
                     *buffer_tail = 0;
                     proccess_data(buff, buffer_tail);
                     buffer_tail = buff;
-                }
-                else{
+                } else {
                     buffer_tail = buff;
                 }
             }
@@ -113,9 +112,12 @@ void RmSerial::stop_thread() {
 bool RmSerial::init() {
     LOG(INFO) << "Serial Send Size:" << sizeof(SendData);
     LOG(INFO) << "Serial Recieve Size:" << sizeof(McuData);
-    active_port = new serial::Serial(config.uart_port, 115200,
-                                     serial::Timeout::simpleTimeout(1000));
-    init_success = true;
+    try {
+        active_port = new serial::Serial(config.uart_port, 115200,
+                                         serial::Timeout::simpleTimeout(1000));
+    } catch (...) {
+        init_success = false;
+    }
     //初始化数据接受结构体
     receive_config_data.anti_top = config.ANTI_TOP;
     receive_config_data.bullet_speed = config.BULLET_SPEED;
@@ -125,7 +127,7 @@ bool RmSerial::init() {
     receive_config_data.state = config.RUNMODE;
     //开启数据接受线程
     start_thread();
-    if (active_port->isOpen()) {
+    if (active_port != nullptr && active_port->isOpen()) {
         LOG(INFO) << "Successfully initialized port " << config.uart_port;
         return true;
     } else {

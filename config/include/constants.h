@@ -19,12 +19,12 @@
 #define BLUE_COMPENSATE_PITCH (74)
 #define EXTRA_DELTA_X (0)
 #define EXTRA_DELTA_Y (-10)
-#define YAW_AIM_KD (0.4)
-#define YAW_AIM_KP (0.75)
-#define YAW_AIM_KI (0.01)
-#define PITCH_AIM_KD (0.4)
-#define PITCH_AIM_KP (0.75)
-#define PITCH_AIM_KI (0.01)
+// #define YAW_AIM_KD (0.4)
+// #define YAW_AIM_KP (0.75)
+// #define YAW_AIM_KI (0.01)
+// #define PITCH_AIM_KD (0.4)
+// #define PITCH_AIM_KP (0.75)
+// #define PITCH_AIM_KI (0.01)
 
 const int BIG = 1;
 const int SMALL = 0;

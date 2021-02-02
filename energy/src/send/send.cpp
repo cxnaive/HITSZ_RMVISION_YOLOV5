@@ -12,23 +12,23 @@ using namespace std;
 // 此函数用于发送能量机关数据
 // ---------------------------------------------------------------------------------------------------------------------
 void Energy::sendEnergy() {
-    sum_yaw += yaw_rotation;
-    sum_pitch += pitch_rotation;
-    float yaw_I_component = YAW_AIM_KI * sum_yaw;
-    float pitch_I_component = PITCH_AIM_KI * sum_pitch;
-    MINMAX(yaw_I_component, -2, 2);
-    MINMAX(pitch_I_component, -2, 2);
+    // sum_yaw += yaw_rotation;
+    // sum_pitch += pitch_rotation;
+    // float yaw_I_component = YAW_AIM_KI * sum_yaw;
+    // float pitch_I_component = PITCH_AIM_KI * sum_pitch;
+    // MINMAX(yaw_I_component, -2, 2);
+    // MINMAX(pitch_I_component, -2, 2);
 
-    double tmp_yaw = yaw_rotation;
-    double tmp_pitch = pitch_rotation;
-    /* yaw_rotation = YAW_AIM_KP * yaw_rotation + YAW_AIM_KI * sum_yaw +
-                    YAW_AIM_KD * (yaw_rotation - last_yaw);
-     pitch_rotation = PITCH_AIM_KP * pitch_rotation + PITCH_AIM_KI * sum_pitch +
-                      PITCH_AIM_KD * (pitch_rotation - last_pitch);
-                      */
+    // double tmp_yaw = yaw_rotation;
+    // double tmp_pitch = pitch_rotation;
+    // /* yaw_rotation = YAW_AIM_KP * yaw_rotation + YAW_AIM_KI * sum_yaw +
+    //                 YAW_AIM_KD * (yaw_rotation - last_yaw);
+    //  pitch_rotation = PITCH_AIM_KP * pitch_rotation + PITCH_AIM_KI * sum_pitch +
+    //                   PITCH_AIM_KD * (pitch_rotation - last_pitch);
+    //                   */
 
-    last_yaw = tmp_yaw;
-    last_pitch = tmp_pitch;
+    // last_yaw = tmp_yaw;
+    // last_pitch = tmp_pitch;
     static double last_time = rmTime.seconds();
     static int fps_cnt = 0;
     double now_time = rmTime.seconds();

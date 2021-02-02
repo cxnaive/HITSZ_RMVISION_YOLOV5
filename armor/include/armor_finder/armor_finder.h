@@ -13,6 +13,7 @@
 #include <ArmorDetector.h>
 #include <string>
 #include <map>
+#include <PidPosition.h>
 #include <opencv2/core.hpp>
 
 #define BLOB_RED ENEMY_RED
@@ -56,7 +57,7 @@ class ArmorFinder {
     RoundQueue<double, 4> top_periodms;  // 陀螺周期循环队列
     std::vector<double> time_seq;             // 一个周期内的时间采样点
     std::vector<float> angle_seq;             // 一个周期内的角度采样点
-
+    PidPosition PitchPID,YawPID;              // PID控制
     bool findLightBlobs(const cv::Mat &src, LightBlobs &light_blobs);
     bool findAccurateArmorBox(const cv::Mat &src, ArmorBox &box);
     bool locateArmorBox(const cv::Mat &src, const ArmorInfo & target); //根据多目标识别的结果寻找灯条信息，精确定位装甲版
