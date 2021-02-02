@@ -33,7 +33,7 @@ endif ()
 
 file(GLOB_RECURSE resources "${PROJECT_SOURCE_DIR}/resources/*")
 message(STATUS "Copying resources file(s): ${resources}")
-file(COPY ${resources} DESTINATION ${CMAKE_BINARY_DIR}/ FOLLOW_SYMLINK_CHAIN)
+file(COPY ${resources} DESTINATION ${CMAKE_BINARY_DIR}/)
 
 # find_package(glog REQUIRED)
 #Src
