@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
     while (keepRunning) {
         if (config.use_video) {
             if (!video->read(src)) break;
-            cv::resize(src, src, cv::Size(640, 360));
+            cv::resize(src, src, cv::Size(640, 640));
         } else {
             cam->read(src);
             // config.camConfig.undistort(src);
