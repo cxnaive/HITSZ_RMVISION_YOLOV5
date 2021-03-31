@@ -51,6 +51,14 @@ void RmConfig::init_from_file() {
     has_show = show_origin || show_armor_box || show_light_box ||
                show_light_blobs || (show_pnp_axies && use_pnp) || show_energy ||
                show_energy_extra || show_process || show_net_box;
+    ignore_types.clear();
+    std::string ignore_info = "";
+    for(int i = 0;i < config["ignore_types"].size();++i){
+        std::string ignore_item = config["ignore_types"][i].asString();
+        ignore_types.insert(ignore_item);
+        ignore_info = ignore_info + ignore_item + " ";
+    }
+    LOG(WARNING) << "NOTE: ignored types: " << ignore_info;
     // data
     Json::Value data = root["config_data"];
     ARMOR_CAMERA_GAIN = data["ARMOR_CAMERA_GAIN"].asInt();
@@ -117,6 +125,10 @@ void RmConfig::write_to_file() {
     config["uart_port"] = uart_port;
     config["video_path"] = video_path;
     config["camera_sn"] = camera_sn;
+    config["ignore_types"].clear();
+    for (auto &item: ignore_types){
+        config["ignore_types"].append(item);
+    }
 
     // data
     Json::Value data;

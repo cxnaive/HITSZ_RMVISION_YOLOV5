@@ -1,9 +1,9 @@
 #include "ArmorDetector.h"
 
 static Logger gLogger;
-const char* ArmorDetector::id_names[16] = {
-    "R1", "B1", "R2", "B2", "R3",  "B3",  "R4",  "B4",
-    "R5", "B5", "R7", "B7", "R10", "B10", "R11", "B11"};
+const char* ArmorDetector::id_names[18] = {
+    "R1", "B1", "R2", "B2",  "R3",  "B3",  "R4",  "B4", "R5",
+    "B5", "R7", "B7", "R10", "B10", "R11", "B11", "RE", "BE"};
 ArmorDetector::ArmorDetector() {
     cudaSetDevice(DEVICE);
     char* trtModelStream{nullptr};
@@ -39,9 +39,9 @@ ArmorDetector::ArmorDetector() {
     assert(outputIndex == 1);
     // Create GPU buffers on device
     NVCHECK(cudaMalloc(&buffers[inputIndex],
-                     BATCH_SIZE * 3 * INPUT_H * INPUT_W * sizeof(float)));
+                       BATCH_SIZE * 3 * INPUT_H * INPUT_W * sizeof(float)));
     NVCHECK(cudaMalloc(&buffers[outputIndex],
-                     BATCH_SIZE * OUTPUT_SIZE * sizeof(float)));
+                       BATCH_SIZE * OUTPUT_SIZE * sizeof(float)));
 
     NVCHECK(cudaStreamCreate(&stream));
 }
@@ -63,12 +63,12 @@ void ArmorDetector::doInference(IExecutionContext& context,
     // DMA input batch data to device, infer on the batch asynchronously, and
     // DMA output back to host
     NVCHECK(cudaMemcpyAsync(buffers[0], input,
-                          batchSize * 3 * INPUT_H * INPUT_W * sizeof(float),
-                          cudaMemcpyHostToDevice, stream));
+                            batchSize * 3 * INPUT_H * INPUT_W * sizeof(float),
+                            cudaMemcpyHostToDevice, stream));
     context.enqueue(batchSize, buffers, stream, nullptr);
     NVCHECK(cudaMemcpyAsync(output, buffers[1],
-                          batchSize * OUTPUT_SIZE * sizeof(float),
-                          cudaMemcpyDeviceToHost, stream));
+                            batchSize * OUTPUT_SIZE * sizeof(float),
+                            cudaMemcpyDeviceToHost, stream));
     cudaStreamSynchronize(stream);
 }
 
@@ -88,12 +88,13 @@ std::vector<ArmorInfo> ArmorDetector::detect(const cv::Mat& img) {
             ++i;
         }
     }
-    // cv::Mat blob_img = cv::dnn::blobFromImage(pr_img,1.0,cv::Size(),cv::Scalar(),true) / 255.0;
-    
+    // cv::Mat blob_img =
+    // cv::dnn::blobFromImage(pr_img,1.0,cv::Size(),cv::Scalar(),true) / 255.0;
+
     doInference(*context, stream, buffers, data, prob, BATCH_SIZE);
     std::vector<Yolo::Detection> res;
     nms(res, &prob[0], CONF_THRESH, NMS_THRESH);
-    
+
     std::vector<ArmorInfo> ans;
     for (auto it : res) {
         cv::Rect r = get_rect(img, it.bbox);
@@ -116,13 +117,13 @@ cv::Mat ArmorDetector::draw_output(cv::Mat& img,
         sprintf(label, "%s %.2f", id_names[it.id], it.conf);
         float wx = it.bbox.x;
         float wy = it.bbox.y;
-        if(wy < 10) wy += it.bbox.height + 12;
-        cv::putText(out, label, cv::Point(wx, wy - 1),
-                    cv::FONT_HERSHEY_PLAIN, 1, cv::Scalar(0xFF, 0xFF, 0xFF), 2);
+        if (wy < 10) wy += it.bbox.height + 12;
+        cv::putText(out, label, cv::Point(wx, wy - 1), cv::FONT_HERSHEY_PLAIN,
+                    1, cv::Scalar(0xFF, 0xFF, 0xFF), 2);
     }
     return out;
 }
 
-cv::Point2f ArmorInfo::getCenter(){
+cv::Point2f ArmorInfo::getCenter() {
     return cv::Point2f(bbox.x + bbox.width / 2, bbox.y + bbox.height / 2);
 }

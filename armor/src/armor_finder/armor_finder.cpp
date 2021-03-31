@@ -18,32 +18,32 @@
 #include <opencv2/highgui.hpp>
 
 std::map<int, std::string> id2name = {
-    {0, "R1"},   {1, "B1"},   {2, "R2"},   {3, "B2"},  {4, "R3"},  {5, "B3"},
-    {6, "R4"},   {7, "B4"},   {8, "R5"},   {9, "B5"},  {10, "R7"}, {11, "B7"},
-    {12, "R10"}, {13, "B10"}, {14, "R11"}, {15, "B11"}};
+    {0, "R1"},   {1, "B1"},   {2, "R2"},   {3, "B2"},   {4, "R3"},  {5, "B3"},
+    {6, "R4"},   {7, "B4"},   {8, "R5"},   {9, "B5"},   {10, "R7"}, {11, "B7"},
+    {12, "R10"}, {13, "B10"}, {14, "R11"}, {15, "B11"}, {16, "RE"}, {17, "BE"}};
 
 std::map<std::string, int> name2id = {
-    {"R1", 0},   {"B1", 1},   {"R2", 2},   {"B2", 3},  {"R3", 4},  {"B3", 5},
-    {"R4", 6},   {"B4", 7},   {"R5", 8},   {"B5", 9},  {"R7", 10}, {"B7", 11},
-    {"R10", 12}, {"B10", 13}, {"R11", 14}, {"B11", 15}};
+    {"R1", 0},   {"B1", 1},   {"R2", 2},   {"B2", 3},   {"R3", 4},  {"B3", 5},
+    {"R4", 6},   {"B4", 7},   {"R5", 8},   {"B5", 9},   {"R7", 10}, {"B7", 11},
+    {"R10", 12}, {"B10", 13}, {"R11", 14}, {"B11", 15}, {"RE", 16}, {"BE", 17}};
 
 std::map<std::string, int> name2color = {
-    {"R1", ENEMY_RED},  {"B1", ENEMY_BLUE},  {"R2", ENEMY_RED},
-    {"B2", ENEMY_BLUE}, {"R3", ENEMY_RED},   {"B3", ENEMY_BLUE},
-    {"R4", ENEMY_RED},  {"B4", ENEMY_BLUE},  {"R5", ENEMY_RED},
-    {"B5", ENEMY_BLUE}, {"R7", ENEMY_RED},   {"B7", ENEMY_BLUE},
-    {"R10", ENEMY_RED}, {"B10", ENEMY_BLUE}, {"R11", ENEMY_RED},
-    {"B11", ENEMY_BLUE}};
+    {"R1", ENEMY_RED},   {"B1", ENEMY_BLUE},  {"R2", ENEMY_RED},
+    {"B2", ENEMY_BLUE},  {"R3", ENEMY_RED},   {"B3", ENEMY_BLUE},
+    {"R4", ENEMY_RED},   {"B4", ENEMY_BLUE},  {"R5", ENEMY_RED},
+    {"B5", ENEMY_BLUE},  {"R7", ENEMY_RED},   {"B7", ENEMY_BLUE},
+    {"R10", ENEMY_RED},  {"B10", ENEMY_BLUE}, {"R11", ENEMY_RED},
+    {"B11", ENEMY_BLUE}, {"RE", ENEMY_RED},   {"BE", ENEMY_BLUE}};
 
 std::map<std::string, int> prior_blue = {
-    {"B10", 0}, {"B1", 1}, {"B3", 2}, {"B4", 2}, {"B5", 2},
-    {"B7", 3},  {"B2", 4}, {"R8", 5}, {"R1", 6}, {"R3", 7},
-    {"R4", 7},  {"R5", 7}, {"R7", 8}, {"R2", 9}};
+    {"B10", 0}, {"B1", 1}, {"B3", 2}, {"B4", 2}, {"B5", 2}, {"B7", 3},
+    {"B2", 4},  {"BE", 5}, {"R8", 5}, {"R1", 6}, {"R3", 7}, {"R4", 7},
+    {"R5", 7},  {"R7", 8}, {"R2", 9}, {"RE", 10}};
 
 std::map<std::string, int> prior_red = {
-    {"R10", 0}, {"R1", 1}, {"R3", 2}, {"R4", 2}, {"R5", 2},
-    {"R7", 3},  {"R2", 4}, {"B8", 5}, {"B1", 6}, {"B3", 7},
-    {"B4", 7},  {"B5", 7}, {"B7", 8}, {"B2", 9}};
+    {"R10", 0}, {"R1", 1}, {"R3", 2}, {"R4", 2}, {"R5", 2}, {"R7", 3},
+    {"R2", 4},  {"RE", 5}, {"B8", 5}, {"B1", 6}, {"B3", 7}, {"B4", 7},
+    {"B5", 7},  {"B7", 8}, {"B2", 9}, {"BE", 10}};
 
 ArmorFinder::ArmorFinder(const int &color, RmSerial &u, const int &anti_top)
     : serial(u),
@@ -66,8 +66,8 @@ std::vector<ArmorInfo> ArmorFinder::filterArmorInfoByColor(
         showNetBoxes("net boxes", src, armors);
     }
     std::vector<ArmorInfo> res;
-    for (auto it : armors) {
-        if (name2color[id2name[it.id]] == enemy_color) {
+    for (auto &it : armors) {
+        if (name2color[id2name[it.id]] == enemy_color && config.ignore_types.count(id2name[it.id]) == 0) {
             res.push_back(it);
         }
     }

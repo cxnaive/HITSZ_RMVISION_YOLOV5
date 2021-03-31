@@ -48,6 +48,7 @@ public:
     bool use_video = false;
     std::string video_path = "video.mp4";
     std::string camera_sn = "NULL";
+    std::set<std::string> ignore_types = {"RE","BE"};
     //energy config
     bool show_energy_extra = false;
     bool show_energy = false;
