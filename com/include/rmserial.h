@@ -3,7 +3,7 @@
 #include <datatypes.h>
 #include <rmconfig.h>
 #include <serial/serial.h>
-
+#include <thread>
 #include <mutex>
 
 struct McuConfig {
@@ -20,6 +20,7 @@ struct McuConfig {
 class RmSerial {
    public:
     serial::Serial* active_port;
+    std::thread* receive_task;
     ~RmSerial();
     bool init_success;
     bool thread_running;

@@ -1,7 +1,6 @@
 #include <rmserial.h>
 #include <runtime.h>
 
-#include <thread>
 
 // receive data
 std::mutex receive_mtx;
@@ -98,8 +97,8 @@ void recieve_data(RmSerial* rm_serial) {
 void RmSerial::start_thread() {
     if (init_success) {
         thread_running = true;
-        std::thread task(recieve_data, this);
-        task.detach();
+        receive_task = new std::thread(recieve_data, this);
+        //task.detach();
     }
 }
 void RmSerial::stop_thread() {
