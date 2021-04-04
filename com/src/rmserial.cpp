@@ -115,9 +115,11 @@ bool RmSerial::init() {
     try {
         active_port = new serial::Serial(config.uart_port, 115200,
                                          serial::Timeout::simpleTimeout(1000));
+        init_success = true;
     } catch (...) {
         init_success = false;
     }
+    
     //初始化数据接受结构体
     receive_config_data.anti_top = config.ANTI_TOP;
     receive_config_data.bullet_speed = config.BULLET_SPEED;
