@@ -1,7 +1,6 @@
 #include <rmserial.h>
 #include <runtime.h>
 
-
 // receive data
 std::mutex receive_mtx;
 McuConfig receive_config_data;
@@ -66,39 +65,51 @@ void proccess_data(uint8_t* s, uint8_t* e) {
     receive_mtx.unlock();
 }
 
-void recieve_data(RmSerial* rm_serial) {
-    LOG(INFO) << "recieve thread started!";
+void recieve_data_once(RmSerial* rm_serial) {
     static uint8_t buff[100];
     uint8_t* buffer_tail = buff;
     serial::Serial* port = rm_serial->active_port;
-    while (rm_serial->thread_running) {
-        size_t wait_in_buffer = port->available();
-        if (wait_in_buffer) {
-            port->read(buffer_tail, 1);
-            buffer_tail += 1;
-            if (buff[0] != 's') {
+    size_t wait_in_buffer = port->available();
+    if (wait_in_buffer) {
+        port->read(buffer_tail, wait_in_buffer);
+        buffer_tail += wait_in_buffer;
+        if (buff[0] != 's') {
+            buffer_tail = buff;
+            return;
+        }
+        if (buffer_tail - buff < sizeof(McuData)) {
+            return;
+        } else if (buffer_tail - buff == sizeof(McuData)){
+            if (buffer_tail[-1] == 'e') {
+                *buffer_tail = 0;
+                proccess_data(buff, buffer_tail);
+                buffer_tail = buff;
+            } else {
                 buffer_tail = buff;
             }
-            if (buffer_tail - buff < sizeof(McuData)) {
-                continue;
-            } else {
-                if (buffer_tail[-1] == 'e') {
-                    *buffer_tail = 0;
-                    proccess_data(buff, buffer_tail);
-                    buffer_tail = buff;
-                } else {
-                    buffer_tail = buff;
-                }
-            }
+            return;
+        }
+        else{
+            buffer_tail = buff;
+            return;
         }
     }
 }
 
+void recieve_data(RmSerial* rm_serial) {
+    LOG(INFO) << "recieve thread started!";
+    while (rm_serial->thread_running) {
+        recieve_data_once(rm_serial);
+    }
+}
+void RmSerial::manual_receive() {
+    recieve_data_once(this);
+}
 void RmSerial::start_thread() {
     if (init_success) {
         thread_running = true;
         receive_task = new std::thread(recieve_data, this);
-        //task.detach();
+        // task.detach();
     }
 }
 void RmSerial::stop_thread() {
@@ -118,7 +129,7 @@ bool RmSerial::init() {
     } catch (...) {
         init_success = false;
     }
-    
+
     //初始化数据接受结构体
     receive_config_data.anti_top = config.ANTI_TOP;
     receive_config_data.bullet_speed = config.BULLET_SPEED;
@@ -127,7 +138,7 @@ bool RmSerial::init() {
     receive_config_data.enemy_color = config.ENEMY_COLOR;
     receive_config_data.state = config.RUNMODE;
     //开启数据接受线程
-    start_thread();
+    // start_thread();
     if (active_port != nullptr && active_port->isOpen()) {
         LOG(INFO) << "Successfully initialized port " << config.uart_port;
         return true;

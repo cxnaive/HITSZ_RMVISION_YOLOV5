@@ -30,6 +30,7 @@ class RmSerial {
     bool send_data(uint8_t* data, size_t size);
     void start_thread();
     void stop_thread();
+    void manual_receive();
 };
 
 extern std::mutex receive_mtx;
