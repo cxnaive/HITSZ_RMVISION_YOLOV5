@@ -1,5 +1,5 @@
 #include "ArmorDetector.h"
-
+#include "glog/logging.h"
 static Logger gLogger;
 const char* ArmorDetector::id_names[18] = {
     "R1", "B1", "R2", "B2",  "R3",  "B3",  "R4",  "B4", "R5",
@@ -44,6 +44,7 @@ ArmorDetector::ArmorDetector() {
                        BATCH_SIZE * OUTPUT_SIZE * sizeof(float)));
 
     NVCHECK(cudaStreamCreate(&stream));
+    LOG(WARNING) << "net init done!";
 }
 
 ArmorDetector::~ArmorDetector() {
