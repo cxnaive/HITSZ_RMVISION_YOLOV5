@@ -80,7 +80,7 @@ void update_config() {
     receive_mtx.unlock();
 }
 void check_mode_and_run(cv::Mat& src) {
-    rmSerial.manual_receive();
+    //rmSerial.manual_receive();
     update_config();
     if (lastRunMode == ARMOR_STATE && (config.RUNMODE == SMALL_ENERGY_STATE ||
                                        config.RUNMODE == BIG_ENERGY_STATE)) {

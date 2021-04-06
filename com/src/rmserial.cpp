@@ -138,7 +138,7 @@ bool RmSerial::init() {
     receive_config_data.enemy_color = config.ENEMY_COLOR;
     receive_config_data.state = config.RUNMODE;
     //开启数据接受线程
-    // start_thread();
+    start_thread();
     if (active_port != nullptr && active_port->isOpen()) {
         LOG(INFO) << "Successfully initialized port " << config.uart_port;
         return true;
