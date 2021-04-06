@@ -5,4 +5,4 @@ echo ${pass_word}|sudo -S nohup ./start_loop "./rmcv" >temp.txt 2>&1 &
 sleep 45s
 echo ${pass_word}|sudo -S killall start_loop
 echo ${pass_word}|sudo -S killall rmcv 
-echo ${pass_word}|sudo ./start_loop "./rmcv"
+echo ${pass_word}|sudo -S ./start_loop "./rmcv"
