@@ -12,7 +12,9 @@
 #include "wrapper_head.h"
 #include <rmconfig.h>
 #include <opencv2/core/core.hpp>
-
+#include <opencv2/core/cuda.hpp>
+#include <opencv2/cudawarping.hpp>
+#include <opencv2/cudaimgproc.hpp>
 
 class Camera:public WrapperHead{
     friend void getRGBImage(Camera *p_cam);
@@ -34,11 +36,14 @@ private:
     int64_t frame_cnt;
     double frame_get_time;
     CameraConfig camConfig;
+    cv::cuda::GpuMat gpu_full;
+    cv::cuda::GpuMat gpu_resize;
     cv::Mat p_img;
     void *g_pRGBframeData;
     void *g_pRaw8Buffer;
     bool thread_running;
     bool init_success;
+    
 
 public:
     Camera(std::string sn,CameraConfig config);			        // constructor, p_img is a pointer towards a 640*640 8uc3 Mat type

@@ -7,9 +7,7 @@
 #include <chrono>
 #include <mutex>
 #include <thread>
-#include <opencv2/core/cuda.hpp>
-#include <opencv2/cudawarping.hpp>
-#include <opencv2/cudaimgproc.hpp>
+
 
 std::mutex mtx;
 
@@ -100,14 +98,16 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
                      CV_8UC3);
 
         memcpy(temp.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
-        cv::cuda::GpuMat gpu_temp(temp);
-        gpu_temp.upload(temp);
-
-        cv::cuda::resize(gpu_temp, gpu_temp, cv::Size(640, 640));
-        cv::cuda::cvtColor(gpu_temp,gpu_temp,cv::COLOR_RGB2BGR);
+        
+        cam->gpu_full.upload(temp);
+        cv::cuda::cvtColor(cam->gpu_full,cam->gpu_full,cv::COLOR_RGB2BGR);
+        cv::cuda::resize(cam->gpu_full,cam->gpu_resize,cv::Size(640, 640));
         auto end = std::chrono::steady_clock::now();
+        
+        
+        
         mtx.lock();
-        gpu_temp.download(cam->p_img);
+        cam->gpu_resize.download(cam->p_img);
         mtx.unlock();
         
         cam->frame_cnt ++;
@@ -155,6 +155,8 @@ Camera::Camera(std::string sn, CameraConfig config)
       frame_get_time(0),
       init_success(false) {
     p_img = cv::Mat(640, 640, CV_8UC3);
+    gpu_full = cv::cuda::GpuMat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
+    gpu_resize = cv::cuda::GpuMat(640,640,CV_8UC3);
 };
 
 Camera::~Camera() {
