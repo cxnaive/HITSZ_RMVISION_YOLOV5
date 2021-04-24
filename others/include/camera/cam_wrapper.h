@@ -11,10 +11,7 @@
 #include "iostream"
 #include "wrapper_head.h"
 #include <rmconfig.h>
-#include <opencv2/core/core.hpp>
-#include <opencv2/core/cuda.hpp>
-#include <opencv2/cudawarping.hpp>
-#include <opencv2/cudaimgproc.hpp>
+#include <opencv2/opencv.hpp>
 
 class Camera:public WrapperHead{
     friend void getRGBImage(Camera *p_cam);
