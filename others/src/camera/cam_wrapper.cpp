@@ -7,7 +7,7 @@
 #include <chrono>
 #include <mutex>
 #include <thread>
-
+#include <opencv2/core/cuda.hpp>
 //#include <opencv2/opencv.hpp>
 
 std::mutex mtx;
@@ -99,12 +99,16 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
                      CV_8UC3);
 
         memcpy(temp.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+        cv::cuda::GpuMat gpu_temp(temp);
+        gpu_temp.upload(temp);
 
-        cv::resize(temp, temp, cv::Size(640, 640));
-        mtx.lock();
-        cv::cvtColor(temp,cam->p_img,cv::COLOR_RGB2BGR);
-        mtx.unlock();
+        cv::resize(gpu_temp, gpu_temp, cv::Size(640, 640));
+        cv::cvtColor(gpu_temp,gpu_temp,cv::COLOR_RGB2BGR);
         auto end = std::chrono::steady_clock::now();
+        mtx.lock();
+        gpu_temp.download(cam->p_img);
+        mtx.unlock();
+        
         cam->frame_cnt ++;
         cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if(cam->frame_cnt == 500){
@@ -133,7 +137,7 @@ void getRGBImage(Camera *p_cam) {
         memcpy(temp.data, p_cam->g_pRGBframeData, 3 * (p_cam->nPayLoadSize));
 
         cv::resize(temp, temp, cv::Size(640, 640));
-        
+
         mtx.lock();
         cv::cvtColor(temp,p_cam->p_img,cv::COLOR_RGB2BGR);
         mtx.unlock();
