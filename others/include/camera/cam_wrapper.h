@@ -36,8 +36,7 @@ private:
     int64_t frame_cnt;
     double frame_get_time;
     CameraConfig camConfig;
-    cv::cuda::GpuMat gpu_full;
-    cv::cuda::GpuMat gpu_resize;
+    cv::Mat temp;
     cv::Mat p_img;
     void *g_pRGBframeData;
     void *g_pRaw8Buffer;
