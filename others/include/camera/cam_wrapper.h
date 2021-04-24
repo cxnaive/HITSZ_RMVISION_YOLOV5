@@ -34,7 +34,6 @@ private:
     double frame_get_time;
     CameraConfig camConfig;
     cv::Mat full;
-    cv::Mat resize;
     cv::Mat p_img;
     void *g_pRGBframeData;
     void *g_pRaw8Buffer;
