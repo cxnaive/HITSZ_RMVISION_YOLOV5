@@ -103,12 +103,12 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         // cv::cuda::cvtColor(cam->gpu_full,cam->gpu_full,cv::COLOR_RGB2BGR);
         // cv::cuda::resize(cam->gpu_full,cam->gpu_resize,cv::Size(640, 640));
         cv::resize(cam->full,cam->resize,cv::Size(640,640),cv::INTER_NEAREST);
-        
+        auto end = std::chrono::steady_clock::now();
         mtx.lock();
         //cam->gpu_resize.download(cam->p_img);
         cv::cvtColor(cam->resize,cam->p_img,cv::COLOR_RGB2BGR);
         mtx.unlock();
-        auto end = std::chrono::steady_clock::now();
+        
         cam->frame_cnt ++;
         cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if(cam->frame_cnt == 500){
