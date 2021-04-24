@@ -1,3 +1,4 @@
 *.o
+/cam_calibrate/*.jpg
 /build
 /CMakeFiles
