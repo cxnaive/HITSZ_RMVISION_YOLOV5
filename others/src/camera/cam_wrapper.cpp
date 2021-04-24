@@ -4,7 +4,7 @@
 
 #include <camera/cam_wrapper.h>
 #include <glog/logging.h>
-
+#include <chrono>
 #include <mutex>
 #include <thread>
 
@@ -90,6 +90,7 @@ void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
 
 void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
     if (pFrame->status == GX_FRAME_STATUS_SUCCESS) {
+        auto start = std::chrono::steady_clock::now();
         Camera *cam = (Camera *)pFrame->pUserParam;
         ProcessData((void *)pFrame->pImgBuf, cam->g_pRaw8Buffer,
                     cam->g_pRGBframeData, pFrame->nWidth, pFrame->nHeight,
@@ -100,14 +101,16 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         memcpy(temp.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
 
         cv::resize(temp, temp, cv::Size(640, 640));
-        std::vector<cv::Mat> channels;
-        split(temp, channels);
-        // std::swap(channels[0], channels[2]);
-        cv::swap(channels[0], channels[2]);
-        merge(channels, temp);
         mtx.lock();
-        temp.copyTo(cam->p_img);
+        cv::cvtColor(temp,cam->p_img,cv::COLOR_RGB2BGR);
         mtx.unlock();
+        auto end = std::chrono::steady_clock::now();
+        cam->frame_cnt ++;
+        cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        if(cam->frame_cnt == 500){
+            LOG(INFO) << "average camera delay:" << cam->frame_get_time / cam->frame_cnt;
+            cam->frame_get_time = cam->frame_cnt = 0;
+        }
     }
     return;
 }
@@ -130,13 +133,9 @@ void getRGBImage(Camera *p_cam) {
         memcpy(temp.data, p_cam->g_pRGBframeData, 3 * (p_cam->nPayLoadSize));
 
         cv::resize(temp, temp, cv::Size(640, 640));
-        std::vector<cv::Mat> channels;
-        split(temp, channels);
-        // std::swap(channels[0], channels[2]);
-        cv::swap(channels[0], channels[2]);
-        merge(channels, temp);
+        
         mtx.lock();
-        temp.copyTo(p_cam->p_img);
+        cv::cvtColor(temp,p_cam->p_img,cv::COLOR_RGB2BGR);
         mtx.unlock();
     }
 }
@@ -147,6 +146,8 @@ Camera::Camera(std::string sn, CameraConfig config)
       gain(0),
       thread_running(false),
       camConfig(config),
+      frame_cnt(0),
+      frame_get_time(0),
       init_success(false) {
     p_img = cv::Mat(640, 640, CV_8UC3);
 };

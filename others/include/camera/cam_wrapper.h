@@ -31,6 +31,8 @@ private:
     int64_t g_nColorFilter;
     int64_t g_SensorHeight;
     int64_t g_SensorWidth;
+    int64_t frame_cnt;
+    double frame_get_time;
     CameraConfig camConfig;
     cv::Mat p_img;
     void *g_pRGBframeData;
