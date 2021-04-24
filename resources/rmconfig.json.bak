@@ -17,7 +17,12 @@
 	},
 	"config" : 
 	{
-		"camera_sn" : "KE0200070452",
+		"camera_sn" : "KE0210010110",
+		"ignore_types" : 
+		[
+			"BE",
+			"RE"
+		],
 		"log_send_target" : false,
 		"save_labelled_boxes" : false,
 		"save_mark" : false,
@@ -34,10 +39,10 @@
 		"show_origin" : true,
 		"show_pnp_axies" : false,
 		"show_process" : false,
-		"uart_port" : "/dev/ttyACM0",
+		"uart_port" : "/dev/ttyUSB0",
 		"use_pnp" : false,
 		"use_video" : false,
-		"video_path" : "../red.mp4",
+		"video_path" : "../../test_video/R10.mp4",
 		"wait_uart" : false
 	},
 	"config_data" : 
@@ -45,6 +50,15 @@
 		"ANTI_TOP" : 0,
 		"ARMOR_CAMERA_EXPOSURE" : 4000,
 		"ARMOR_CAMERA_GAIN" : 3,
+		"ARMOR_DELTA_X" : 0.0,
+		"ARMOR_PITCH_DELTA_B" : 0.0,
+		"ARMOR_PITCH_DELTA_K" : 0.0,
+		"ARMOR_PITCH_KD" : 0.0,
+		"ARMOR_PITCH_KI" : 0.0,
+		"ARMOR_PITCH_KP" : 0.0,
+		"ARMOR_YAW_KD" : 0.0,
+		"ARMOR_YAW_KI" : 0.0,
+		"ARMOR_YAW_KP" : 0.0,
 		"ENEMY_COLOR" : 1,
 		"ENERGY_CAMERA_EXPOSURE" : 1000,
 		"ENERGY_CAMERA_GAIN" : 1,
