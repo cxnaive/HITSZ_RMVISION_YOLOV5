@@ -8,7 +8,8 @@
 #include <mutex>
 #include <thread>
 #include <opencv2/core/cuda.hpp>
-//#include <opencv2/opencv.hpp>
+#include <opencv2/cudawarping.hpp>
+#include <opencv2/cudaimgproc.hpp>
 
 std::mutex mtx;
 
@@ -102,8 +103,8 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         cv::cuda::GpuMat gpu_temp(temp);
         gpu_temp.upload(temp);
 
-        cv::resize(gpu_temp, gpu_temp, cv::Size(640, 640));
-        cv::cvtColor(gpu_temp,gpu_temp,cv::COLOR_RGB2BGR);
+        cv::cuda::resize(gpu_temp, gpu_temp, cv::Size(640, 640));
+        cv::cuda::cvtColor(gpu_temp,gpu_temp,cv::COLOR_RGB2BGR);
         auto end = std::chrono::steady_clock::now();
         mtx.lock();
         gpu_temp.download(cam->p_img);
