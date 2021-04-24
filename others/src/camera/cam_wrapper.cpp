@@ -97,16 +97,16 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         // cv::Mat temp(cam->camConfig.roi_height, cam->camConfig.roi_width,
         //              CV_8UC3);
 
-        memcpy(cam->temp.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+        memcpy(cam->full.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
         
         // cam->gpu_full.upload(temp);
         // cv::cuda::cvtColor(cam->gpu_full,cam->gpu_full,cv::COLOR_RGB2BGR);
         // cv::cuda::resize(cam->gpu_full,cam->gpu_resize,cv::Size(640, 640));
-        cv::resize(cam->temp,cam->temp,cv::Size(640,640),cv::INTER_NEAREST);
+        cv::resize(cam->full,cam->resize,cv::Size(640,640),cv::INTER_NEAREST);
         
         mtx.lock();
         //cam->gpu_resize.download(cam->p_img);
-        cv::cvtColor(cam->temp,cam->p_img,cv::COLOR_RGB2BGR);
+        cv::cvtColor(cam->resize,cam->p_img,cv::COLOR_RGB2BGR);
         mtx.unlock();
         auto end = std::chrono::steady_clock::now();
         cam->frame_cnt ++;
@@ -154,7 +154,8 @@ Camera::Camera(std::string sn, CameraConfig config)
       frame_get_time(0),
       init_success(false) {
     p_img = cv::Mat(640, 640, CV_8UC3);
-    temp = cv::Mat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
+    full = cv::Mat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
+    resize = cv::Mat(640, 640, CV_8UC3);
 };
 
 Camera::~Camera() {
