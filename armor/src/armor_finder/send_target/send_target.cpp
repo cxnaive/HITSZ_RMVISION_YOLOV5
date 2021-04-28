@@ -44,6 +44,15 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
     }
     double dpitch = config.ARMOR_PITCH_DELTA_K * dist + config.ARMOR_PITCH_DELTA_B;
     pitch -= dpitch;
+    
+    //Apply filter
+    ArmorPosFilter.update(cv::Point2f(yaw,pitch));
+    cv::Point2f res = ArmorPosFilter.predict();
+    if (getPointLength(res - cv::Point2f(yaw,pitch)) < 5){
+        yaw = res.x;
+        pitch = res.y;
+    }
+    
 
     if (config.log_send_target) {
         LOG(INFO) << "Target: " << yaw <<" "<< -pitch;

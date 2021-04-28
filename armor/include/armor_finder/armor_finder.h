@@ -10,6 +10,7 @@
 #include <rmserial.h>
 #include <runtime.h>
 #include <functional>
+#include <KalmanPosFilter.h>
 #include <ArmorDetector.h>
 #include <string>
 #include <map>
@@ -58,6 +59,7 @@ class ArmorFinder {
     std::vector<double> time_seq;             // 一个周期内的时间采样点
     std::vector<float> angle_seq;             // 一个周期内的角度采样点
     PidPosition PitchPID,YawPID;              // PID控制
+    KalmanPosFilter ArmorPosFilter;           // 解决延迟
     bool findLightBlobs(const cv::Mat &src, LightBlobs &light_blobs);
     bool findAccurateArmorBox(const cv::Mat &src, ArmorBox &box);
     bool locateArmorBox(const cv::Mat &src, const ArmorInfo & target); //根据多目标识别的结果寻找灯条信息，精确定位装甲版

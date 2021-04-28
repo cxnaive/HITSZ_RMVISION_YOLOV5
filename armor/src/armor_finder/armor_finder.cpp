@@ -59,6 +59,7 @@ ArmorFinder::ArmorFinder(const int &color, RmSerial &u, const int &anti_top)
       contour_area(
           0),  //装甲区域亮点个数，用于数字识别未启用时判断是否跟丢（已弃用）
       tracking_cnt(0) {  // 记录追踪帧数，用于定时退出追踪
+      ArmorPosFilter.init(cv::Point2f(0,0));
 }
 std::vector<ArmorInfo> ArmorFinder::filterArmorInfoByColor(
     const std::vector<ArmorInfo> &armors, const cv::Mat &src) {
@@ -91,7 +92,7 @@ void ArmorFinder::run(cv::Mat &src) {    // 自瞄主函数
             break;
         case TRACKING_STATE:
             if (!stateTrackingTarget(src) ||
-                ++tracking_cnt > 300) {  // 最多追踪300帧图像
+                ++tracking_cnt > 1500) {  // 最多追踪300帧图像
                 state = SEARCHING_STATE;
                 LOG(INFO) << "into search!";
             } else
