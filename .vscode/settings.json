@@ -87,6 +87,8 @@
         "__functional_03": "cpp",
         "__node_handle": "cpp",
         "*.ipp": "cpp",
-        "cfenv": "cpp"
+        "cfenv": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp"
     }
 }
