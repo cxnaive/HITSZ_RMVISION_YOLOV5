@@ -1,126 +1,111 @@
 #include "ArmorDetector.h"
+
+#include <fstream>
+#include <iostream>
+
 #include "glog/logging.h"
-static Logger gLogger;
-const char* ArmorDetector::id_names[18] = {
-    "R1", "B1", "R2", "B2",  "R3",  "B3",  "R4",  "B4", "R5",
-    "B5", "R7", "B7", "R10", "B10", "R11", "B11", "RE", "BE"};
+
 ArmorDetector::ArmorDetector() {
-    cudaSetDevice(DEVICE);
-    char* trtModelStream{nullptr};
-    size_t size{0};
-    std::ifstream file(ENGINE_NAME, std::ios::binary);
-    if (file.good()) {
-        file.seekg(0, file.end);
-        size = file.tellg();
-        file.seekg(0, file.beg);
-        trtModelStream = new char[size];
-        assert(trtModelStream);
-        file.read(trtModelStream, size);
-        file.close();
+    classesFile = "rmcv.names";
+    onnx_file = "mbv3.onnx";
+    trt_file = "mbv3.engine";
+    confThreshold = 0.3;
+    nmsThreshold = 0.1;
+    inpHeight = 640;
+    inpWidth = 640;
+    net_box_num = 25200;
+    // Load names
+    std::ifstream ifs(classesFile.c_str());
+    std::string line;
+    while (getline(ifs, line)) {
+        classes.push_back(line);
     }
-    runtime = createInferRuntime(gLogger);
-    assert(runtime != nullptr);
-    // int dlacore = runtime->getNbDLACores() - 1;
-    // std::cout << "DLA cores:" << dlacore << std::endl;
-    // runtime->setDLACore(dlacore);
-    engine = runtime->deserializeCudaEngine(trtModelStream, size);
-    assert(engine != nullptr);
-    context = engine->createExecutionContext();
-    assert(context != nullptr);
-    delete[] trtModelStream;
-    assert(engine->getNbBindings() == 2);
-
-    // In order to bind the buffers, we need to know the names of the input and
-    // output tensors. Note that indices are guaranteed to be less than
-    // IEngine::getNbBindings()
-    inputIndex = engine->getBindingIndex(INPUT_BLOB_NAME);
-    outputIndex = engine->getBindingIndex(OUTPUT_BLOB_NAME);
-    assert(inputIndex == 0);
-    assert(outputIndex == 1);
-    // Create GPU buffers on device
-    NVCHECK(cudaMalloc(&buffers[inputIndex],
-                       BATCH_SIZE * 3 * INPUT_H * INPUT_W * sizeof(float)));
-    NVCHECK(cudaMalloc(&buffers[outputIndex],
-                       BATCH_SIZE * OUTPUT_SIZE * sizeof(float)));
-
-    NVCHECK(cudaStreamCreate(&stream));
-    LOG(WARNING) << "net init done!";
+    // load engine
+    onnx_net = new Trt();
+    onnx_net->CreateEngine(onnx_file, trt_file, std::vector<std::string>(), 1,
+                           1, std::vector<std::vector<float>>());
+    input = new float[1 * 3 * inpHeight * inpWidth];
 }
 
 ArmorDetector::~ArmorDetector() {
-    // Release stream and buffers
-    cudaStreamDestroy(stream);
-    NVCHECK(cudaFree(buffers[inputIndex]));
-    NVCHECK(cudaFree(buffers[outputIndex]));
-    // Destroy the engine
-    context->destroy();
-    engine->destroy();
-    runtime->destroy();
+    if (input) delete input;
+    if (onnx_net) delete onnx_net;
 }
 
-void ArmorDetector::doInference(IExecutionContext& context,
-                                cudaStream_t& stream, void** buffers,
-                                float* input, float* output, int batchSize) {
-    // DMA input batch data to device, infer on the batch asynchronously, and
-    // DMA output back to host
-    NVCHECK(cudaMemcpyAsync(buffers[0], input,
-                            batchSize * 3 * INPUT_H * INPUT_W * sizeof(float),
-                            cudaMemcpyHostToDevice, stream));
-    context.enqueue(batchSize, buffers, stream, nullptr);
-    NVCHECK(cudaMemcpyAsync(output, buffers[1],
-                            batchSize * OUTPUT_SIZE * sizeof(float),
-                            cudaMemcpyDeviceToHost, stream));
-    cudaStreamSynchronize(stream);
+std::vector<ArmorInfo> ArmorDetector::PostProcess(const cv::Mat& frame, std::vector<float>& output) {
+    std::vector<int> classIds;
+    std::vector<float> confidences;
+    std::vector<cv::Rect> bboxes;
+    double ratio_w = frame.cols / 640.0;
+    double ratio_h = frame.rows / 640.0;
+    // cout << "out size: " << output.size() << endl;
+    int class_num = classes.size();
+    for (int i = 0; i < net_box_num; ++i) {
+        int data_idx = i * (class_num + 6);
+        float obj_conf = output[data_idx + 4];
+        if (obj_conf > confThreshold) {
+            int max_id = output[data_idx + 5];
+            // cout << "id:" << max_id << endl;
+            classIds.push_back(max_id);
+            confidences.push_back(obj_conf);
+            int centerX = (int)(output[data_idx] * ratio_w);
+            int centerY = (int)(output[data_idx + 1] * ratio_h);
+            int width = (int)(output[data_idx + 2] * ratio_w);
+            int height = (int)(output[data_idx + 3] * ratio_h);
+            int left = centerX - width / 2;
+            int top = centerY - height / 2;
+            // cout << left <<" "<< top <<" "<< width <<" "<< height << endl;
+            bboxes.push_back(cv::Rect(left, top, width, height));
+        }
+    }
+    std::vector<int> indices;
+    std::vector<ArmorInfo> res;
+    cv::dnn::NMSBoxes(bboxes, confidences, confThreshold, nmsThreshold, indices);
+    for (size_t i = 0; i < indices.size(); ++i) {
+        int idx = indices[i];
+        cv::Rect box = bboxes[idx];
+        res.push_back(ArmorInfo(box,classIds[idx],confidences[idx]));
+    }
+    return res;
 }
 
 std::vector<ArmorInfo> ArmorDetector::detect(const cv::Mat& img) {
     auto start = std::chrono::system_clock::now();
-    // cv::Mat pr_img = preprocess_img(img);
-    // cv::Mat pr_img;
-    // cv::copyMakeBorder(img,pr_img,80,80,0,0,cv::BORDER_CONSTANT,cv::Scalar(128,128,128));
     int i = 0;
-    for (int row = 0; row < INPUT_H; ++row) {
+    for (int row = 0; row < inpHeight; ++row) {
         uchar* uc_pixel = img.data + row * img.step;
-        for (int col = 0; col < INPUT_W; ++col) {
-            data[i] = (float)uc_pixel[2] / 255.0;
-            data[i + INPUT_H * INPUT_W] = (float)uc_pixel[1] / 255.0;
-            data[i + 2 * INPUT_H * INPUT_W] = (float)uc_pixel[0] / 255.0;
+        for (int col = 0; col < inpWidth; ++col) {
+            input[i] = (float)uc_pixel[2] / 255.0;
+            input[i + inpHeight * inpWidth] = (float)uc_pixel[1] / 255.0;
+            input[i + 2 * inpHeight * inpWidth] = (float)uc_pixel[0] / 255.0;
             uc_pixel += 3;
             ++i;
         }
     }
-    // cv::Mat blob_img =
-    // cv::dnn::blobFromImage(pr_img,1.0,cv::Size(),cv::Scalar(),true) / 255.0;
+    onnx_net->DataTransferHost(input, 1 * 3 * inpWidth * inpHeight, 0);
+    onnx_net->Forward();
+    onnx_net->DataTransfer(output, 1, false);
+    auto res = PostProcess(img, output);
 
-    doInference(*context, stream, buffers, data, prob, BATCH_SIZE);
-    std::vector<Yolo::Detection> res;
-    nms(res, &prob[0], CONF_THRESH, NMS_THRESH);
-
-    std::vector<ArmorInfo> ans;
-    for (auto it : res) {
-        cv::Rect r = get_rect(img, it.bbox);
-        ans.push_back((ArmorInfo){r, (int)it.class_id, it.conf});
-    }
     auto end = std::chrono::system_clock::now();
     total_time +=
         std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
             .count();
     ++total_cnt;
-    return ans;
+    return res;
 }
 
 cv::Mat ArmorDetector::draw_output(cv::Mat& img,
                                    std::vector<ArmorInfo>& armors) {
     cv::Mat out = img.clone();
-    char label[100];
     for (auto it : armors) {
-        cv::rectangle(out, it.bbox, cv::Scalar(0x27, 0xC1, 0x36), 2);
-        sprintf(label, "%s %.2f", id_names[it.id], it.conf);
+        cv::rectangle(out, it.bbox, cv::Scalar(255,178,50), 1);
+        std::string label = classes[it.id] + cv::format(" %.2f", it.conf);
         float wx = it.bbox.x;
         float wy = it.bbox.y;
         if (wy < 10) wy += it.bbox.height + 12;
-        cv::putText(out, label, cv::Point(wx, wy - 1), cv::FONT_HERSHEY_PLAIN,
-                    1, cv::Scalar(0xFF, 0xFF, 0xFF), 2);
+        cv::putText(out, label, cv::Point(wx, wy - 1), cv::FONT_HERSHEY_SIMPLEX,
+                    0.75, cv::Scalar(0xFF, 0xFF, 0xFF), 1);
     }
     return out;
 }
