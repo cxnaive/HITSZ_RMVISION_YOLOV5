@@ -46,6 +46,7 @@ static void OnInit(const char* cmd) {
     rmTime.init();
     config.init_from_file();
     rmSerial.init();
+    src = cv::Mat(640,640,CV_8UC3);
     if (config.use_video) {
         video = new VideoWrapper(config.video_path);
         video->init();
