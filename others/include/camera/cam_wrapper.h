@@ -33,7 +33,6 @@ private:
     int64_t frame_cnt;
     double frame_get_time;
     CameraConfig camConfig;
-    cv::Mat full;
     cv::Mat p_img;
     void *g_pRGBframeData;
     void *g_pRaw8Buffer;

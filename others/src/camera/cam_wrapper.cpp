@@ -95,20 +95,23 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
                     cam->g_pRGBframeData, pFrame->nWidth, pFrame->nHeight,
                     pFrame->nPixelFormat, cam->g_nColorFilter);
 
-        memcpy(cam->full.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
         
+        // cam->full_gpu.upload(cam->full);
         
-        
-        
+        // cv::cuda::resize(cam->full_gpu,cam->resize_gpu,cv::Size(640,640));
+        // cv::cuda::cvtColor(cam->resize_gpu,cam->resize_gpu,cv::COLOR_RGB2BGR);
         mtx.lock();
-        cv::resize(cam->full,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
+        // cv::resize(cam->full,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
+        // cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+        // cam->resize_gpu.download(cam->p_img);
+        memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
         cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
         mtx.unlock();
         auto end = std::chrono::steady_clock::now();
         cam->frame_cnt ++;
         cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if(cam->frame_cnt == 500){
-            LOG(INFO) << "average camera delay:" << cam->frame_get_time / cam->frame_cnt;
+            LOG(INFO) << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt;
             cam->frame_get_time = cam->frame_cnt = 0;
         }
     }
@@ -150,7 +153,9 @@ Camera::Camera(std::string sn, CameraConfig config)
       frame_get_time(0),
       init_success(false) {
     p_img = cv::Mat(640, 640, CV_8UC3);
-    full = cv::Mat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
+    // full = cv::Mat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
+    // full_gpu = cv::cuda::GpuMat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
+    // resize_gpu = cv::cuda::GpuMat(640,640,CV_8UC3);
 };
 
 Camera::~Camera() {
