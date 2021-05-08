@@ -39,7 +39,7 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
         cv::Point2f center = target_box.getCenter();
         yaw = atan((center.x - config.IMAGE_CENTER_X + config.ARMOR_DELTA_X) / config.camConfig.fx) *
               180 / PI;
-        pitch = atan((center.y - config.IMAGE_CENTER_Y) / config.camConfig.fy) *
+        pitch = atan((center.y - config.IMAGE_CENTER_Y + config.ARMOR_DELTA_Y) / config.camConfig.fy) *
                 180 / PI;
     }
     double dpitch = config.ARMOR_PITCH_DELTA_K * dist + config.ARMOR_PITCH_DELTA_B;

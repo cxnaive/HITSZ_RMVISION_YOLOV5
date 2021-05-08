@@ -71,13 +71,14 @@ public:
     int ARMOR_W = 230;
     int IMAGE_CENTER_X = 320;
     int IMAGE_CENTER_Y = 320;
-    char RUNMODE = ARMOR_STATE;
+    char RUNMODE = BIG_ENERGY_STATE;
     double MCU_DELTA_X = 0;
     double MCU_DELTA_Y = 0;
     double MANUAL_DELTA_X = 0;
     double MANUAL_DELTA_Y = 0;
     float BULLET_SPEED = 0;
     double ARMOR_DELTA_X = 0;
+    double ARMOR_DELTA_Y = 0;
     double ARMOR_PITCH_DELTA_K = 0;
     double ARMOR_PITCH_DELTA_B = 0;
     double ARMOR_PITCH_KP = 0.75;
