@@ -1,5 +1,5 @@
-pass_word="Chen3xun27"
-home_dir="andychen"
+pass_word="ubuntu"
+home_dir="ubuntu"
 cd /home/${home_dir}/HITSZ_RMVISION_YOLOV5/build
 echo ${pass_word}|sudo -S nohup ./start_loop "./rmcv" >warm_up.txt 2>&1 &
 sleep 45s
