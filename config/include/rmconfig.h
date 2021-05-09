@@ -74,19 +74,25 @@ public:
     char RUNMODE = BIG_ENERGY_STATE;
     double MCU_DELTA_X = 0;
     double MCU_DELTA_Y = 0;
+    double MCU_YAW_SPEED = 0;
+    double MCU_PITCH_SPEED = 0;
     double MANUAL_DELTA_X = 0;
     double MANUAL_DELTA_Y = 0;
     float BULLET_SPEED = 0;
     double ARMOR_DELTA_X = 0;
     double ARMOR_DELTA_Y = 0;
-    double ARMOR_PITCH_DELTA_K = 0;
-    double ARMOR_PITCH_DELTA_B = 0;
-    double ARMOR_PITCH_KP = 0.75;
-    double ARMOR_PITCH_KI = 0.01;
-    double ARMOR_PITCH_KD = 0.4;
-    double ARMOR_YAW_KP = 0.75;
-    double ARMOR_YAW_KI = 0.01;
-    double ARMOR_YAW_KD = 0.4;
+    //double ARMOR_PITCH_DELTA_K = 0;
+    //double ARMOR_PITCH_DELTA_B = 0;
+    std::vector<double> ARMOR_PITCH_DELTA_K = {0};
+    std::vector<double> ARMOR_PITCH_DELTA_B = {0};
+    std::vector<double> ARMOR_BULLET_SPEED_SET = {0};
+    double ARMOR_PITCH_KP = 1;
+    double ARMOR_PITCH_KI = 0;
+    double ARMOR_PITCH_KD = 0;
+    double ARMOR_YAW_KP = 1;
+    double ARMOR_YAW_KI = 0;
+    double ARMOR_YAW_KD = 0;
+    double PROG_DELAY = 13;
     //Camera
     CameraConfig camConfig;
     

@@ -52,10 +52,10 @@ file(GLOB_RECURSE sourcefiles
 file(GLOB_RECURSE camfiles "others/**/*.h" "others/**/*.cpp" "config/src/rmconfig.cpp" "config/include/rmconfig.h")
 
 add_executable(rmcv main.cpp ${sourcefiles})
-#add_executable(calibrate calibrate_get_imgs.cpp ${camfiles})
+add_executable(calibrate calibrate_get_imgs.cpp ${camfiles})
 #add_executable(mcusend test_mcu_send.cpp ${sourcefiles})
 link_directories(${OpenCV_LIBRARY_DIRS})
 
 target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
-#target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi  -lpthread)
+target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi  -lpthread)
 #target_link_libraries(mcusend  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)

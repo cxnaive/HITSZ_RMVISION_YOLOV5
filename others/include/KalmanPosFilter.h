@@ -7,7 +7,7 @@ class KalmanPosFilter {
     cv::KalmanFilter KF;
     void init(cv::Point2f target);
     void update(cv::Point2f target);
-    cv::Point2f predict();
+    cv::Vec4f predict();
 };
 
 #endif

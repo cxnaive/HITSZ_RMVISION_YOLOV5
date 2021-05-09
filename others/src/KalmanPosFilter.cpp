@@ -18,9 +18,9 @@ void KalmanPosFilter::update(cv::Point2f target){
     KF.correct((cv::Mat_<float>(2,1) << target.x,target.y));
 }
 
-cv::Point2f KalmanPosFilter::predict(){
+cv::Vec4f KalmanPosFilter::predict(){
     cv::Mat result = KF.predict();
     //LOG(INFO) << "KF result:" << result;
     float* data = (float*) result.data;
-    return cv::Point2f(data[0],data[1]);
+    return cv::Vec4f(data[0],data[1],data[2],data[3]);
 }

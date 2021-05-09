@@ -10,8 +10,8 @@ struct McuConfig {
     uint8_t state;        // 当前状态，自瞄-大符-小符
     uint8_t anti_top;     // 是否为反陀螺模式
     uint8_t enemy_color;  // 敌方颜色
-    float curr_yaw;       // 当前云台yaw角度
-    float curr_pitch;     // 当前云台pitch角
+    float curr_yaw;       // 当前云台yaw角速度
+    float curr_pitch;     // 当前云台pitch角速度
     float bullet_speed;   // 当前弹速
     int delta_x;          // 能量机关x轴补偿量
     int delta_y;          // 能量机关y轴补偿量

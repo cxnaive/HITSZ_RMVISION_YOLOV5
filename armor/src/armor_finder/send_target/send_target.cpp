@@ -4,6 +4,19 @@
 
 #include <cmath>
 
+inline static int bullet_speed_config_index(){
+    int idx = 0;
+    float mindis = 1000;
+    for(int i = 0;i < config.ARMOR_BULLET_SPEED_SET.size();++i){
+        float disnow = fabs(config.BULLET_SPEED - config.ARMOR_BULLET_SPEED_SET[i]);
+        if(disnow < mindis){
+            idx = i;
+            mindis = disnow;
+        }
+    }
+    return idx;
+}
+
 static bool sendTarget(RmSerial &serial, double x, double y, double z,
                        uint16_t shoot_delay) {
     static short x_tmp, y_tmp, z_tmp;
@@ -42,17 +55,24 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
         pitch = atan((center.y - config.IMAGE_CENTER_Y + config.ARMOR_DELTA_Y) / config.camConfig.fy) *
                 180 / PI;
     }
-    double dpitch = config.ARMOR_PITCH_DELTA_K * dist + config.ARMOR_PITCH_DELTA_B;
+    int config_index = bullet_speed_config_index();
+    double dpitch = config.ARMOR_PITCH_DELTA_K[config_index] * dist + config.ARMOR_PITCH_DELTA_B[config_index];
     pitch -= dpitch;
     
     //Apply filter
     ArmorPosFilter.update(cv::Point2f(yaw,pitch));
-    cv::Point2f res = ArmorPosFilter.predict();
-    if (getPointLength(res - cv::Point2f(yaw,pitch)) < 5){
-        yaw = res.x;
-        pitch = res.y;
+    cv::Vec4f res = ArmorPosFilter.predict();
+    cv::Point2f pred_pos(res[0],res[1]);
+    cv::Point2f pred_speed(res[0],res[1]);
+    if (getPointLength(pred_pos - cv::Point2f(yaw,pitch)) < 5){
+        yaw = pred_pos.x;
+        pitch = pred_pos.y;
     }
     
+    // Predict target pos
+    double target_yaw_speed = pred_speed.x * 1000 / config.PROG_DELAY + config.MCU_YAW_SPEED;
+    double dyaw = target_yaw_speed * (dist / 1000 / config.BULLET_SPEED);
+    yaw += dyaw;
 
     if (config.log_send_target) {
         LOG(INFO) << "Target: " << yaw <<" "<< -pitch;

@@ -53,7 +53,7 @@ void RmConfig::init_from_file() {
                show_energy_extra || show_process || show_net_box;
     ignore_types.clear();
     std::string ignore_info = "";
-    for(int i = 0;i < config["ignore_types"].size();++i){
+    for (int i = 0; i < config["ignore_types"].size(); ++i) {
         std::string ignore_item = config["ignore_types"][i].asString();
         ignore_types.insert(ignore_item);
         ignore_info = ignore_info + ignore_item + " ";
@@ -71,14 +71,46 @@ void RmConfig::init_from_file() {
     MANUAL_DELTA_Y = data["MANUAL_DELTA_Y"].asDouble();
     ARMOR_DELTA_X = data["ARMOR_DELTA_X"].asDouble();
     ARMOR_DELTA_Y = data["ARMOR_DELTA_Y"].asDouble();
-    ARMOR_PITCH_DELTA_K = data["ARMOR_PITCH_DELTA_K"].asDouble();
-    ARMOR_PITCH_DELTA_B = data["ARMOR_PITCH_DELTA_B"].asDouble();
+    // ARMOR_PITCH_DELTA_K = data["ARMOR_PITCH_DELTA_K"].asDouble();
+    // ARMOR_PITCH_DELTA_B = data["ARMOR_PITCH_DELTA_B"].asDouble();
     ARMOR_YAW_KP = data["ARMOR_YAW_KP"].asDouble();
     ARMOR_YAW_KI = data["ARMOR_YAW_KI"].asDouble();
     ARMOR_YAW_KD = data["ARMOR_YAW_KD"].asDouble();
     ARMOR_PITCH_KP = data["ARMOR_PITCH_KP"].asDouble();
     ARMOR_PITCH_KI = data["ARMOR_PITCH_KI"].asDouble();
     ARMOR_PITCH_KD = data["ARMOR_PITCH_KD"].asDouble();
+    PROG_DELAY = data["PROG_DELAY"].asDouble();
+
+    std::string k_info = "";
+    std::string b_info = "";
+    std::string s_info = "";
+    if (data["ARMOR_PITCH_DELTA_K"].size() !=
+            data["ARMOR_PITCH_DELTA_B"].size() ||
+        data["ARMOR_PITCH_DELTA_K"].size() !=
+            data["ARMOR_BULLET_SPEED_SET"].size() ||
+        data["ARMOR_PITCH_DELTA_K"].size() == 0) {
+        LOG(ERROR) << "Invalid armor pitch settings!";
+        k_info = b_info = s_info = "0";
+    } else {
+        ARMOR_PITCH_DELTA_K.clear();
+        ARMOR_PITCH_DELTA_B.clear();
+        ARMOR_BULLET_SPEED_SET.clear();
+
+        for (int i = 0; i < data["ARMOR_PITCH_DELTA_K"].size(); ++i) {
+            double nowk = data["ARMOR_PITCH_DELTA_K"][i].asDouble();
+            double nowb = data["ARMOR_PITCH_DELTA_B"][i].asDouble();
+            double nows = data["ARMOR_BULLET_SPEED_SET"][i].asDouble();
+            ARMOR_PITCH_DELTA_K.push_back(nowk);
+            ARMOR_PITCH_DELTA_B.push_back(nowb);
+            ARMOR_BULLET_SPEED_SET.push_back(nows);
+            k_info = k_info + std::to_string(nowk) + " ";
+            b_info = b_info + std::to_string(nowb) + " ";
+            s_info = s_info + std::to_string(nows) + " ";
+        }
+    }
+    LOG(WARNING) << "NOTE: pitch delta k: " << k_info;
+    LOG(WARNING) << "NOTE: pitch delta b: " << b_info;
+    LOG(WARNING) << "NOTE: bullet speed set: " << s_info;
 
     // camera
     Json::Value camera = root["camera"];
@@ -127,7 +159,7 @@ void RmConfig::write_to_file() {
     config["video_path"] = video_path;
     config["camera_sn"] = camera_sn;
     config["ignore_types"].clear();
-    for (auto &item: ignore_types){
+    for (auto &item : ignore_types) {
         config["ignore_types"].append(item);
     }
 
@@ -143,14 +175,20 @@ void RmConfig::write_to_file() {
     data["MANUAL_DELTA_Y"] = MANUAL_DELTA_Y;
     data["ARMOR_DELTA_X"] = ARMOR_DELTA_X;
     data["ARMOR_DELTA_Y"] = ARMOR_DELTA_Y;
-    data["ARMOR_PITCH_DELTA_K"] = ARMOR_PITCH_DELTA_K;
-    data["ARMOR_PITCH_DELTA_B"] = ARMOR_PITCH_DELTA_B;
+    // data["ARMOR_PITCH_DELTA_K"] = ARMOR_PITCH_DELTA_K;
+    // data["ARMOR_PITCH_DELTA_B"] = ARMOR_PITCH_DELTA_B;
     data["ARMOR_YAW_KP"] = ARMOR_YAW_KP;
     data["ARMOR_YAW_KI"] = ARMOR_YAW_KI;
     data["ARMOR_YAW_KD"] = ARMOR_YAW_KD;
     data["ARMOR_PITCH_KP"] = ARMOR_PITCH_KP;
     data["ARMOR_PITCH_KI"] = ARMOR_PITCH_KI;
     data["ARMOR_PITCH_KD"] = ARMOR_PITCH_KD;
+    data["PROG_DELAY"] = PROG_DELAY;
+    for (int i = 0; i < ARMOR_PITCH_DELTA_K.size(); ++i) {
+        data["ARMOR_PITCH_DELTA_K"].append(ARMOR_PITCH_DELTA_K[i]);
+        data["ARMOR_PITCH_DELTA_B"].append(ARMOR_PITCH_DELTA_B[i]);
+        data["ARMOR_BULLET_SPEED_SET"].append(ARMOR_BULLET_SPEED_SET[i]);
+    }
 
     // camera
     Json::Value camera;

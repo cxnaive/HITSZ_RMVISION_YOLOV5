@@ -123,7 +123,7 @@ bool RmSerial::init() {
     LOG(INFO) << "Serial Send Size:" << sizeof(SendData);
     LOG(INFO) << "Serial Recieve Size:" << sizeof(McuData);
     try {
-        active_port = new serial::Serial(config.uart_port, 115200,
+        active_port = new serial::Serial(config.uart_port, 2000000,
                                          serial::Timeout::simpleTimeout(1000));
         init_success = true;
     } catch (...) {

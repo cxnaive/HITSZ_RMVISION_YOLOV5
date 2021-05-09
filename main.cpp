@@ -78,6 +78,8 @@ void update_config() {
     config.MCU_DELTA_X = receive_config_data.delta_x;
     config.MCU_DELTA_Y = receive_config_data.delta_y;
     config.BULLET_SPEED = receive_config_data.bullet_speed;
+    config.MCU_PITCH_SPEED = receive_config_data.curr_pitch;
+    config.MCU_YAW_SPEED = receive_config_data.curr_yaw;
     receive_mtx.unlock();
 }
 void check_mode_and_run(cv::Mat& src) {
