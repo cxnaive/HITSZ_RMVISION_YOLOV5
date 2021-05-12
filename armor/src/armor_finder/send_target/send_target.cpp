@@ -70,9 +70,9 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
     }
     
     // Predict target pos
-    double target_yaw_speed = pred_speed.x * 1000 / config.PROG_DELAY + config.MCU_YAW_SPEED;
-    double dyaw = target_yaw_speed * (dist / 1000 / config.BULLET_SPEED);
-    yaw += dyaw;
+    // double target_yaw_speed = config.MCU_YAW_SPEED;
+    // double dyaw = target_yaw_speed * (dist / 1000 / config.BULLET_SPEED);
+    // yaw += dyaw;
 
     if (config.log_send_target) {
         LOG(INFO) << "Target: " << yaw <<" "<< -pitch;
