@@ -37,7 +37,6 @@ void Energy::initEnergy() {
     guess_polar_angle = -1000;
     last_base_angle = -1000;
     predict_rad = 0;
-    predict_rad_norm = 45;
     attack_distance = ATTACK_DISTANCE;
     center_delta_yaw = 1000;
     center_delta_pitch = 1000;
@@ -150,12 +149,12 @@ void Energy::initRotation() {
     }
     //由于刚开始圆心判断不准，角度变化可能计算有误，因此需要在角度正向或逆向变化足够大时才可确定是否为顺逆时针
     if (clockwise_rotation_init_cnt == 15) {
-        energy_rotation_direction = CLOCKWISE;  //顺时针变化30次，确定为顺时针
+        energy_rotation_direction = CLOCKWISE;  //顺时针变化15次，确定为顺时针
         LOG(INFO) << "rotation: " << energy_rotation_direction;
         energy_rotation_init = false;
     } else if (anticlockwise_rotation_init_cnt == 15) {
         energy_rotation_direction =
-            ANTICLOCKWISE;  //逆时针变化30次，确定为顺时针
+            ANTICLOCKWISE;  //逆时针变化15次，确定为顺时针
         LOG(INFO) << "rotation: " << energy_rotation_direction;
         energy_rotation_init = false;
     }

@@ -13,12 +13,12 @@ using std::vector;
 // 此函数获取预测点坐标
 // ---------------------------------------------------------------------------------------------------------------------
 void Energy::getPredictPoint(cv::Point target_point) {
-    if (is_big) {
+    if (is_small) {
         if (energy_rotation_direction == 1)
-            predict_rad = predict_rad_norm;
+            predict_rad = config.ENERGY_SMALL_SPEED * config.ENERGY_DELAY_TIME / 1000.0;
         else if (energy_rotation_direction == -1)
-            predict_rad = -predict_rad_norm;
+            predict_rad = -config.ENERGY_SMALL_SPEED * config.ENERGY_DELAY_TIME / 1000.0;
         rotate(target_point);
-    } else if (is_small)
+    } else if (is_big)
         predict_point = target_point;
 }

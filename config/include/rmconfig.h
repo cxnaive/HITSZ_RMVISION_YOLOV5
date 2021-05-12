@@ -66,12 +66,14 @@ public:
     int ENERGY_CAMERA_EXPOSURE = 4000;
     int ENERGY_CAMERA_GAIN = 5;
     int ENEMY_COLOR = ENEMY_RED;
+    double ENERGY_SMALL_SPEED = 60;
+    double ENERGY_DELAY_TIME = 270;
     int ANTI_TOP = 0;
     int ARMOR_H = 58;
     int ARMOR_W = 230;
     int IMAGE_CENTER_X = 320;
     int IMAGE_CENTER_Y = 320;
-    char RUNMODE = BIG_ENERGY_STATE;
+    char RUNMODE = SMALL_ENERGY_STATE;
     double MCU_DELTA_X = 0;
     double MCU_DELTA_Y = 0;
     double MCU_YAW_SPEED = 0;

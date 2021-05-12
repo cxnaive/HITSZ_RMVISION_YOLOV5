@@ -37,6 +37,8 @@ void Energy::getAimPoint(cv::Point target_point_) {
         compensate_pitch = BLUE_COMPENSATE_PITCH;
     }
 
+    if(config.show_info) LOG(INFO) << "extra_delta_y:" << extra_delta_y;
+
     double dx = (target_point_.x - config.camConfig.cx - compensate_yaw - config.MCU_DELTA_X -
                   config.MANUAL_DELTA_X - extra_delta_x);
     double dy = -(target_point_.y - config.camConfig.cy - compensate_pitch - config.MCU_DELTA_Y -
