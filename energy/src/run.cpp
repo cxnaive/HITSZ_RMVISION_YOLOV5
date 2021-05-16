@@ -49,11 +49,17 @@ void Energy::run(cv::Mat &src) {
 
     changeTarget();
     getTargetPolarAngle();
+    getTargetTime();
     if (energy_rotation_init) {
         initRotation();
         sendEnergyLost();
         return;
     }
+    if(predict_time_init){
+        sendEnergyLost();
+        return;
+    }
+    // LOG(INFO) << predict_time;
     getPredictPoint(target_point);
 
     // cv::Mat rgb;

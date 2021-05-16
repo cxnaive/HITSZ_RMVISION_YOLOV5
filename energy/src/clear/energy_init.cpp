@@ -16,6 +16,7 @@ void Energy::initEnergy() {
     is_predicting = true;
     energy_mode_init = true;
     energy_rotation_init = true;
+    predict_time_init = true;
     start_guess = false;
     change_target = false;
 
@@ -34,6 +35,9 @@ void Energy::initEnergy() {
     target_polar_angle = -1000;
     last_target_polar_angle_judge_change = -1000;
     last_target_polar_angle_judge_rotation = -1000;
+    last_target_polar_angle_predict_time = -1000;
+    last_target_polar_angle_time_point = -1000;
+
     guess_polar_angle = -1000;
     last_base_angle = -1000;
     predict_rad = 0;
@@ -47,11 +51,18 @@ void Energy::initEnergy() {
     last_pitch = 0;
     sum_yaw = 0;
     sum_pitch = 0;
+    predict_time = 0;
+    predict_time_cnt = 0;
+    predict_time_sum = 0;
+    moving_average_cnt = 30;
+    ekf.init(config.PROG_DELAY / 1000,func_acc,func_speed);
 
     circle_center_point = Point(0, 0);
     target_point = Point(0, 0);
     guess_point = Point(0, 0);
     predict_point = Point(0, 0);
+    target_angles.clear();
+    temp_predict_times.clear();
 
     fans.clear();
     armors.clear();
@@ -154,7 +165,7 @@ void Energy::initRotation() {
         energy_rotation_init = false;
     } else if (anticlockwise_rotation_init_cnt == 15) {
         energy_rotation_direction =
-            ANTICLOCKWISE;  //逆时针变化15次，确定为顺时针
+            ANTICLOCKWISE;  //逆时针变化15次，确定为逆时针
         LOG(INFO) << "rotation: " << energy_rotation_direction;
         energy_rotation_init = false;
     }

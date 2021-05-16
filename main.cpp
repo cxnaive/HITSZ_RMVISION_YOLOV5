@@ -46,14 +46,14 @@ static void OnInit(const char* cmd) {
     rmTime.init();
     config.init_from_file();
     rmSerial.init();
-    src = cv::Mat(640,640,CV_8UC3);
+    src = cv::Mat(640, 640, CV_8UC3);
     if (config.use_video) {
         video = new VideoWrapper(config.video_path);
         video->init();
     } else {
         cam = new Camera(config.camera_sn, config.camConfig);
         cam->init();
-        if(!cam->init_is_successful()){
+        if (!cam->init_is_successful()) {
             LOG(ERROR) << "Camera Init Failed!";
             keepRunning = false;
             return;
@@ -83,7 +83,7 @@ void update_config() {
     receive_mtx.unlock();
 }
 void check_mode_and_run(cv::Mat& src) {
-    //rmSerial.manual_receive();
+    // rmSerial.manual_receive();
     update_config();
     if (lastRunMode == ARMOR_STATE && (config.RUNMODE == SMALL_ENERGY_STATE ||
                                        config.RUNMODE == BIG_ENERGY_STATE)) {
@@ -99,6 +99,11 @@ void check_mode_and_run(cv::Mat& src) {
             cam->setParam(config.ARMOR_CAMERA_EXPOSURE,
                           config.ARMOR_CAMERA_GAIN);
         LOG(WARNING) << "Change to Armor mode:" << config.RUNMODE;
+    }
+    if (lastRunMode != config.RUNMODE &&
+        (config.RUNMODE == SMALL_ENERGY_STATE ||
+         config.RUNMODE == BIG_ENERGY_STATE)) {
+        energy->setEnergyInit();
     }
     lastRunMode = config.RUNMODE;
     if (config.RUNMODE == ARMOR_STATE) {
@@ -122,7 +127,7 @@ int main(int argc, char** argv) {
     while (keepRunning) {
         if (config.use_video) {
             if (!video->read(src)) break;
-            cv::resize(src, src, cv::Size(640, 640));
+            cv::resize(src, src, cv::Size(640, 360));
         } else {
             cam->read(src);
             // config.camConfig.undistort(src);
@@ -132,7 +137,7 @@ int main(int argc, char** argv) {
             // cv::waitKey(1);
         }
         check_mode_and_run(src);
-        // cv::waitKey(10);
+        cv::waitKey(9);
         if (config.has_show) cv::waitKey(1);
     }
     LOG(INFO) << "exiting...";

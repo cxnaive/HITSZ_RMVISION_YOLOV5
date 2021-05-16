@@ -11,6 +11,7 @@
 #include <opencv2/opencv.hpp>
 #include <constants.h>
 #include <stdio.h>
+#include <energy_ekf.h>
 #include "param_struct_define.h"
 #include <rmserial.h>
 #include <runtime.h>
@@ -23,7 +24,7 @@ public:
 
     bool is_big;//大符模式为true
     bool is_small;//小符模式为true
-
+    
     void run(cv::Mat &src);
 
     RmSerial &serial;//串口
@@ -40,6 +41,7 @@ private:
     bool is_predicting; //当前处于新目标出现到发弹的过程，则为true，此时正常击打
     bool energy_mode_init;//大小符状态判断
     bool energy_rotation_init;//若仍在判断风车旋转方向，则为true
+    bool predict_time_init;//在判断变速风车时间，则为true
     bool start_guess;//进入猜测状态的标志
     bool change_target;//目标切换的标志
 
@@ -60,6 +62,8 @@ private:
     float target_polar_angle;//待击打装甲板的极坐标角度
     float last_target_polar_angle_judge_change;//上一帧待击打装甲板的极坐标角度（用于判断目标切换）
     float last_target_polar_angle_judge_rotation;//上一帧待击打装甲板的极坐标角度（用于判断旋向）
+    float last_target_polar_angle_predict_time;
+    double last_target_polar_angle_time_point;
     float guess_polar_angle;//猜测的下一个目标装甲板极坐标角度
     float last_base_angle;//上一帧的各扇叶在0区（0°~72°）的基础角度
     float predict_rad;//预测提前角
@@ -69,6 +73,11 @@ private:
     float shoot;//给主控板的指令，1表示跟随，2表示发射，3表示目标切换,4表示猜测模式
     float last_yaw, last_pitch;//PID中微分项
     float sum_yaw, sum_pitch;//yaw和pitch的累计误差，即PID中积分项
+    float predict_time;    //变速风车0相位初始时间预测
+    float predict_time_sum;
+    float predict_time_cnt;
+    int moving_average_cnt; //变速风车移动平均窗口大小
+    EnergyEKF ekf;
 
     double time_start_guess;//进入猜测模式的时间
 
@@ -92,8 +101,9 @@ private:
     std::vector<cv::RotatedRect> flow_strips;//可能的流动条
     std::vector<cv::Point> all_target_armor_centers;//记录全部的装甲板中心，用于风车圆心和半径的计算
 
-    std::queue<float> recent_target_armor_centers;//记录最近一段时间的装甲板中心，用于判断大符还是小符
-
+    std::queue<float> recent_target_armor_centers;//**已弃用** //记录最近一段时间的装甲板中心，用于判断大符还是小符
+    std::deque<cv::Point> target_angles; //记录最近一段时间目标角速度和时间戳
+    std::deque<double> temp_predict_times; //记录最近一段时间解算的0相位初始时间
 
     void initEnergy();//能量机关初始化
     void initEnergyPartParam();//能量机关参数初始化
@@ -139,6 +149,7 @@ private:
     void getCenter();//对心
     void multipleMode(cv::Mat &src);//多模式切换
     void getTargetPolarAngle();//获得目标装甲板极坐标角度
+    void getTargetTime();//预测变速时间
     void getPredictPoint(cv::Point target_point);//获取预测点位
     void getAimPoint(cv::Point target_point);//通过自瞄逻辑计算点位
     void getRecentTargetArmorCenters();//记录近30帧目标装甲板中心坐标
