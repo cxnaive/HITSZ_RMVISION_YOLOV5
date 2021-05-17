@@ -1,0 +1,85 @@
+{
+	"camera" : 
+	{
+		"cx" : 303.92727183847512,
+		"cy" : 307.00937071223274,
+		"fx" : 811.72293646509797,
+		"fy" : 812.08878700531454,
+		"k1" : -0.23008069888906263,
+		"k2" : 0.53017452547602162,
+		"k3" : -1.2392524907626943,
+		"p1" : -0.0044045373220139242,
+		"p2" : -0.0026143012397772166,
+		"roi_height" : 640,
+		"roi_offset_x" : 320,
+		"roi_offset_y" : 0,
+		"roi_width" : 640
+	},
+	"config" : 
+	{
+		"camera_sn" : "KE0210010109",
+		"ignore_types" : 
+		[
+			"B10",
+			"BE",
+			"R10",
+			"RE"
+		],
+		"log_send_target" : false,
+		"save_labelled_boxes" : false,
+		"save_mark" : false,
+		"save_video" : false,
+		"show_armor_box" : false,
+		"show_class_id" : false,
+		"show_energy" : false,
+		"show_energy_extra" : false,
+		"show_info" : false,
+		"show_light_blobs" : false,
+		"show_light_box" : false,
+		"show_mcu_info" : true,
+		"show_net_box" : false,
+		"show_origin" : false,
+		"show_pnp_axies" : false,
+		"show_process" : false,
+		"uart_port" : "/dev/ttyTHS0",
+		"use_pnp" : false,
+		"use_video" : false,
+		"video_path" : "../../test_video/R10.mp4",
+		"wait_uart" : false
+	},
+	"config_data" : 
+	{
+		"ANTI_TOP" : 0,
+		"ARMOR_BULLET_SPEED_SET" : 
+		[
+			15.0,
+			30.0
+		],
+		"ARMOR_CAMERA_EXPOSURE" : 4000,
+		"ARMOR_CAMERA_GAIN" : 8,
+		"ARMOR_DELTA_X" : -15.0,
+		"ARMOR_DELTA_Y" : 192.0,
+		"ARMOR_PITCH_DELTA_B" : 
+		[
+			4.4000000000000004,
+			1.7
+		],
+		"ARMOR_PITCH_DELTA_K" : 
+		[
+			0.0040000000000000001,
+			0.00023000000000000001
+		],
+		"ARMOR_PITCH_KD" : 0.0,
+		"ARMOR_PITCH_KI" : 0.0,
+		"ARMOR_PITCH_KP" : 1.0,
+		"ARMOR_YAW_KD" : 0.0,
+		"ARMOR_YAW_KI" : 0.0,
+		"ARMOR_YAW_KP" : 1.0,
+		"ENEMY_COLOR" : 0,
+		"ENERGY_CAMERA_EXPOSURE" : 1000,
+		"ENERGY_CAMERA_GAIN" : 1,
+		"MANUAL_DELTA_X" : 0.0,
+		"MANUAL_DELTA_Y" : 0.0,
+		"PROG_DELAY" : 13.0
+	}
+}
