@@ -73,7 +73,7 @@ public:
     int ARMOR_W = 230;
     int IMAGE_CENTER_X = 320;
     int IMAGE_CENTER_Y = 320;
-    char RUNMODE = BIG_ENERGY_STATE;
+    char RUNMODE = ARMOR_STATE;
     double MCU_DELTA_X = 0;
     double MCU_DELTA_Y = 0;
     double MCU_YAW_SPEED = 0;

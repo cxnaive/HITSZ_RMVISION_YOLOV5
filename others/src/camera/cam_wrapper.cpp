@@ -249,11 +249,8 @@ void Camera::setParam(int exposureInput, int gainInput) {
     if (init_success) {
         exposure = exposureInput;
         gain = gainInput;
-        stop();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
-        start();
     }
 }
 void Camera::start() {

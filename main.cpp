@@ -36,6 +36,7 @@ ArmorFinder* armor_finder;
 Energy* energy;
 //运行时原图实例
 cv::Mat src;
+cv::Mat src_energy;
 //保存上一次循环运行模式
 char lastRunMode;
 static void OnInit(const char* cmd) {
@@ -110,14 +111,16 @@ void check_mode_and_run(cv::Mat& src) {
         armor_finder->run(src);
     }
     if (config.RUNMODE == SMALL_ENERGY_STATE) {
+        src.copyTo(src_energy);
         energy->is_big = false;
         energy->is_small = true;
-        energy->run(src);
+        energy->run(src_energy);
     }
     if (config.RUNMODE == BIG_ENERGY_STATE) {
+        src.copyTo(src_energy);
         energy->is_big = true;
         energy->is_small = false;
-        energy->run(src);
+        energy->run(src_energy);
     }
 }
 
@@ -137,7 +140,7 @@ int main(int argc, char** argv) {
             // cv::waitKey(1);
         }
         check_mode_and_run(src);
-        cv::waitKey(9);
+        //cv::waitKey(9);
         if (config.has_show) cv::waitKey(1);
     }
     LOG(INFO) << "exiting...";
