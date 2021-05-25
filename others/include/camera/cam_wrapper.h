@@ -36,10 +36,10 @@ private:
     cv::Mat p_img,p_energy;
     void *g_pRGBframeData;
     void *g_pRaw8Buffer;
+    std::thread cam_run;
     bool thread_running;
     bool init_success;
     bool is_energy;
-    bool is_running;
     
 
 public:

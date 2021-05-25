@@ -88,9 +88,8 @@ void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
 }
 
 void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
-    Camera *cam = (Camera *)pFrame->pUserParam;
-    if (!cam->is_running) return;
     if (pFrame->status == GX_FRAME_STATUS_SUCCESS) {
+        Camera *cam = (Camera *)pFrame->pUserParam;
         auto start = std::chrono::steady_clock::now();
         ProcessData((void *)pFrame->pImgBuf, cam->g_pRaw8Buffer,
                     cam->g_pRGBframeData, pFrame->nWidth, pFrame->nHeight,
@@ -128,28 +127,34 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
     return;
 }
 
-void getRGBImage(Camera *p_cam) {
+void getRGBImage(Camera *cam) {
     while (1) {
         GX_STATUS status;
-        status = GXGetImage(p_cam->g_hDevice, &p_cam->g_frameData, 100);
-        if (!p_cam->thread_running) {
+        status = GXGetImage(cam->g_hDevice, &cam->g_frameData, 100);
+        auto start = std::chrono::steady_clock::now();
+        if (!cam->thread_running) {
             return;
         }
-        ProcessData(p_cam->g_frameData.pImgBuf, p_cam->g_pRaw8Buffer,
-                    p_cam->g_pRGBframeData, p_cam->g_frameData.nWidth,
-                    p_cam->g_frameData.nHeight, p_cam->g_nPixelFormat,
-                    p_cam->g_nColorFilter);
-
-        cv::Mat temp(p_cam->camConfig.roi_height, p_cam->camConfig.roi_width,
-                     CV_8UC3);
-
-        memcpy(temp.data, p_cam->g_pRGBframeData, 3 * (p_cam->nPayLoadSize));
-
-        cv::resize(temp, temp, cv::Size(640, 640));
-
-        mtx.lock();
-        cv::cvtColor(temp,p_cam->p_img,cv::COLOR_RGB2BGR);
-        mtx.unlock();
+        if(cam->is_energy){
+            memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+            mtx.lock();
+            cv::resize(cam->p_energy,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
+            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            mtx.unlock();
+        }
+        else{
+            mtx.lock();
+            memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            mtx.unlock();
+        }
+        auto end = std::chrono::steady_clock::now();
+        cam->frame_cnt ++;
+        cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        if(cam->frame_cnt == 500){
+            LOG(INFO) << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt;
+            cam->frame_get_time = cam->frame_cnt = 0;
+        }
     }
 }
 
@@ -164,9 +169,6 @@ Camera::Camera(std::string sn, CameraConfig config)
       init_success(false) {
     p_img = cv::Mat(640, 640, CV_8UC3);
     p_energy = cv::Mat(1024, 1024, CV_8UC3);
-    // full = cv::Mat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
-    // full_gpu = cv::cuda::GpuMat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
-    // resize_gpu = cv::cuda::GpuMat(640,640,CV_8UC3);
 };
 
 Camera::~Camera() {
@@ -180,7 +182,6 @@ Camera::~Camera() {
         }
         GXCloseDevice(g_hDevice);
     }
-
     GXCloseLib();
 }
 std::string gc_device_typename[5] = {
@@ -266,10 +267,10 @@ void Camera::setParam(int exposureInput, int gainInput) {
 }
 void Camera::start() {
     if (init_success) {
-        is_running = true;
-        GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
-        // thread_running = true;
+        // GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
+        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
+        thread_running = true;
+        cam_run = std::thread(getRGBImage, this);
         // std::thread task(getRGBImage, this);
         // task.detach();
     }
@@ -277,11 +278,11 @@ void Camera::start() {
 
 void Camera::stop() {
     if (init_success) {
-        is_running = false;
-        // thread_running = false;
+        thread_running = false;
+        cam_run.join();
         // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        GXUnregisterCaptureCallback(g_hDevice);
+        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
+        // GXUnregisterCaptureCallback(g_hDevice);
     }
 }
 
@@ -297,10 +298,7 @@ bool Camera::read(cv::Mat &src) {
 
 void Camera::setEnergy(int exposureInput, int gainInput){
     if(init_success){
-        is_running = false;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        stop();
         is_energy = true;
         exposure = exposureInput;
         gain = gainInput;
@@ -311,17 +309,28 @@ void Camera::setEnergy(int exposureInput, int gainInput){
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
-        is_running = true;
+        GXGetEnum(g_hDevice, GX_ENUM_PIXEL_FORMAT, &g_nPixelFormat);
+        GXGetEnum(g_hDevice, GX_ENUM_PIXEL_COLOR_FILTER, &g_nColorFilter);
+        
+        if (g_frameData.pImgBuf != NULL) {
+            free(g_frameData.pImgBuf);
+            g_frameData.pImgBuf = NULL;
+        }
+        if (g_pRGBframeData != NULL) {
+            free(g_pRGBframeData);
+            g_pRGBframeData = NULL;
+        }
+        
+        g_frameData.pImgBuf = malloc(nPayLoadSize);
+        g_pRGBframeData = malloc(nPayLoadSize * 3);
+
+        start();
     }
 }
 
 void Camera::setArmor(int exposureInput, int gainInput){
     if(init_success){
-        is_running = false;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        stop();
         is_energy = false;
         exposure = exposureInput;
         gain = gainInput;
@@ -332,7 +341,21 @@ void Camera::setArmor(int exposureInput, int gainInput){
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
-        is_running = true;
+        GXGetEnum(g_hDevice, GX_ENUM_PIXEL_FORMAT, &g_nPixelFormat);
+        GXGetEnum(g_hDevice, GX_ENUM_PIXEL_COLOR_FILTER, &g_nColorFilter);
+
+        if (g_frameData.pImgBuf != NULL) {
+            free(g_frameData.pImgBuf);
+            g_frameData.pImgBuf = NULL;
+        }
+        if (g_pRGBframeData != NULL) {
+            free(g_pRGBframeData);
+            g_pRGBframeData = NULL;
+        }
+
+        g_frameData.pImgBuf = malloc(nPayLoadSize);
+        g_pRGBframeData = malloc(nPayLoadSize * 3);
+
+        start();
     }
 }
