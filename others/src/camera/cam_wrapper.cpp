@@ -129,15 +129,17 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
 
 void getRGBImage(Camera *cam) {
     while (1) {
-        GX_STATUS status;
-        status = GXGetImage(cam->g_hDevice, &cam->g_frameData, 100);
-        auto start = std::chrono::steady_clock::now();
         if (!cam->thread_running) {
             return;
         }
-        ProcessData(cam->g_frameData.pImgBuf, cam->g_pRaw8Buffer,
-                cam->g_pRGBframeData, cam->g_frameData.nWidth,
-                cam->g_frameData.nHeight, cam->g_nPixelFormat,
+        GX_STATUS status;
+        status = GXDQBuf(cam->g_hDevice,&cam->g_frameBuffer,1000);
+        auto start = std::chrono::steady_clock::now();
+        //cam->g_frameBuffer.
+        
+        ProcessData(cam->g_frameBuffer->pImgBuf, cam->g_pRaw8Buffer,
+                cam->g_pRGBframeData, cam->g_frameBuffer->nWidth,
+                cam->g_frameBuffer->nHeight, cam->g_frameBuffer->nPixelFormat,
                 cam->g_nColorFilter);
         if(cam->is_energy){
             memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
@@ -273,10 +275,11 @@ void Camera::setParam(int exposureInput, int gainInput) {
 }
 void Camera::start() {
     if (init_success) {
-        GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
-        // thread_running = true;
-        // cam_run = std::thread(getRGBImage, this);
+        // GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
+        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
+        GXStreamOn(g_hDevice);
+        thread_running = true;
+        cam_run = std::thread(getRGBImage, this);
         // std::thread task(getRGBImage, this);
         // task.detach();
     }
@@ -284,11 +287,12 @@ void Camera::start() {
 
 void Camera::stop() {
     if (init_success) {
-        // thread_running = false;
-        // cam_run.join();
+        thread_running = false;
+        cam_run.join();
+        GXStreamOff(g_hDevice);
         // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        GXUnregisterCaptureCallback(g_hDevice);
+        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
+        // GXUnregisterCaptureCallback(g_hDevice);
     }
 }
 

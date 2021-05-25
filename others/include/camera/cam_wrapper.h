@@ -26,6 +26,7 @@ private:
 
     GX_DEV_HANDLE g_hDevice;
     GX_FRAME_DATA g_frameData;
+    PGX_FRAME_BUFFER g_frameBuffer;
     int64_t g_nPixelFormat;
     int64_t g_nColorFilter;
     int64_t g_SensorHeight;
