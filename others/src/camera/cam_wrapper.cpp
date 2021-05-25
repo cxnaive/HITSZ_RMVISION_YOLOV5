@@ -273,10 +273,10 @@ void Camera::setParam(int exposureInput, int gainInput) {
 }
 void Camera::start() {
     if (init_success) {
-        // GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
-        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
-        thread_running = true;
-        cam_run = std::thread(getRGBImage, this);
+        GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
+        // thread_running = true;
+        // cam_run = std::thread(getRGBImage, this);
         // std::thread task(getRGBImage, this);
         // task.detach();
     }
@@ -284,11 +284,11 @@ void Camera::start() {
 
 void Camera::stop() {
     if (init_success) {
-        thread_running = false;
-        cam_run.join();
+        // thread_running = false;
+        // cam_run.join();
         // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        // GXUnregisterCaptureCallback(g_hDevice);
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
+        GXUnregisterCaptureCallback(g_hDevice);
     }
 }
 
