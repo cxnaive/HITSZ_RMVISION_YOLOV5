@@ -89,17 +89,19 @@ void check_mode_and_run(cv::Mat& src) {
     if (lastRunMode == ARMOR_STATE && (config.RUNMODE == SMALL_ENERGY_STATE ||
                                        config.RUNMODE == BIG_ENERGY_STATE)) {
         if (!config.use_video)
-            cam->setParam(config.ENERGY_CAMERA_EXPOSURE,
+            cam->setEnergy(config.ENERGY_CAMERA_EXPOSURE,
                           config.ENERGY_CAMERA_GAIN);
         LOG(WARNING) << "Change to Energy mode:" << config.RUNMODE;
+        return;
     }
     if ((lastRunMode == SMALL_ENERGY_STATE ||
          lastRunMode == BIG_ENERGY_STATE) &&
         config.RUNMODE == ARMOR_STATE) {
         if (!config.use_video)
-            cam->setParam(config.ARMOR_CAMERA_EXPOSURE,
+            cam->setArmor(config.ARMOR_CAMERA_EXPOSURE,
                           config.ARMOR_CAMERA_GAIN);
         LOG(WARNING) << "Change to Armor mode:" << config.RUNMODE;
+        return;
     }
     if (lastRunMode != config.RUNMODE &&
         (config.RUNMODE == SMALL_ENERGY_STATE ||
