@@ -135,6 +135,10 @@ void getRGBImage(Camera *cam) {
         if (!cam->thread_running) {
             return;
         }
+        ProcessData(cam->g_frameData.pImgBuf, cam->g_pRaw8Buffer,
+                cam->g_pRGBframeData, cam->g_frameData.nWidth,
+                cam->g_frameData.nHeight, cam->g_nPixelFormat,
+                cam->g_nColorFilter);
         if(cam->is_energy){
             memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
             mtx.lock();
