@@ -33,11 +33,12 @@ private:
     int64_t frame_cnt;
     double frame_get_time;
     CameraConfig camConfig;
-    cv::Mat p_img;
+    cv::Mat p_img,p_energy;
     void *g_pRGBframeData;
     void *g_pRaw8Buffer;
     bool thread_running;
     bool init_success;
+    bool is_energy;
     
 
 public:
@@ -46,6 +47,8 @@ public:
     
     bool init() final;                                        // init camera lib and do settings, be called firstly
     void setParam(int exposureInput, int gainInput); 	// set exposure and gain
+    void setEnergy(int exposureInput, int gainInput);
+    void setArmor(int exposureInput, int gainInput);
     void start();					                    // start video stream
     void stop();					                    // stop receiving frames
     void calcRoi(); //autmatic resize parameters

@@ -100,13 +100,22 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         
         // cv::cuda::resize(cam->full_gpu,cam->resize_gpu,cv::Size(640,640));
         // cv::cuda::cvtColor(cam->resize_gpu,cam->resize_gpu,cv::COLOR_RGB2BGR);
-        mtx.lock();
-        // cv::resize(cam->full,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
-        // cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
-        // cam->resize_gpu.download(cam->p_img);
-        memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
-        cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
-        mtx.unlock();
+        if(cam->is_energy){
+            memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+            mtx.lock();
+            cv::resize(cam->p_energy,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
+            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            mtx.unlock();
+        }
+        else{
+            mtx.lock();
+            // cv::resize(cam->full,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
+            // cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            // cam->resize_gpu.download(cam->p_img);
+            memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            mtx.unlock();
+        }
         auto end = std::chrono::steady_clock::now();
         cam->frame_cnt ++;
         cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -153,6 +162,7 @@ Camera::Camera(std::string sn, CameraConfig config)
       frame_get_time(0),
       init_success(false) {
     p_img = cv::Mat(640, 640, CV_8UC3);
+    p_energy = cv::Mat(1024, 1024, CV_8UC3);
     // full = cv::Mat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
     // full_gpu = cv::cuda::GpuMat(camConfig.roi_height,camConfig.roi_width,CV_8UC3);
     // resize_gpu = cv::cuda::GpuMat(640,640,CV_8UC3);
@@ -280,4 +290,32 @@ bool Camera::read(cv::Mat &src) {
     cv::swap(p_img, src);
     mtx.unlock();
     return true;
+}
+
+void Camera::setEnergy(int exposureInput, int gainInput){
+    if(init_success){
+        is_energy = true;
+        exposure = exposureInput;
+        gain = gainInput;
+        GXSetInt(g_hDevice, GX_INT_OFFSET_X, 128);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, 0);
+        GXSetInt(g_hDevice, GX_INT_WIDTH, 1024);
+        GXSetInt(g_hDevice, GX_INT_HEIGHT, 1024);
+        GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
+        GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
+    }
+}
+
+void Camera::setArmor(int exposureInput, int gainInput){
+    if(init_success){
+        is_energy = false;
+        exposure = exposureInput;
+        gain = gainInput;
+        GXSetInt(g_hDevice, GX_INT_OFFSET_X, camConfig.roi_offset_x);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, camConfig.roi_offset_y);
+        GXSetInt(g_hDevice, GX_INT_WIDTH, camConfig.roi_width);
+        GXSetInt(g_hDevice, GX_INT_HEIGHT, camConfig.roi_height);
+        GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
+        GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
+    }
 }
