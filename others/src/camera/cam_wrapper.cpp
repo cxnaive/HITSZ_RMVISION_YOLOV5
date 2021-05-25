@@ -255,6 +255,8 @@ bool Camera::init() {
         GXGetEnum(g_hDevice, GX_ENUM_PIXEL_COLOR_FILTER, &g_nColorFilter);
 
         init_success = true;
+        thread_running = false;
+        is_energy = false;
         return true;
     } else {
         return false;
