@@ -39,6 +39,7 @@ private:
     bool thread_running;
     bool init_success;
     bool is_energy;
+    bool is_running;
     
 
 public:

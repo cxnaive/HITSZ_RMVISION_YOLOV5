@@ -88,9 +88,10 @@ void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
 }
 
 void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
+    Camera *cam = (Camera *)pFrame->pUserParam;
+    if (!cam->is_running) return;
     if (pFrame->status == GX_FRAME_STATUS_SUCCESS) {
         auto start = std::chrono::steady_clock::now();
-        Camera *cam = (Camera *)pFrame->pUserParam;
         ProcessData((void *)pFrame->pImgBuf, cam->g_pRaw8Buffer,
                     cam->g_pRGBframeData, pFrame->nWidth, pFrame->nHeight,
                     pFrame->nPixelFormat, cam->g_nColorFilter);
@@ -265,6 +266,7 @@ void Camera::setParam(int exposureInput, int gainInput) {
 }
 void Camera::start() {
     if (init_success) {
+        is_running = true;
         GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
         // thread_running = true;
@@ -275,6 +277,7 @@ void Camera::start() {
 
 void Camera::stop() {
     if (init_success) {
+        is_running = false;
         // thread_running = false;
         // std::this_thread::sleep_for(std::chrono::milliseconds(100));
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
@@ -294,9 +297,10 @@ bool Camera::read(cv::Mat &src) {
 
 void Camera::setEnergy(int exposureInput, int gainInput){
     if(init_success){
-        LOG(ERROR) << "end";
+        is_running = false;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         is_energy = true;
         exposure = exposureInput;
         gain = gainInput;
@@ -307,15 +311,17 @@ void Camera::setEnergy(int exposureInput, int gainInput){
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
-        
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
+        is_running = true;
     }
 }
 
 void Camera::setArmor(int exposureInput, int gainInput){
     if(init_success){
+        is_running = false;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         is_energy = false;
         exposure = exposureInput;
         gain = gainInput;
@@ -327,5 +333,6 @@ void Camera::setArmor(int exposureInput, int gainInput){
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
+        is_running = true;
     }
 }
