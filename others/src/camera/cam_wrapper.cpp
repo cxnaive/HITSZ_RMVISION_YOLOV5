@@ -154,6 +154,7 @@ void getRGBImage(Camera *cam) {
             cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
             mtx.unlock();
         }
+        GXQBuf(cam->g_hDevice, cam->g_frameBuffer);
         auto end = std::chrono::steady_clock::now();
         cam->frame_cnt ++;
         cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
