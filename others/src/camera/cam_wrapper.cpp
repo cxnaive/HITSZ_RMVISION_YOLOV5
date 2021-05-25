@@ -294,6 +294,9 @@ bool Camera::read(cv::Mat &src) {
 
 void Camera::setEnergy(int exposureInput, int gainInput){
     if(init_success){
+        LOG(ERROR) << "end";
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
         is_energy = true;
         exposure = exposureInput;
         gain = gainInput;
@@ -304,11 +307,15 @@ void Camera::setEnergy(int exposureInput, int gainInput){
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
+        
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
     }
 }
 
 void Camera::setArmor(int exposureInput, int gainInput){
     if(init_success){
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
         is_energy = false;
         exposure = exposureInput;
         gain = gainInput;
@@ -319,5 +326,6 @@ void Camera::setArmor(int exposureInput, int gainInput){
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
     }
 }
