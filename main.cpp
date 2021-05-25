@@ -92,6 +92,7 @@ void check_mode_and_run(cv::Mat& src) {
             cam->setEnergy(config.ENERGY_CAMERA_EXPOSURE,
                           config.ENERGY_CAMERA_GAIN);
         LOG(WARNING) << "Change to Energy mode:" << config.RUNMODE;
+        lastRunMode = config.RUNMODE;
         return;
     }
     if ((lastRunMode == SMALL_ENERGY_STATE ||
@@ -101,6 +102,7 @@ void check_mode_and_run(cv::Mat& src) {
             cam->setArmor(config.ARMOR_CAMERA_EXPOSURE,
                           config.ARMOR_CAMERA_GAIN);
         LOG(WARNING) << "Change to Armor mode:" << config.RUNMODE;
+        lastRunMode = config.RUNMODE;
         return;
     }
     if (lastRunMode != config.RUNMODE &&
@@ -108,7 +110,7 @@ void check_mode_and_run(cv::Mat& src) {
          config.RUNMODE == BIG_ENERGY_STATE)) {
         energy->setEnergyInit();
     }
-    lastRunMode = config.RUNMODE;
+    
     if (config.RUNMODE == ARMOR_STATE) {
         armor_finder->run(src);
     }
