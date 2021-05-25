@@ -303,6 +303,7 @@ void Camera::setEnergy(int exposureInput, int gainInput){
         GXSetInt(g_hDevice, GX_INT_HEIGHT, 1024);
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
+        GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
     }
 }
 
@@ -317,5 +318,6 @@ void Camera::setArmor(int exposureInput, int gainInput){
         GXSetInt(g_hDevice, GX_INT_HEIGHT, camConfig.roi_height);
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
+        GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
     }
 }
