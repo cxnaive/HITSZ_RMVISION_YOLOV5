@@ -210,7 +210,7 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
             if (std::string(pBaseinfo[i].szSN) == sn) found_device = true;
         }
         if (!found_device) {
-            std::cerr << "No device found with SN:" << sn << std::endl;;
+            std::cerr << "No device found with SN:" << sn << std::endl;
             return false;
         }
         GX_OPEN_PARAM stOpenParam;
@@ -235,10 +235,10 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
         GXSetEnum(g_hDevice, GX_ENUM_ACQUISITION_MODE, GX_ACQ_MODE_CONTINUOUS);
         GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4);
 
-        GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x);
-        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y);
-        GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w);
-        GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h);
+        while(GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS);
+        while(GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS);
+        while(GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS);
+        while(GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS);
 
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
