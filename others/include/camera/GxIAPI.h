@@ -2,8 +2,8 @@
 @File      GxIAPI.h
 @Brief     the interface for the GxIAPI dll module. 
 @Author    Software Department
-@Date      2019-5-14
-@Version   1.1.1905.9141
+@Date      2020-11-25
+@Version   1.1.2011.9251
 */
 
 #ifndef GX_GALAXY_H
@@ -254,6 +254,9 @@ typedef enum GX_FEATURE_ID
     GX_COMMAND_TIMESTAMP_RESET                 = 15  | GX_FEATURE_COMMAND| GX_FEATURE_LEVEL_REMOTE_DEV,   ///< reset Timestamp
     GX_COMMAND_TIMESTAMP_LATCH_RESET           = 16  | GX_FEATURE_COMMAND| GX_FEATURE_LEVEL_REMOTE_DEV,   ///< reset Timestamp latch
     GX_INT_TIMESTAMP_LATCH_VALUE               = 17  | GX_FEATURE_INT    | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Timestamp Latch value
+    GX_STRING_DEVICE_PHY_VERSION               = 18  | GX_FEATURE_STRING | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Device network chip version
+    GX_ENUM_DEVICE_TEMPERATURE_SELECTOR        = 19  | GX_FEATURE_ENUM   | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Device temperature selection
+    GX_FLOAT_DEVICE_TEMPERATURE                = 20  | GX_FEATURE_FLOAT  | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Device temperature
 
 
     //---------------ImageFormat Section--------------------------------
@@ -283,6 +286,7 @@ typedef enum GX_FEATURE_ID
     GX_INT_CENTER_HEIGHT              = 1023 |GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,      ///< height of window
     GX_ENUM_BINNING_HORIZONTAL_MODE   = 1024 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Binning Horizontal mode, see also GX_BINNING_HORIZONTAL_MODE_ENTRY
     GX_ENUM_BINNING_VERTICAL_MODE     = 1025 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Binning vertical mode, see also GX_BINNING_VERTICAL_MODE_ENTRY
+    GX_ENUM_SENSOR_SHUTTER_MODE       = 1026 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Sensor shutter mode, see also GX_SENSOR_SHUTTER_MODE_ENTRY
 
     //---------------TransportLayer Section-------------------------------
     GX_INT_PAYLOAD_SIZE                              = 2000 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< Provides the number of bytes transferred for each image or chunk on the stream channel. 
@@ -326,6 +330,8 @@ typedef enum GX_FEATURE_ID
     GX_ENUM_ACQUISITION_STATUS_SELECTOR      = 3031 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Acquisition status selection, see also GX_ACQUISITION_STATUS_SELECTOR_ENTRY
     GX_BOOL_ACQUISITION_STATUS               = 3032 | GX_FEATURE_BOOL | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Acquisition status
     GX_FLOAT_EXPOSURE_DELAY                  = 30300| GX_FEATURE_FLOAT | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Delay of exposure
+    GX_FLOAT_EXPOSURE_OVERLAP_TIME_MAX       = 30301| GX_FEATURE_FLOAT | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Maximum overlap exposure time
+    GX_ENUM_EXPOSURE_TIME_MODE               = 30302| GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Exposure time mode, see also GX_EXPOSURE_TIME_MODE_ENTRY
 
     //----------------DigitalIO Section----------------------------------
     GX_ENUM_USER_OUTPUT_SELECTOR      = 4000 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Selects which bit of the User Output register will be set by UserOutputValue.
@@ -356,6 +362,7 @@ typedef enum GX_FEATURE_ID
     GX_ENUM_GAMMA_MODE                = 5014 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Gamma select, see also GX_GAMMA_MODE_ENTRY
     GX_FLOAT_GAMMA                    = 5015 | GX_FEATURE_FLOAT| GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Gamma
     GX_INT_DIGITAL_SHIFT              = 5016 | GX_FEATURE_INT  | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< bit select
+    GX_ENUM_LIGHT_SOURCE_PRESET       = 5017 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Light source preset, see also GX_LIGHT_SOURCE_PRESET_ENTRY
 
     //---------------CustomFeature Section-------------------------
     GX_INT_ADC_LEVEL                  = 6000 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< When the pixel size is not 8bits, this function can be used to choose 8bits form 10bits or 12bit for show image.
@@ -386,6 +393,13 @@ typedef enum GX_FEATURE_ID
     GX_INT_AWBROI_HEIGHT              = 6025 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< This value sets the height of the rect of interest in pixels for Auto WhiteBalance
     GX_ENUM_SHARPNESS_MODE            = 6026 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Sharpening mode, see also GX_SHARPNESS_MODE_ENTRY
     GX_FLOAT_SHARPNESS                = 6027 | GX_FEATURE_FLOAT | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< Sharpness
+    GX_ENUM_USER_DATA_FILED_SELECTOR  = 6028 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< User selects the flash data field, refer to GX_USER_DATA_FILED_SELECTOR_ENTRY for area selection
+    GX_BUFFER_USER_DATA_FILED_VALUE   = 6029 | GX_FEATURE_BUFFER | GX_FEATURE_LEVEL_REMOTE_DEV, ///< User data field content
+    GX_ENUM_FLAT_FIELD_CORRECTION     = 6030 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Flat field correction switch, see also GX_FLAT_FIELD_CORRECTION_ENTRY
+    GX_ENUM_NOISE_REDUCTION_MODE      = 6031 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Noise reduction mode, see also GX_NOISE_REDUCTION_MODE_ENTRY
+    GX_FLOAT_NOISE_REDUCTION          = 6032 | GX_FEATURE_FLOAT | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< Noise reduction
+    GX_BUFFER_FFCLOAD                 = 6033 | GX_FEATURE_BUFFER | GX_FEATURE_LEVEL_REMOTE_DEV, ///< Get flat field correction parameters
+    GX_BUFFER_FFCSAVE                 = 6034 | GX_FEATURE_BUFFER | GX_FEATURE_LEVEL_REMOTE_DEV, ///< Set flat field correction parameters
 
     //---------------UserSetControl Section-------------------------
     GX_ENUM_USER_SET_SELECTOR         = 7000 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Selects the feature User Set to load, save or configure.
@@ -409,6 +423,18 @@ typedef enum GX_FEATURE_ID
     GX_INT_EVENT_BLOCK_NOT_EMPTY_TIMESTAMP        = 8012 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< Indicates the time stamp of the BlockNotEmpty event
     GX_INT_EVENT_INTERNAL_ERROR                   = 8013 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< This enumeration value indicates the InternalError event.
     GX_INT_EVENT_INTERNAL_ERROR_TIMESTAMP         = 8014 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< Indicates the time stamp of the InternalError event
+    GX_INT_EVENT_FRAMEBURSTSTART_OVERTRIGGER      = 8015 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< Frame burst start overtrigger event ID
+    GX_INT_EVENT_FRAMEBURSTSTART_OVERTRIGGER_FRAMEID      = 8016 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame burst start overtrigger event frame ID
+    GX_INT_EVENT_FRAMEBURSTSTART_OVERTRIGGER_TIMESTAMP    = 8017 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame burst start overtrigger event timestamp
+    GX_INT_EVENT_FRAMESTART_WAIT                          = 8018 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame start wait event ID
+    GX_INT_EVENT_FRAMESTART_WAIT_TIMESTAMP                = 8019 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame start wait event timestamp
+    GX_INT_EVENT_FRAMEBURSTSTART_WAIT                     = 8020 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame burst start wait event ID
+    GX_INT_EVENT_FRAMEBURSTSTART_WAIT_TIMESTAMP           = 8021 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame burst start wait event timestamp
+    GX_INT_EVENT_BLOCK_DISCARD_FRAMEID                    = 8022 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Data block discard event frame ID
+    GX_INT_EVENT_FRAMESTART_OVERTRIGGER_FRAMEID           = 8023 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame start wait overtrigger event frame ID
+    GX_INT_EVENT_BLOCK_NOT_EMPTY_FRAMEID                  = 8024 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Data block not empty event frame ID
+    GX_INT_EVENT_FRAMESTART_WAIT_FRAMEID                  = 8025 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame start wait event frame ID
+    GX_INT_EVENT_FRAMEBURSTSTART_WAIT_FRAMEID             = 8026 | GX_FEATURE_INT | GX_FEATURE_LEVEL_REMOTE_DEV,    ///< Frame burst start wait event frame ID
 
     //---------------LUT Section-------------------------
     GX_ENUM_LUT_SELECTOR             = 9000 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,   ///< Selects which LUT to control.
@@ -438,6 +464,12 @@ typedef enum GX_FEATURE_ID
     GX_ENUM_COUNTER_RESET_SOURCE            = 12006 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,     ///< Selects the signals that will be the source to reset the Counter, Refer to GX_COUNTER_RESET_SOURCE_ENTRY
     GX_ENUM_COUNTER_RESET_ACTIVATION        = 12007 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,     ///< Selects the Activation mode of the Counter Reset Source signal, Refer to GX_COUNTER_RESET_ACTIVATION_ENTRY
     GX_COMMAND_COUNTER_RESET                = 12008 | GX_FEATURE_COMMAND | GX_FEATURE_LEVEL_REMOTE_DEV,  ///< Does a software reset of the selected Counter and starts it.
+    GX_ENUM_COUNTER_TRIGGER_SOURCE          = 12009 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,     ///< Counter trigger source, see also GX_COUNTER_TRIGGER_SOURCE_ENTRY
+    GX_INT_COUNTER_DURATION                 = 12010 | GX_FEATURE_INT  | GX_FEATURE_LEVEL_REMOTE_DEV,     ///< Counter duration
+    GX_ENUM_TIMER_TRIGGER_ACTIVATION		= 12011 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,     ///< Timer Trigger Activation see also GX_TIMER_TRIGGER_ACTIVATION_ENTRY
+
+    //---------------RemoveParameterLimitControl Section-------------------------
+    GX_ENUM_REMOVE_PARAMETER_LIMIT          = 13000 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_REMOTE_DEV,     ///< Remove paremeter range restriction, see also GX_REMOVE_PARAMETER_LIMIT_ENTRY
 
     //////////////////////////////////////////////////////////////////////////
     /// Local device layer(Device Feature)
@@ -468,8 +500,9 @@ typedef enum GX_FEATURE_ID
     GX_DS_INT_STREAM_TRANSFER_NUMBER_URB      = 17 | GX_FEATURE_INT | GX_FEATURE_LEVEL_DS,  ///< Number of data blocks transmitted
     GX_DS_INT_MAX_NUM_QUEUE_BUFFER            = 18 | GX_FEATURE_INT | GX_FEATURE_LEVEL_DS,  ///< Maximum Buffer Number of Collection Queues
     GX_DS_INT_PACKET_TIMEOUT                  = 19 | GX_FEATURE_INT | GX_FEATURE_LEVEL_DS,  ///< time of package timeout
-	GX_DS_INT_SOCKET_BUFFER_SIZE			  = 20 | GX_FEATURE_INT | GX_FEATURE_LEVEL_DS,  ///< Socket buffer size in kilobytes
-
+    GX_DS_INT_SOCKET_BUFFER_SIZE              = 20 | GX_FEATURE_INT | GX_FEATURE_LEVEL_DS,  ///< Socket buffer size in kilobytes
+    GX_DS_ENUM_STOP_ACQUISITION_MODE          = 21 | GX_FEATURE_ENUM | GX_FEATURE_LEVEL_DS, ///< stop acquisition mode
+    GX_DS_ENUM_STREAM_BUFFER_HANDLING_MODE    = 22 | GX_FEATURE_ENUM| GX_FEATURE_LEVEL_DS,  ///< Buffer handling mode, see also GX_DS_STREAM_BUFFER_HANDLING_MODE_ENTRY
 }GX_FEATURE_ID;
 typedef int32_t GX_FEATURE_ID_CMD;
 
@@ -523,8 +556,8 @@ typedef enum GX_PIXEL_FORMAT_ENTRY
     GX_PIXEL_FORMAT_UNDEFINED          = (0),
     GX_PIXEL_FORMAT_MONO8              = (GX_PIXEL_MONO  | GX_PIXEL_8BIT  | 0x0001),//0x1080001,
     GX_PIXEL_FORMAT_MONO8_SIGNED       = (GX_PIXEL_MONO  | GX_PIXEL_8BIT  | 0x0002),//0x1080002,
-    GX_PIXEL_FORMAT_MONO10             = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0003),//0x1100003,    
-    GX_PIXEL_FORMAT_MONO12             = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0005),//0x1100005,    
+    GX_PIXEL_FORMAT_MONO10             = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0003),//0x1100003,
+    GX_PIXEL_FORMAT_MONO12             = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0005),//0x1100005,
     GX_PIXEL_FORMAT_MONO14             = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0025),//0x1100025,
     GX_PIXEL_FORMAT_MONO16             = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0007),//0x1100007,
     GX_PIXEL_FORMAT_BAYER_GR8          = (GX_PIXEL_MONO  | GX_PIXEL_8BIT  | 0x0008),//0x1080008,               
@@ -538,11 +571,11 @@ typedef enum GX_PIXEL_FORMAT_ENTRY
     GX_PIXEL_FORMAT_BAYER_GR12         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0010),//0x1100010,              
     GX_PIXEL_FORMAT_BAYER_RG12         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0011),//0x1100011,
     GX_PIXEL_FORMAT_BAYER_GB12         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0012),//0x1100012,
-    GX_PIXEL_FORMAT_BAYER_BG12         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0013),//0x1100013,    
+    GX_PIXEL_FORMAT_BAYER_BG12         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0013),//0x1100013,
     GX_PIXEL_FORMAT_BAYER_GR16         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x002E),//0x110002E,                
     GX_PIXEL_FORMAT_BAYER_RG16         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x002F),//0x110002F,
     GX_PIXEL_FORMAT_BAYER_GB16         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0030),//0x1100030,
-    GX_PIXEL_FORMAT_BAYER_BG16         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0031),//0x1100031,    
+    GX_PIXEL_FORMAT_BAYER_BG16         = (GX_PIXEL_MONO  | GX_PIXEL_16BIT | 0x0031),//0x1100031,
     GX_PIXEL_FORMAT_RGB8_PLANAR        = (GX_PIXEL_COLOR | GX_PIXEL_24BIT | 0x0021),//0x2180021,
     GX_PIXEL_FORMAT_RGB10_PLANAR       = (GX_PIXEL_COLOR | GX_PIXEL_48BIT | 0x0022),//0x2300022,
     GX_PIXEL_FORMAT_RGB12_PLANAR       = (GX_PIXEL_COLOR | GX_PIXEL_48BIT | 0x0023),//0x2300023,
@@ -569,6 +602,7 @@ typedef enum GX_TRIGGER_SOURCE_ENTRY
     GX_TRIGGER_SOURCE_LINE1                        = 2,           ///< Trigger source 1
     GX_TRIGGER_SOURCE_LINE2                        = 3,           ///< Trigger source 2
     GX_TRIGGER_SOURCE_LINE3                        = 4,           ///< Trigger source 3
+    GX_TRIGGER_SOURCE_COUNTER2END                  = 5,           ///< Counter 2 end trigger
 }GX_TRIGGER_SOURCE_ENTRY;
 
 typedef enum GX_TRIGGER_ACTIVATION_ENTRY
@@ -711,9 +745,11 @@ typedef enum GX_AWB_LAMP_HOUSE_ENTRY
 typedef enum GX_TEST_PATTERN_ENTRY
 {
     GX_ENUM_TEST_PATTERN_OFF                       = 0,           ///< Off
-    GX_ENUM_TEST_PATTERN_GRAY_FRAME_RAMP_MOVING    = 1,           ///< Static gray increment
+    GX_ENUM_TEST_PATTERN_GRAY_FRAME_RAMP_MOVING    = 1,           ///< Static grey increment
     GX_ENUM_TEST_PATTERN_SLANT_LINE_MOVING         = 2,           ///< Rolling slant line
     GX_ENUM_TEST_PATTERN_VERTICAL_LINE_MOVING      = 3,           ///< Rolling vertical line
+    GX_ENUM_TEST_PATTERN_HORIZONTAL_LINE_MOVING    = 4,           ///< Rolling horizontal line
+    GX_ENUM_TEST_PATTERN_GREY_VERTICAL_RAMP        = 5,           ///< Vertical grey increment
     GX_ENUM_TEST_PATTERN_SLANT_LINE                = 6,           ///< Static slant line
 }GX_TEST_PATTERN_ENTRY;
 
@@ -729,6 +765,14 @@ typedef enum GX_LINE_SELECTOR_ENTRY
     GX_ENUM_LINE_SELECTOR_LINE1                    = 1,           ///< Line 1
     GX_ENUM_LINE_SELECTOR_LINE2                    = 2,           ///< Line 2
     GX_ENUM_LINE_SELECTOR_LINE3                    = 3,           ///< Line 3
+    GX_ENUM_LINE_SELECTOR_LINE4                    = 4,           ///< Line 4
+    GX_ENUM_LINE_SELECTOR_LINE5                    = 5,           ///< Line 5
+    GX_ENUM_LINE_SELECTOR_LINE6                    = 6,           ///< Line 6
+    GX_ENUM_LINE_SELECTOR_LINE7                    = 7,           ///< Line 7
+    GX_ENUM_LINE_SELECTOR_LINE8                    = 8,           ///< Line 8
+    GX_ENUM_LINE_SELECTOR_LINE9                    = 9,           ///< Line 9
+    GX_ENUM_LINE_SELECTOR_LINE10                   = 10,          ///< Line 10
+    GX_ENUM_LINE_SELECTOR_LINE_STROBE              = 11,          ///< Line strobe
 } GX_LINE_SELECTOR_ENTRY;
 
 typedef enum GX_LINE_MODE_ENTRY
@@ -747,8 +791,13 @@ typedef enum GX_LINE_SOURCE_ENTRY
     GX_ENUM_LINE_SOURCE_EXPOSURE_ACTIVE            = 5,            ///< Exposure active
     GX_ENUM_LINE_SOURCE_FRAME_TRIGGER_WAIT         = 6,            ///< Frame trigger wait
     GX_ENUM_LINE_SOURCE_ACQUISITION_TRIGGER_WAIT   = 7,            ///< Acquisition trigger wait
-    GX_ENUM_LINE_SOURCE_TIMER1_ACTIVE              = 8             ///< Timer active
-} GX_LINE_SOURCE_ENTRY;
+    GX_ENUM_LINE_SOURCE_TIMER1_ACTIVE              = 8,            ///< Timer 1 active
+    GX_ENUM_LINE_SOURCE_USEROUTPUT3                = 9,            ///< UserDefined output 3
+    GX_ENUM_LINE_SOURCE_USEROUTPUT4                = 10,           ///< UserDefined output 4
+    GX_ENUM_LINE_SOURCE_USEROUTPUT5                = 11,           ///< UserDefined output 5
+    GX_ENUM_LINE_SOURCE_USEROUTPUT6                = 12,           ///< UserDefined output 6
+
+} GX_LINE_SOURCE_ENTRY; 
 
 typedef enum GX_EVENT_SELECTOR_ENTRY
 {
@@ -758,6 +807,9 @@ typedef enum GX_EVENT_SELECTOR_ENTRY
     GX_ENUM_EVENT_SELECTOR_FRAMESTART_OVERTRIGGER  = 0x9002,       ///< Trigger signal overflow
     GX_ENUM_EVENT_SELECTOR_BLOCK_NOT_EMPTY         = 0x9003,       ///< Image frame memory is not empty
     GX_ENUM_EVENT_SELECTOR_INTERNAL_ERROR          = 0x9004,       ///< Internal error events
+    GX_ENUM_EVENT_SELECTOR_FRAMEBURSTSTART_OVERTRIGGER = 0x9005,   ///< Frame burst start overtrigger event
+    GX_ENUM_EVENT_SELECTOR_FRAMESTART_WAIT             = 0x9006,   ///< Frame start wait event
+    GX_ENUM_EVENT_SELECTOR_FRAMEBURSTSTART_WAIT        = 0x9007,   ///< Frame burst start wait event
 } GX_EVENT_SELECTOR_ENTRY;
 
 typedef enum GX_EVENT_NOTIFICATION_ENTRY
@@ -805,6 +857,13 @@ typedef enum GX_DS_RESEND_MODE_ENTRY
     GX_DS_RESEND_MODE_OFF                          = 0,            ///< Turn off resend mode     
     GX_DS_RESEND_MODE_ON                           = 1,            ///< Turn on resend mode
 } GX_DS_RESEND_MODE_ENTRY;
+
+typedef enum GX_DS_STREAM_BUFFER_HANDLING_MODE_ENTRY
+{
+    GX_DS_STREAM_BUFFER_HANDLING_MODE_OLDEST_FIRST              = 1,        ///< OldestFirst mode
+    GX_DS_STREAM_BUFFER_HANDLING_MODE_OLDEST_FIRST_OVERWRITE    = 2,        ///< OldestFirstOverwrite mode
+    GX_DS_STREAM_BUFFER_HANDLING_MODE_NEWEST_ONLY               = 3,        ///< NewestOnly mode
+}GX_DS_STREAM_BUFFER_HANDLING_MODE_ENTRY;
 
 typedef enum GX_DEVICE_LINK_THROUGHPUT_LIMIT_MODE_ENTRY
 {
@@ -862,6 +921,12 @@ typedef enum GX_SHARPNESS_MODE_ENTRY
     GX_SHARPNESS_MODE_ON                           = 1             ///< Turn on sharpness mode
 }GX_SHARPNESS_MODE_ENTRY;
 
+typedef enum GX_NOISE_REDUCTION_MODE_ENTRY
+{
+    GX_NOISE_REDUCTION_MODE_OFF                    = 0,            ///< Noise reduction mode off
+    GX_NOISE_REDUCTION_MODE_ON                     = 1             ///< Noise reduction mode on
+}GX_NOISE_REDUCTION_MODE_ENTRY;
+
 typedef enum GX_BINNING_HORIZONTAL_MODE_ENTRY
 {
     GX_BINNING_HORIZONTAL_MODE_SUM                 = 0,            ///< Horizontal value sum of BINNING
@@ -874,6 +939,13 @@ typedef enum GX_BINNING_VERTICAL_MODE_ENTRY
     GX_BINNING_VERTICAL_MODE_AVERAGE               = 1,            ///< Average Vertical value of BINNING
 }GX_BINNING_VERTICAL_MODE_ENTRY;
 
+typedef enum GX_SENSOR_SHUTTER_MODE_ENTRY
+{
+    GX_SENSOR_SHUTTER_MODE_GLOBAL                  = 0,            ///< All pixels are exposed simultaneously with same exposure time
+    GX_SENSOR_SHUTTER_MODE_ROLLING                 = 1,            ///< All pixels have the same exposure time, but exposure start at different time
+    GX_SENSOR_SHUTTER_MODE_GLOBALRESET             = 2,            ///< All pixels start exposure at same time, but exposure time are different
+}GX_SENSOR_SHUTTER_MODE_ENTRY;
+
 typedef enum GX_ACQUISITION_STATUS_SELECTOR_ENTRY
 {
     GX_ACQUISITION_STATUS_SELECTOR_ACQUISITION_TRIGGER_WAIT   = 0, ///< Acquisition trigger waiting
@@ -885,6 +957,16 @@ typedef enum GX_GAMMA_MODE_ENTRY
     GX_GAMMA_SELECTOR_SRGB                         = 0,            ///< Default gamma correction
     GX_GAMMA_SELECTOR_USER                         = 1,            ///< User-defined gamma correction
 }GX_GAMMA_MODE_ENTRY;
+
+typedef enum GX_LIGHT_SOURCE_PRESET_ENTRY
+{
+    GX_LIGHT_SOURCE_PRESET_OFF                     = 0,            ///< Light house preset OFF
+    GX_LIGHT_SOURCE_PRESET_CUSTOM                  = 1,            ///< Light house preset CUSTOM
+    GX_LIGHT_SOURCE_PRESET_DAYLIGHT_6500K          = 2,            ///< Light house preset DAYLIGHT_6500K
+    GX_LIGHT_SOURCE_PRESET_DAYLIGHT_5000K          = 3,            ///< Light house preset DAYLIGHT_5000K
+    GX_LIGHT_SOURCE_PRESET_COOL_WHITE_FLUORESCENCE = 4,            ///< Light house preset COOL_WHITE_FLUORESCENCE
+    GX_LIGHT_SOURCE_PRESET_INCA                    = 5,            ///< Light house preset INCANDESCENT_A
+}GX_LIGHT_SOURCE_PRESET_ENTRY;
 
 typedef enum GX_COLOR_TRANSFORMATION_MODE_ENTRY
 {
@@ -924,28 +1006,91 @@ typedef enum GX_TIMER_TRIGGER_SOURCE_ENTRY
 
 typedef enum GX_COUNTER_SELECTOR_ENTRY
 {
-    GX_COUNTER_SELECTOR_COUNTER1                   = 1,            ///< Counter 1      
+    GX_COUNTER_SELECTOR_COUNTER1                   = 1,            ///< Counter 1
+    GX_COUNTER_SELECTOR_COUNTER2                   = 2,            ///< Counter 2
 }GX_COUNTER_SELECTOR_ENTRY;
 
 typedef enum GX_COUNTER_EVENT_SOURCE_ENTRY
 {
-    GX_COUNTER_EVENT_SOURCE_FRAME_START            = 1,            ///< Frame start
+    GX_COUNTER_EVENT_SOURCE_FRAME_START            = 1,            ///< Count the number of "FRAME_START" events
+    GX_COUNTER_EVENT_SOURCE_FRAME_TRIGGER          = 2,            ///< Count the number of "FRAME_TRIGGER" events
+    GX_COUNTER_EVENT_SOURCE_ACQUISITION_TRIGGER    = 3,            ///< Count the number of "ACQUISITION_TRIGGER" events
+    GX_COUNTER_EVENT_SOURCE_OFF                    = 4,            ///< Off
+    GX_COUNTER_EVENT_SOURCE_SOFTWARE               = 5,            ///< Count the number of "SOFTWARE_TRIGGER" events
+    GX_COUNTER_EVENT_SOURCE_LINE0                  = 6,            ///< Count the number of "LINE0_TRIGGER" events
+    GX_COUNTER_EVENT_SOURCE_LINE1                  = 7,            ///< Count the number of "LINE1_TRIGGER" events
+    GX_COUNTER_EVENT_SOURCE_LINE2                  = 8,            ///< Count the number of "LINE2_TRIGGER" events
+    GX_COUNTER_EVENT_SOURCE_LINE3                  = 9,            ///< Count the number of "LINE3_TRIGGER" events
 }GX_COUNTER_EVENT_SOURCE_ENTRY;
 
 typedef enum GX_COUNTER_RESET_SOURCE_ENTRY
 {
     GX_COUNTER_RESET_SOURCE_OFF                    = 0,            ///< Counter reset off
     GX_COUNTER_RESET_SOURCE_SOFTWARE               = 1,            ///< Software
-    GX_COUNTER_RESET_SOURCE_LINE0                  = 2,            ///< Line 0     
+    GX_COUNTER_RESET_SOURCE_LINE0                  = 2,            ///< Line 0
     GX_COUNTER_RESET_SOURCE_LINE1                  = 3,            ///< Line 1
     GX_COUNTER_RESET_SOURCE_LINE2                  = 4,            ///< Line 2
     GX_COUNTER_RESET_SOURCE_LINE3                  = 5,            ///< Line 3
+    GX_COUNTER_RESET_SOURCE_COUNTER2END            = 6,            ///< Counter2End
 }GX_COUNTER_RESET_SOURCE_ENTRY;
+
+typedef enum GX_COUNTER_TRIGGER_SOURCE_ENTRY
+{
+    GX_COUNTER_TRIGGER_SOURCE_OFF                  = 0,            ///< Off
+    GX_COUNTER_TRIGGER_SOURCE_SOFTWARE             = 1,            ///< Software
+    GX_COUNTER_TRIGGER_SOURCE_LINE0                = 2,            ///< Line 0
+    GX_COUNTER_TRIGGER_SOURCE_LINE1                = 3,            ///< Line 1
+    GX_COUNTER_TRIGGER_SOURCE_LINE2                = 4,            ///< Line 2
+    GX_COUNTER_TRIGGER_SOURCE_LINE3                = 5,            ///< Line 3
+}GX_COUNTER_TRIGGER_SOURCE_ENTRY;
+
+typedef enum GX_TIMER_TRIGGER_ACTIVATION_ENTRY
+{
+	GX_TIMER_TRIGGER_ACTIVATION_RISINGEDGE         = 0,            ///< Rising edge Timer Trigger Activation
+}GX_TIMER_TRIGGER_ACTIVATION_ENTRY;
 
 typedef enum GX_COUNTER_RESET_ACTIVATION_ENTRY
 {
     GX_COUNTER_RESET_ACTIVATION_RISING_EDGE        = 1,            ///< Rising edge counter reset.
 }GX_COUNTER_RESET_ACTIVATION_ENTRY;
+
+typedef enum GX_USER_DATA_FILED_SELECTOR_ENTRY
+{
+    GX_USER_DATA_FILED_0                           = 0,            ///< Flash data field 0
+    GX_USER_DATA_FILED_1                           = 1,            ///< Flash data field 1
+    GX_USER_DATA_FILED_2                           = 2,            ///< Flash data field 2
+    GX_USER_DATA_FILED_3                           = 3,            ///< Flash data field 3
+}GX_USER_DATA_FILED_SELECTOR_ENTRY;
+
+typedef enum GX_REMOVE_PARAMETER_LIMIT_ENTRY
+{
+    GX_ENUM_REMOVE_PARAMETER_LIMIT_OFF             = 0,            ///< Off
+    GX_ENUM_REMOVE_PARAMETER_LIMIT_ON              = 1,            ///< On
+}GX_REMOVE_PARAMETER_LIMIT_ENTRY;
+
+typedef enum GX_FLAT_FIELD_CORRECTION_ENTRY
+{
+    GX_ENUM_FLAT_FIELD_CORRECTION_OFF              = 0,            ///< Off
+    GX_ENUM_FLAT_FIELD_CORRECTION_ON               = 1,            ///< On
+}GX_FLAT_FIELD_CORRECTION_ENTRY;
+
+typedef enum GX_DEVICE_TEMPERATURE_SELECTOR_ENTRY
+{
+    GX_DEVICE_TEMPERATURE_SELECTOR_SENSOR          = 1,            ///< Sensor
+    GX_DEVICE_TEMPERATURE_SELECTOR_MAINBOARD       = 2,            ///< Mainboard
+}GX_DEVICE_TEMPERATURE_SELECTOR_ENTRY;
+
+typedef enum GX_STOP_ACQUISITION_MODE_ENTRY
+{
+    GX_STOP_ACQUISITION_MODE_GENERAL               = 0,            ///< General stop acquisition mode
+    GX_STOP_ACQUISITION_MODE_LIGHT                 = 1,            ///< Light stop acquisition mode
+} GX_STOP_ACQUISITION_MODE_ENTRY;
+
+typedef enum GX_EXPOSURE_TIME_MODE_ENTRY
+{
+    GX_EXPOSURE_TIME_MODE_ULTRASHORT               = 0,            ///< Ultra short mode
+    GX_EXPOSURE_TIME_MODE_STANDARD                 = 1,            ///< Standard mode
+} GX_EXPOSURE_TIME_MODE_ENTRY;
 
 //------------------------------------------------------------------------------
 //  Structural Type Definition
@@ -1098,7 +1243,7 @@ typedef void (GX_STDC *GXFeatureCallBack) (GX_FEATURE_ID_CMD nFeatureID, void *p
 //------------------------------------------------------------------------------
 //  Standard C API Function Definition
 //------------------------------------------------------------------------------
-#define GX_API GX_EXTC GX_STATUS GX_STDC
+#define GX_API GX_EXTC GX_STATUS GX_STDC GX_DLLEXPORT
 
 //----------------------------------------------------------------------------------
 /**
@@ -1106,7 +1251,7 @@ typedef void (GX_STDC *GXFeatureCallBack) (GX_FEATURE_ID_CMD nFeatureID, void *p
 \return     const char*   Library version number of string type.
 */
 //----------------------------------------------------------------------------------
-GX_EXTC const char *GX_STDC GXGetLibVersion ();
+GX_EXTC GX_DLLEXPORT const char *GX_STDC GXGetLibVersion ();
 
 //------------------------------------------------------------------------
 /**

@@ -8,12 +8,11 @@
 #include <thread>
 #include "GxIAPI.h"
 #include "DxImageProc.h"
+#include <glog/logging.h>
 #include "iostream"
-#include "wrapper_head.h"
-#include <rmconfig.h>
 #include <opencv2/opencv.hpp>
 
-class Camera:public WrapperHead{
+class Camera{
     friend void getRGBImage(Camera *p_cam);
     friend void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame);
 private:
@@ -33,7 +32,6 @@ private:
     int64_t g_SensorWidth;
     int64_t frame_cnt;
     double frame_get_time;
-    CameraConfig camConfig;
     cv::Mat p_img,p_energy;
     void *g_pRGBframeData;
     void *g_pRaw8Buffer;
@@ -44,18 +42,18 @@ private:
     
 
 public:
-    Camera(std::string sn,CameraConfig config);			        // constructor, p_img is a pointer towards a 640*640 8uc3 Mat type
+    Camera(std::string sn);			        // constructor, p_img is a pointer towards a 640*640 8uc3 Mat type
     ~Camera();
     
-    bool init() final;                                        // init camera lib and do settings, be called firstly
+    bool init(int roi_x,int roi_y,int roi_w,int roi_h);                                        // init camera lib and do settings, be called firstly
     void setParam(int exposureInput, int gainInput); 	// set exposure and gain
-    void setEnergy(int exposureInput, int gainInput);
-    void setArmor(int exposureInput, int gainInput);
+    void setEnergy(int exposureInput, int gainInput,int roi_x,int roi_y,int roi_w,int roi_h);
+    void setArmor(int exposureInput, int gainInput,int roi_x,int roi_y,int roi_w,int roi_h);
     void start();					                    // start video stream
     void stop();					                    // stop receiving frames
     void calcRoi(); //autmatic resize parameters
     bool init_is_successful();				            // return video is available or not
-    bool read(cv::Mat &src) final;
+    bool read(cv::Mat &src);
 };
 
 #endif //RM2020_CAM_DRIVER_CAMWRAPPER_H

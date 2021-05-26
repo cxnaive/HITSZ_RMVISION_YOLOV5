@@ -52,8 +52,8 @@ static void OnInit(const char* cmd) {
         video = new VideoWrapper(config.video_path);
         video->init();
     } else {
-        cam = new Camera(config.camera_sn, config.camConfig);
-        cam->init();
+        cam = new Camera(config.camera_sn);
+        cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height);
         if (!cam->init_is_successful()) {
             LOG(ERROR) << "Camera Init Failed!";
             keepRunning = false;
@@ -90,7 +90,7 @@ void check_mode_and_run(cv::Mat& src) {
                                        config.RUNMODE == BIG_ENERGY_STATE)) {
         if (!config.use_video)
             cam->setEnergy(config.ENERGY_CAMERA_EXPOSURE,
-                          config.ENERGY_CAMERA_GAIN);
+                          config.ENERGY_CAMERA_GAIN, config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height);
         LOG(WARNING) << "Change to Energy mode:" << config.RUNMODE;
         lastRunMode = config.RUNMODE;
         return;
@@ -100,7 +100,7 @@ void check_mode_and_run(cv::Mat& src) {
         config.RUNMODE == ARMOR_STATE) {
         if (!config.use_video)
             cam->setArmor(config.ARMOR_CAMERA_EXPOSURE,
-                          config.ARMOR_CAMERA_GAIN);
+                          config.ARMOR_CAMERA_GAIN,128,0,1024,1024);
         LOG(WARNING) << "Change to Armor mode:" << config.RUNMODE;
         lastRunMode = config.RUNMODE;
         return;

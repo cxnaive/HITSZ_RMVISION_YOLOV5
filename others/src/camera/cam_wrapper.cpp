@@ -3,8 +3,8 @@
 //
 
 #include <camera/cam_wrapper.h>
-#include <glog/logging.h>
 #include <chrono>
+#include <glog/logging.h>
 #include <mutex>
 #include <thread>
 
@@ -120,6 +120,7 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         cam->frame_cnt ++;
         cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if(cam->frame_cnt == 500){
+            //std::cout << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt << std::endl;
             LOG(INFO) << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt;
             cam->frame_get_time = cam->frame_cnt = 0;
         }
@@ -142,6 +143,7 @@ void getRGBImage(Camera *cam) {
                 cam->g_frameBuffer->nHeight, cam->g_frameBuffer->nPixelFormat,
                 cam->g_nColorFilter);
         if(cam->is_energy){
+            //LOG(INFO) << cam->g_frameBuffer->nWidth << " " << cam->g_frameBuffer->nHeight << " " << cam->nPayLoadSize;
             memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
             mtx.lock();
             cv::resize(cam->p_energy,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
@@ -159,18 +161,17 @@ void getRGBImage(Camera *cam) {
         cam->frame_cnt ++;
         cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         if(cam->frame_cnt == 500){
-            LOG(INFO) << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt;
+            std::cout << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt << std::endl;
             cam->frame_get_time = cam->frame_cnt = 0;
         }
     }
 }
 
-Camera::Camera(std::string sn, CameraConfig config)
+Camera::Camera(std::string sn)
     : sn(sn),
       exposure(5000),
       gain(0),
       thread_running(false),
-      camConfig(config),
       frame_cnt(0),
       frame_get_time(0),
       init_success(false) {
@@ -194,7 +195,7 @@ Camera::~Camera() {
 std::string gc_device_typename[5] = {
     "GX_DEVICE_CLASS_UNKNOWN", "GX_DEVICE_CLASS_USB2", "GX_DEVICE_CLASS_GEV",
     "GX_DEVICE_CLASS_U3V", "GX_DEVICE_CLASS_SMART"};
-bool Camera::init() {
+bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h) {
     GXInitLib();
     GXUpdateDeviceList(&nDeviceNum, 1000);
     if (nDeviceNum >= 1) {
@@ -203,13 +204,13 @@ bool Camera::init() {
         status = GXGetAllDeviceBaseInfo(pBaseinfo, &nSize);
         bool found_device = false;
         for (int i = 0; i < nDeviceNum; ++i) {
-            LOG(INFO) << "device: SN:" << pBaseinfo[i].szSN
+            std::cout << "device: SN:" << pBaseinfo[i].szSN
                       << " NAME:" << pBaseinfo[i].szDisplayName << " TYPE:"
-                      << gc_device_typename[pBaseinfo[i].deviceClass];
+                      << gc_device_typename[pBaseinfo[i].deviceClass] <<std::endl;
             if (std::string(pBaseinfo[i].szSN) == sn) found_device = true;
         }
         if (!found_device) {
-            LOG(ERROR) << "No device found with SN:" << sn;
+            std::cerr << "No device found with SN:" << sn << std::endl;;
             return false;
         }
         GX_OPEN_PARAM stOpenParam;
@@ -220,8 +221,8 @@ bool Camera::init() {
 
         GXGetInt(g_hDevice, GX_INT_SENSOR_WIDTH, &g_SensorWidth);
         GXGetInt(g_hDevice, GX_INT_SENSOR_HEIGHT, &g_SensorHeight);
-        LOG(WARNING) << "Camera Sensor: " << g_SensorWidth << " X "
-                     << g_SensorHeight;
+        std::cout << "Camera Sensor: " << g_SensorWidth << " X "
+                     << g_SensorHeight << std::endl;
 
         GXSetEnum(g_hDevice, GX_ENUM_EXPOSURE_AUTO, GX_EXPOSURE_AUTO_OFF);
         GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF);
@@ -234,10 +235,10 @@ bool Camera::init() {
         GXSetEnum(g_hDevice, GX_ENUM_ACQUISITION_MODE, GX_ACQ_MODE_CONTINUOUS);
         GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4);
 
-        GXSetInt(g_hDevice, GX_INT_OFFSET_X, camConfig.roi_offset_x);
-        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, camConfig.roi_offset_y);
-        GXSetInt(g_hDevice, GX_INT_WIDTH, camConfig.roi_width);
-        GXSetInt(g_hDevice, GX_INT_HEIGHT, camConfig.roi_height);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y);
+        GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w);
+        GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h);
 
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
@@ -247,8 +248,8 @@ bool Camera::init() {
         //获取实际增益范围
         GX_FLOAT_RANGE gainRange;
         GXGetFloatRange(g_hDevice, GX_FLOAT_GAIN, &gainRange);
-        LOG(WARNING) << "Camera Gain Range: " << gainRange.dMin << "~"
-                     << gainRange.dMax << " step size:" << gainRange.dInc;
+        std::cout << "Camera Gain Range: " << gainRange.dMin << "~"
+                     << gainRange.dMax << " step size:" << gainRange.dInc << std::endl;
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
 
         g_frameData.pImgBuf = malloc(nPayLoadSize);
@@ -276,24 +277,15 @@ void Camera::setParam(int exposureInput, int gainInput) {
 }
 void Camera::start() {
     if (init_success) {
-        // GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
-        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
-        GXStreamOn(g_hDevice);
-        thread_running = true;
-        cam_run = std::thread(getRGBImage, this);
-        // std::thread task(getRGBImage, this);
-        // task.detach();
+        GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
     }
 }
 
 void Camera::stop() {
     if (init_success) {
-        thread_running = false;
-        cam_run.join();
-        GXStreamOff(g_hDevice);
-        // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        // GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
-        // GXUnregisterCaptureCallback(g_hDevice);
+        GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
+        GXUnregisterCaptureCallback(g_hDevice);
     }
 }
 
@@ -307,64 +299,54 @@ bool Camera::read(cv::Mat &src) {
     return true;
 }
 
-void Camera::setEnergy(int exposureInput, int gainInput){
+void Camera::setEnergy(int exposureInput, int gainInput,int roi_x,int roi_y,int roi_w,int roi_h){
     if(init_success){
         stop();
         is_energy = true;
         exposure = exposureInput;
         gain = gainInput;
-        GXSetInt(g_hDevice, GX_INT_OFFSET_X, 128);
-        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, 0);
-        GXSetInt(g_hDevice, GX_INT_WIDTH, 1024);
-        GXSetInt(g_hDevice, GX_INT_HEIGHT, 1024);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y);
+        std::cout << "set:" << GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) <<std::endl;
+        GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h);
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
         GXGetEnum(g_hDevice, GX_ENUM_PIXEL_FORMAT, &g_nPixelFormat);
         GXGetEnum(g_hDevice, GX_ENUM_PIXEL_COLOR_FILTER, &g_nColorFilter);
         
-        if (g_frameData.pImgBuf != NULL) {
-            free(g_frameData.pImgBuf);
-            g_frameData.pImgBuf = NULL;
-        }
         if (g_pRGBframeData != NULL) {
             free(g_pRGBframeData);
             g_pRGBframeData = NULL;
         }
         
-        g_frameData.pImgBuf = malloc(nPayLoadSize);
         g_pRGBframeData = malloc(nPayLoadSize * 3);
 
         start();
     }
 }
 
-void Camera::setArmor(int exposureInput, int gainInput){
+void Camera::setArmor(int exposureInput, int gainInput,int roi_x,int roi_y,int roi_w,int roi_h){
     if(init_success){
         stop();
         is_energy = false;
         exposure = exposureInput;
         gain = gainInput;
-        GXSetInt(g_hDevice, GX_INT_OFFSET_X, camConfig.roi_offset_x);
-        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, camConfig.roi_offset_y);
-        GXSetInt(g_hDevice, GX_INT_WIDTH, camConfig.roi_width);
-        GXSetInt(g_hDevice, GX_INT_HEIGHT, camConfig.roi_height);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x);
+        GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y);
+        GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w);
+        GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h);
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
         GXGetEnum(g_hDevice, GX_ENUM_PIXEL_FORMAT, &g_nPixelFormat);
         GXGetEnum(g_hDevice, GX_ENUM_PIXEL_COLOR_FILTER, &g_nColorFilter);
 
-        if (g_frameData.pImgBuf != NULL) {
-            free(g_frameData.pImgBuf);
-            g_frameData.pImgBuf = NULL;
-        }
         if (g_pRGBframeData != NULL) {
             free(g_pRGBframeData);
             g_pRGBframeData = NULL;
         }
 
-        g_frameData.pImgBuf = malloc(nPayLoadSize);
         g_pRGBframeData = malloc(nPayLoadSize * 3);
 
         start();

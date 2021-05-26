@@ -2,8 +2,8 @@
 /** 
 \file      DxImageProc.h
 \brief     Image Processing Library
-\version   v1.0.1904.9101 
-\date      2019-04-10
+\version   v1.0.2010.9291 
+\date      2020-10-29
 \author    Software Department 
 <p>Copyright (c) 2012-2019 and all right reserved.</p> 
 */ 
@@ -23,7 +23,7 @@ extern "C" {
 #else                          
 #include <stdlib.h>
 #include <string.h>
-#define  DHDECL
+#define  DHDECL __attribute__((visibility("default")))
 #endif
 
 typedef char            VxInt8;     

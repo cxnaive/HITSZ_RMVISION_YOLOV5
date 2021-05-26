@@ -41,7 +41,7 @@ file(COPY ${resources} DESTINATION ${CMAKE_BINARY_DIR}/)
 # find_package(glog REQUIRED)
 #Src
 file(GLOB_RECURSE sourcefiles 
-"others/**/*.h" "others/**/*.cpp"
+"others/**/*.h" "others/lib_json/*.cpp" "others/*.cpp"
 "energy/**/*.h" "energy/**/*.cpp" 
 "net/**/*.cpp" "net/**/*.h" 
 "config/**/*.cpp" "config/**/*.h" 
