@@ -224,6 +224,11 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
         std::cout << "Camera Sensor: " << g_SensorWidth << " X "
                      << g_SensorHeight << std::endl;
 
+        if(GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS) return false;
+        if(GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS) return false;
+        if(GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS) return false;
+        if(GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS) return false;
+
         GXSetEnum(g_hDevice, GX_ENUM_EXPOSURE_AUTO, GX_EXPOSURE_AUTO_OFF);
         GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF);
         GXSetEnum(g_hDevice, GX_ENUM_BLACKLEVEL_AUTO, GX_BLACKLEVEL_AUTO_OFF);
@@ -234,11 +239,6 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
 
         GXSetEnum(g_hDevice, GX_ENUM_ACQUISITION_MODE, GX_ACQ_MODE_CONTINUOUS);
         GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4);
-
-        while(GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS);
-        while(GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS);
-        while(GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS);
-        while(GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS);
 
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
