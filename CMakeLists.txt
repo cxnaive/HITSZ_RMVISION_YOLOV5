@@ -49,16 +49,20 @@ file(GLOB_RECURSE sourcefiles
 "armor/**/*.cpp"
 )
 
-file(GLOB_RECURSE camfiles "others/**/*.h" "others/**/*.cpp" "config/src/rmconfig.cpp" "config/include/rmconfig.h")
+file (GLOB_RECURSE calfiles
+"others/src/lib_json/*.cpp"
+"config/src/rmconfig.cpp"
+)
+
 
 add_library(camlib SHARED "others/src/camera/cam_wrapper.cpp")
 target_link_libraries(camlib ${OpenCV_LIBS} -lglog -lgxiapi -lpthread)
 
 add_executable(rmcv main.cpp ${sourcefiles})
-add_executable(calibrate calibrate_get_imgs.cpp ${camfiles})
+add_executable(calibrate calibrate_get_imgs.cpp ${calfiles})
 #add_executable(mcusend test_mcu_send.cpp ${sourcefiles})
 link_directories(${OpenCV_LIBRARY_DIRS})
 
 target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread libtinytrt.so camlib nvinfer nvinfer_plugin nvparsers nvonnxparser)
-target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread)
+target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread camlib)
 #target_link_libraries(mcusend  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)
