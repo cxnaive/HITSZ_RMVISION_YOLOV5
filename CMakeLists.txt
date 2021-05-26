@@ -41,21 +41,24 @@ file(COPY ${resources} DESTINATION ${CMAKE_BINARY_DIR}/)
 # find_package(glog REQUIRED)
 #Src
 file(GLOB_RECURSE sourcefiles 
-"others/**/*.h" "others/lib_json/*.cpp" "others/*.cpp"
-"energy/**/*.h" "energy/**/*.cpp" 
-"net/**/*.cpp" "net/**/*.h" 
-"config/**/*.cpp" "config/**/*.h" 
-"com/**/*.h"  "com/**/*.cpp" "com/**/*.cc" "com/**/*.c"
-"armor/**/*.h" "armor/**/*.cpp"
+"others/src/lib_json/*.cpp" "others/src/KalmanPosFilter.cpp" "others/src/rmtime.cpp" "others/src/PidPosition.cpp" "others/src/video_wrapper.cpp"
+"energy/**/*.cpp" 
+"net/**/*.cpp"
+"config/**/*.cpp"
+"com/**/*.cpp" "com/**/*.cc" "com/**/*.c"
+"armor/**/*.cpp"
 )
 
 file(GLOB_RECURSE camfiles "others/**/*.h" "others/**/*.cpp" "config/src/rmconfig.cpp" "config/include/rmconfig.h")
+
+add_library(camlib SHARED "others/src/camera/cam_wrapper.cpp")
+target_link_libraries(camlib ${OpenCV_LIBS} -lglog -lgxiapi -lpthread)
 
 add_executable(rmcv main.cpp ${sourcefiles})
 add_executable(calibrate calibrate_get_imgs.cpp ${camfiles})
 #add_executable(mcusend test_mcu_send.cpp ${sourcefiles})
 link_directories(${OpenCV_LIBRARY_DIRS})
 
-target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
-target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi  -lpthread)
+target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread libtinytrt.so camlib nvinfer nvinfer_plugin nvparsers nvonnxparser)
+target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread)
 #target_link_libraries(mcusend  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)
