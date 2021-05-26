@@ -61,7 +61,13 @@ void RmConfig::init_from_file() {
     LOG(WARNING) << "NOTE: ignored types: " << ignore_info;
     // data
     Json::Value data = root["config_data"];
-    RUNMODE = data["RUNMODE"].asCString()[0];
+    std::string mode_sting = data["RUNMODE"].asString();
+    if(mode_sting.length() == 1){
+        char op = mode_sting[0];
+        if(op == ARMOR_STATE || op == SMALL_ENERGY_STATE || op == BIG_ENERGY_STATE) RUNMODE = op;
+        else RUNMODE = ARMOR_STATE;
+    } 
+    else RUNMODE = ARMOR_STATE;
     ARMOR_CAMERA_GAIN = data["ARMOR_CAMERA_GAIN"].asInt();
     ARMOR_CAMERA_EXPOSURE = data["ARMOR_CAMERA_EXPOSURE"].asInt();
     ENERGY_CAMERA_GAIN = data["ENERGY_CAMERA_GAIN"].asInt();
