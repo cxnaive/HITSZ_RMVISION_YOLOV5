@@ -223,11 +223,13 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
         GXGetInt(g_hDevice, GX_INT_SENSOR_HEIGHT, &g_SensorHeight);
         std::cout << "Camera Sensor: " << g_SensorWidth << " X "
                      << g_SensorHeight << std::endl;
-
-        if(GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS) return false;
-        if(GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS) return false;
-        if(GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS) return false;
-        if(GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS) return false;
+        
+        bool roi_exit = false;
+        if(GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS) roi_exit = true;
+        if(GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS) roi_exit = true;
+        if(GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS) roi_exit = true;
+        if(GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS) roi_exit = true;
+        if(roi_exit) return false;
 
         GXSetEnum(g_hDevice, GX_ENUM_EXPOSURE_AUTO, GX_EXPOSURE_AUTO_OFF);
         GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF);
