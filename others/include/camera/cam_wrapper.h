@@ -47,8 +47,6 @@ public:
     
     bool init(int roi_x,int roi_y,int roi_w,int roi_h);                                        // init camera lib and do settings, be called firstly
     void setParam(int exposureInput, int gainInput); 	// set exposure and gain
-    void setEnergy(int exposureInput, int gainInput,int roi_x,int roi_y,int roi_w,int roi_h);
-    void setArmor(int exposureInput, int gainInput,int roi_x,int roi_y,int roi_w,int roi_h);
     void start();					                    // start video stream
     void stop();					                    // stop receiving frames
     void calcRoi(); //autmatic resize parameters

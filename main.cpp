@@ -46,6 +46,7 @@ static void OnInit(const char* cmd) {
 
     rmTime.init();
     config.init_from_file();
+    LOG(WARNING) << "RunMode: " << config.RUNMODE;
     rmSerial.init();
     src = cv::Mat(640, 640, CV_8UC3);
     if (config.use_video) {
@@ -53,20 +54,27 @@ static void OnInit(const char* cmd) {
         video->init();
     } else {
         cam = new Camera(config.camera_sn);
-        cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height);
+        if(config.RUNMODE == ARMOR_STATE){
+            cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height);
+        }
+        else{
+            cam->init(128,0,1024,1024);
+        }
+        
         if (!cam->init_is_successful()) {
             LOG(ERROR) << "Camera Init Failed!";
             keepRunning = false;
             return;
         }
-        cam->setParam(config.ARMOR_CAMERA_EXPOSURE, config.ARMOR_CAMERA_GAIN);
+        if(config.RUNMODE == ARMOR_STATE) cam->setParam(config.ARMOR_CAMERA_EXPOSURE, config.ARMOR_CAMERA_GAIN);
+        else cam->setParam(config.ENERGY_CAMERA_EXPOSURE,config.ENERGY_CAMERA_GAIN);
         cam->start();
     }
 
     armor_finder =
         new ArmorFinder(config.ENEMY_COLOR, rmSerial, config.ANTI_TOP);
     energy = new Energy(rmSerial, config.ENEMY_COLOR);
-    lastRunMode = ARMOR_STATE;
+    lastRunMode = config.RUNMODE;
 }
 
 static void OnClose() { config.write_to_file(); }
@@ -88,19 +96,22 @@ void check_mode_and_run(cv::Mat& src) {
     update_config();
     if (lastRunMode == ARMOR_STATE && (config.RUNMODE == SMALL_ENERGY_STATE ||
                                        config.RUNMODE == BIG_ENERGY_STATE)) {
-        if (!config.use_video)
-            cam->setEnergy(config.ENERGY_CAMERA_EXPOSURE,
-                          config.ENERGY_CAMERA_GAIN, config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height);
+        
         LOG(WARNING) << "Change to Energy mode:" << config.RUNMODE;
+        if (!config.use_video){
+            config.write_to_file();
+            keepRunning = false;
+        }
         lastRunMode = config.RUNMODE;
         return;
     }
     if ((lastRunMode == SMALL_ENERGY_STATE ||
          lastRunMode == BIG_ENERGY_STATE) &&
         config.RUNMODE == ARMOR_STATE) {
-        if (!config.use_video)
-            cam->setArmor(config.ARMOR_CAMERA_EXPOSURE,
-                          config.ARMOR_CAMERA_GAIN,128,0,1024,1024);
+        if (!config.use_video){
+            config.write_to_file();
+            keepRunning = false;
+        }
         LOG(WARNING) << "Change to Armor mode:" << config.RUNMODE;
         lastRunMode = config.RUNMODE;
         return;

@@ -61,6 +61,7 @@ void RmConfig::init_from_file() {
     LOG(WARNING) << "NOTE: ignored types: " << ignore_info;
     // data
     Json::Value data = root["config_data"];
+    RUNMODE = data["RUNMODE"].asCString()[0];
     ARMOR_CAMERA_GAIN = data["ARMOR_CAMERA_GAIN"].asInt();
     ARMOR_CAMERA_EXPOSURE = data["ARMOR_CAMERA_EXPOSURE"].asInt();
     ENERGY_CAMERA_GAIN = data["ENERGY_CAMERA_GAIN"].asInt();
@@ -165,6 +166,7 @@ void RmConfig::write_to_file() {
 
     // data
     Json::Value data;
+    data["RUNMODE"] = RUNMODE;
     data["ARMOR_CAMERA_GAIN"] = ARMOR_CAMERA_GAIN;
     data["ARMOR_CAMERA_EXPOSURE"] = ARMOR_CAMERA_EXPOSURE;
     data["ENERGY_CAMERA_GAIN"] = ENERGY_CAMERA_GAIN;
