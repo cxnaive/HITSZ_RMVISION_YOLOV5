@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
             cv::resize(src, src, cv::Size(640, 360));
         } else {
             cam->read(src);
-            if(src.empty()) continue;
+            // if(src.empty()) continue;
             // config.camConfig.undistort(src);
         }
         if (config.show_origin) {
