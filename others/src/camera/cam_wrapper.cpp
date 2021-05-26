@@ -195,7 +195,7 @@ Camera::~Camera() {
 std::string gc_device_typename[5] = {
     "GX_DEVICE_CLASS_UNKNOWN", "GX_DEVICE_CLASS_USB2", "GX_DEVICE_CLASS_GEV",
     "GX_DEVICE_CLASS_U3V", "GX_DEVICE_CLASS_SMART"};
-bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h) {
+bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
     GXInitLib();
     GXUpdateDeviceList(&nDeviceNum, 1000);
     if (nDeviceNum >= 1) {
@@ -260,7 +260,7 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h) {
 
         init_success = true;
         thread_running = false;
-        is_energy = false;
+        is_energy = isEnergy;
         return true;
     } else {
         return false;

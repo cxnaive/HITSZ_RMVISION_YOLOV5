@@ -40,18 +40,20 @@ private:
     bool init_success;
     bool is_energy;
     
+    
 
 public:
     Camera(std::string sn);			        // constructor, p_img is a pointer towards a 640*640 8uc3 Mat type
     ~Camera();
     
-    bool init(int roi_x,int roi_y,int roi_w,int roi_h);                                        // init camera lib and do settings, be called firstly
+    bool init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy);                                        // init camera lib and do settings, be called firstly
     void setParam(int exposureInput, int gainInput); 	// set exposure and gain
     void start();					                    // start video stream
     void stop();					                    // stop receiving frames
     void calcRoi(); //autmatic resize parameters
     bool init_is_successful();				            // return video is available or not
     bool read(cv::Mat &src);
+
 };
 
 #endif //RM2020_CAM_DRIVER_CAMWRAPPER_H

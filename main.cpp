@@ -55,10 +55,10 @@ static void OnInit(const char* cmd) {
     } else {
         cam = new Camera(config.camera_sn);
         if(config.RUNMODE == ARMOR_STATE){
-            cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height);
+            cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height,false);
         }
         else{
-            cam->init(128,0,1024,1024);
+            cam->init(128,0,1024,1024,true);
         }
         
         if (!cam->init_is_successful()) {

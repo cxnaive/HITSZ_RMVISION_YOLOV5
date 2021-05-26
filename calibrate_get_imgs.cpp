@@ -13,7 +13,7 @@ int main(int argc, char** argv){
     RmConfig config;
     config.init_from_file();
     Camera cam(config.camera_sn);
-    cam.init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height);
+    cam.init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height,false);
     if(!cam.init_is_successful()){
         LOG(ERROR) << "unable to open camera";
         return 0;

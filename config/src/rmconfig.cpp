@@ -62,6 +62,7 @@ void RmConfig::init_from_file() {
     // data
     Json::Value data = root["config_data"];
     std::string mode_sting = data["RUNMODE"].asString();
+    LOG(INFO) << "mode string:" << mode_sting;
     if(mode_sting.length() == 1){
         char op = mode_sting[0];
         if(op == ARMOR_STATE || op == SMALL_ENERGY_STATE || op == BIG_ENERGY_STATE) RUNMODE = op;
@@ -172,7 +173,7 @@ void RmConfig::write_to_file() {
 
     // data
     Json::Value data;
-    data["RUNMODE"] = RUNMODE;
+    data["RUNMODE"] = std::string(1,RUNMODE);
     data["ARMOR_CAMERA_GAIN"] = ARMOR_CAMERA_GAIN;
     data["ARMOR_CAMERA_EXPOSURE"] = ARMOR_CAMERA_EXPOSURE;
     data["ENERGY_CAMERA_GAIN"] = ENERGY_CAMERA_GAIN;
