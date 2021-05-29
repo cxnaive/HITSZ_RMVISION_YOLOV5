@@ -17,12 +17,10 @@
 	},
 	"config" : 
 	{
-		"camera_sn" : "KE0210010109",
+		"camera_sn" : "KE0180060056",
 		"ignore_types" : 
 		[
-			"B10",
 			"BE",
-			"R10",
 			"RE"
 		],
 		"log_send_target" : false,
@@ -80,6 +78,7 @@
 		"ENERGY_CAMERA_GAIN" : 1,
 		"MANUAL_DELTA_X" : 0.0,
 		"MANUAL_DELTA_Y" : 0.0,
-		"PROG_DELAY" : 13.0
+		"PROG_DELAY" : 13.0,
+		"RUNMODE" : "a"
 	}
 }

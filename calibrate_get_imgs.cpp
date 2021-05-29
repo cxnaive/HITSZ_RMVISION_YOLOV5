@@ -18,9 +18,9 @@ int main(int argc, char** argv){
         LOG(ERROR) << "unable to open camera";
         return 0;
     }
-    cam.setParam(4000,10);
+    cam.setParam(4000,12);
     cam.start();
-    cv::Mat src;
+    cv::Mat src(640, 640, CV_8UC3);
     int cnt = 0;
     while(true){
         cam.read(src);
