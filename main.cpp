@@ -1,5 +1,5 @@
 #include <armor_finder/armor_finder.h>
-#include <camera/cam_wrapper.h>
+#include <camera/dh_cam_wrapper.h>
 #include <camera/video_wrapper.h>
 #include <energy.h>
 #include <glog/logging.h>
@@ -53,7 +53,7 @@ static void OnInit(const char* cmd) {
         video = new VideoWrapper(config.video_path);
         video->init();
     } else {
-        cam = new Camera(config.camera_sn);
+        cam = new DHCamera(config.camera_sn);
         if(config.RUNMODE == ARMOR_STATE){
             cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height,false);
         }

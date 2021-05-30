@@ -6,6 +6,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(use_u2_camera false)
 add_compile_options(-O3)
 
+# OpenCV
+find_package(OpenCV 4.5 REQUIRED)
+# link_directories(${OpenCV_LIBRARY_DIRS})
 
 # cuda
 find_package(CUDA REQUIRED)
@@ -19,9 +22,13 @@ include_directories(${PROJECT_SOURCE_DIR}/net/include)
 include_directories(${PROJECT_SOURCE_DIR}/others/include)
 include_directories(${PROJECT_SOURCE_DIR}/config/include)
 include_directories(${PROJECT_SOURCE_DIR}/com/include)
+include_directories(/opt/MVS/include)
 include_directories(../tiny-tensorrt)
+
+#Link
+link_directories(/opt/MVS/lib/64)
 link_directories(../tiny-tensorrt/build)
-find_package(OpenCV 4.5 REQUIRED)
+
 
 if (use_u2_camera)
     message(STATUS "Linking u2 camera lib on linux...")
@@ -58,8 +65,8 @@ file (GLOB_RECURSE calfiles
 add_executable(rmcv main.cpp ${sourcefiles})
 add_executable(calibrate calibrate_get_imgs.cpp ${calfiles})
 #add_executable(mcusend test_mcu_send.cpp ${sourcefiles})
-link_directories(${OpenCV_LIBRARY_DIRS})
 
-target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
-target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread)
+
+target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread -lMvCameraControl libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
+target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread -lMvCameraControl)
 #target_link_libraries(mcusend  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)

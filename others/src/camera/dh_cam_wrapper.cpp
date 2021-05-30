@@ -2,7 +2,7 @@
 // Created by erc on 1/3/20.
 //
 
-#include <camera/cam_wrapper.h>
+#include <camera/dh_cam_wrapper.h>
 #include <chrono>
 #include <glog/logging.h>
 #include <mutex>
@@ -89,7 +89,7 @@ void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
 
 void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
     if (pFrame->status == GX_FRAME_STATUS_SUCCESS) {
-        Camera *cam = (Camera *)pFrame->pUserParam;
+        DHCamera *cam = (DHCamera *)pFrame->pUserParam;
         auto start = std::chrono::steady_clock::now();
         ProcessData((void *)pFrame->pImgBuf, cam->g_pRaw8Buffer,
                     cam->g_pRGBframeData, pFrame->nWidth, pFrame->nHeight,
@@ -128,7 +128,7 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
     return;
 }
 
-void getRGBImage(Camera *cam) {
+void getRGBImage(DHCamera *cam) {
     while (1) {
         if (!cam->thread_running) {
             return;
@@ -167,7 +167,7 @@ void getRGBImage(Camera *cam) {
     }
 }
 
-Camera::Camera(std::string sn)
+DHCamera::DHCamera(std::string sn)
     : sn(sn),
       exposure(5000),
       gain(0),
@@ -179,7 +179,7 @@ Camera::Camera(std::string sn)
     p_energy = cv::Mat(1024, 1024, CV_8UC3);
 };
 
-Camera::~Camera() {
+DHCamera::~DHCamera() {
     if (init_success) {
         stop();
         if (g_frameData.pImgBuf != NULL) {
@@ -195,7 +195,7 @@ Camera::~Camera() {
 std::string gc_device_typename[5] = {
     "GX_DEVICE_CLASS_UNKNOWN", "GX_DEVICE_CLASS_USB2", "GX_DEVICE_CLASS_GEV",
     "GX_DEVICE_CLASS_U3V", "GX_DEVICE_CLASS_SMART"};
-bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
+bool DHCamera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
     GXInitLib();
     GXUpdateDeviceList(&nDeviceNum, 1000);
     if (nDeviceNum >= 1) {
@@ -221,7 +221,7 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
 
         GXGetInt(g_hDevice, GX_INT_SENSOR_WIDTH, &g_SensorWidth);
         GXGetInt(g_hDevice, GX_INT_SENSOR_HEIGHT, &g_SensorHeight);
-        std::cout << "Camera Sensor: " << g_SensorWidth << " X "
+        std::cout << "DHCamera Sensor: " << g_SensorWidth << " X "
                      << g_SensorHeight << std::endl;
         
         bool roi_exit = false;
@@ -250,7 +250,7 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
         //获取实际增益范围
         GX_FLOAT_RANGE gainRange;
         GXGetFloatRange(g_hDevice, GX_FLOAT_GAIN, &gainRange);
-        std::cout << "Camera Gain Range: " << gainRange.dMin << "~"
+        std::cout << "DHCamera Gain Range: " << gainRange.dMin << "~"
                      << gainRange.dMax << " step size:" << gainRange.dInc << std::endl;
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
 
@@ -269,7 +269,7 @@ bool Camera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
     }
 }
 
-void Camera::setParam(int exposureInput, int gainInput) {
+void DHCamera::setParam(int exposureInput, int gainInput) {
     if (init_success) {
         exposure = exposureInput;
         gain = gainInput;
@@ -277,23 +277,23 @@ void Camera::setParam(int exposureInput, int gainInput) {
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
     }
 }
-void Camera::start() {
+void DHCamera::start() {
     if (init_success) {
         GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
     }
 }
 
-void Camera::stop() {
+void DHCamera::stop() {
     if (init_success) {
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
         GXUnregisterCaptureCallback(g_hDevice);
     }
 }
 
-bool Camera::init_is_successful() { return init_success; }
+bool DHCamera::init_is_successful() { return init_success; }
 
-bool Camera::read(cv::Mat &src) {
+bool DHCamera::read(cv::Mat &src) {
     mtx.lock();
     // p_img.copyTo(src);
     cv::swap(p_img, src);
