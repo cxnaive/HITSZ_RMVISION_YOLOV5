@@ -1,5 +1,6 @@
 #include <camera/hk_cam_wrapper.h>
 #include <glog/logging.h>
+
 #include <iomanip>
 HKCamera::HKCamera(std::string sn) {
     p_img = cv::Mat(640, 640, CV_8UC3);
@@ -103,15 +104,16 @@ bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
               << m_GainRange.fMax;
 
     //获取像素格式
-    MV_CC_GetEnumValue(m_handle,"PixelFormat",&m_PixelFormat);
-    LOG(INFO) << "HKCamera Pixel Format: " << std::hex <<m_PixelFormat.nCurValue;
+    MV_CC_GetEnumValue(m_handle, "PixelFormat", &m_PixelFormat);
+    LOG(INFO) << "HKCamera Pixel Format: " << std::hex
+              << m_PixelFormat.nCurValue;
 
     UPDB(MV_CC_SetFloatValue(m_handle, "ExposureTime", exposure));
     UPDB(MV_CC_SetFloatValue(m_handle, "Gain", gain));
     UPDB(MV_CC_SetFloatValue(m_handle, "BlackLevel", 0));
 
     if (set_failed) {
-        LOG(ERROR) << "some parm set failed!";
+        LOG(ERROR) << "failed to set some parameters!";
         return false;
     }
 
@@ -121,15 +123,70 @@ bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
     return true;
 }
 
-void getRGBImage(HKCamera *cam){
-    memset(&cam->stOutFrame,0,sizeof(MV_FRAME_OUT));
-    while(cam->thread_running){
-        cam->nRet = MV_CC_GetImageBuffer(cam->m_handle,&cam->stOutFrame,1000);
-        if(cam->nRet == MV_OK){
+void getRGBImage(HKCamera* cam) {
+    memset(&cam->stOutFrame, 0, sizeof(MV_FRAME_OUT));
+    MV_CC_PIXEL_CONVERT_PARAM stConvertParam = {0};
+    MV_FRAME_OUT_INFO_EX stImageInfo;
+    while (cam->thread_running) {
+        cam->nRet = MV_CC_GetImageBuffer(cam->m_handle, &cam->stOutFrame, 1000);
+        if (cam->nRet == MV_OK) {
+            auto start = std::chrono::steady_clock::now();
             printf("Get One Frame: Width[%d], Height[%d], nFrameNum[%d]\n",
-                cam->stOutFrame.stFrameInfo.nWidth, cam->stOutFrame.stFrameInfo.nHeight, cam->stOutFrame.stFrameInfo.nFrameNum);
-        }
-        else{
+                   cam->stOutFrame.stFrameInfo.nWidth,
+                   cam->stOutFrame.stFrameInfo.nHeight,
+                   cam->stOutFrame.stFrameInfo.nFrameNum);
+            //像素格式转换
+            stImageInfo = cam->stOutFrame.stFrameInfo;
+            stConvertParam.nWidth = stImageInfo.nWidth;
+            stConvertParam.nHeight = stImageInfo.nHeight;
+            stConvertParam.pSrcData = cam->stOutFrame.pBufAddr;
+            stConvertParam.nSrcDataLen = stImageInfo.nFrameLen;
+            stConvertParam.enSrcPixelType = stImageInfo.enPixelType;
+            stConvertParam.enDstPixelType = PixelType_Gvsp_BGR8_Packed;
+            if (cam->is_energy)
+                stConvertParam.pDstBuffer = cam->p_energy.data;
+            else
+                stConvertParam.pDstBuffer = cam->p_img.data;
+            stConvertParam.nDstBufferSize =
+                stImageInfo.nWidth * stImageInfo.nHeight * 3;
+            //1024*1024
+            if (cam->is_energy) {
+                cam->nRet =
+                    MV_CC_ConvertPixelType(cam->m_handle, &stConvertParam);
+                if (cam->nRet != MV_OK) {
+                    LOG(ERROR) << "Error converting pixel format!";
+                }
+                cam->pimg_lock.lock();
+                cv::resize(cam->p_energy, cam->p_img, cv::Size(640, 640),
+                           cv::INTER_NEAREST);
+                cam->pimg_lock.unlock();
+            } else {
+                //640*640
+                cam->pimg_lock.lock();
+                cam->nRet =
+                    MV_CC_ConvertPixelType(cam->m_handle, &stConvertParam);
+                cam->pimg_lock.unlock();
+                if (cam->nRet != MV_OK) {
+                    LOG(ERROR) << "Error converting pixel format!";
+                }
+            }
+            auto end = std::chrono::steady_clock::now();
+            cam->nRet = MV_CC_FreeImageBuffer(cam->m_handle, &cam->stOutFrame);
+            if (cam->nRet != MV_OK) {
+                LOG(ERROR) << "Free Image Buffer fail! nRet: " << cam->nRet;
+            }
+            cam->frame_cnt++;
+            cam->frame_get_time +=
+                std::chrono::duration_cast<std::chrono::milliseconds>(end -
+                                                                      start)
+                    .count();
+            if (cam->frame_cnt == 500) {
+                LOG(INFO) << "average hkcamera delay(ms):"
+                          << cam->frame_get_time / cam->frame_cnt;
+                cam->frame_get_time = cam->frame_cnt = 0;
+            }
+
+        } else {
             LOG(ERROR) << "Error hkcamera no data!";
         }
     }
@@ -147,20 +204,20 @@ void HKCamera::setParam(int exposureInput, int gainInput) {
 void HKCamera::start() {
     if (init_success) {
         nRet = MV_CC_StartGrabbing(m_handle);
-        if(nRet != MV_OK){
+        if (nRet != MV_OK) {
             LOG(ERROR) << "failed to start grabbing image!";
             return;
         }
         thread_running = true;
-        hkcam_thread = std::thread(getRGBImage,this);
+        hkcam_thread = std::thread(getRGBImage, this);
     }
 }
 void HKCamera::stop() {
-    if(init_success){
+    if (init_success) {
         thread_running = false;
         hkcam_thread.join();
         nRet = MV_CC_StartGrabbing(m_handle);
-        if(nRet != MV_OK){
+        if (nRet != MV_OK) {
             LOG(ERROR) << "failed to stop grabbing image!";
             return;
         }
@@ -168,4 +225,10 @@ void HKCamera::stop() {
 }
 void HKCamera::calcRoi() {}
 bool HKCamera::init_is_successful() { return init_success; }
-bool HKCamera::read(cv::Mat& src) {}
+bool HKCamera::read(cv::Mat& src) {
+    pimg_lock.lock();
+    // p_img.copyTo(src);
+    cv::swap(p_img, src);
+    pimg_lock.unlock();
+    return true;
+}

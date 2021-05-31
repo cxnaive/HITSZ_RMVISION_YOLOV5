@@ -24,6 +24,8 @@ private:
     MV_FRAME_OUT stOutFrame;
     std::thread hkcam_thread;
     std::mutex pimg_lock;
+    int64_t frame_cnt;
+    double frame_get_time;
 public:
     HKCamera(std::string sn);
     ~HKCamera();
