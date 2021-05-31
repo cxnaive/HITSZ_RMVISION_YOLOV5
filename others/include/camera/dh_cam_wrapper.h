@@ -11,6 +11,7 @@
 #include <glog/logging.h>
 #include "iostream"
 #include "cam_wrapper.h"
+#include <thread>
 #include <opencv2/opencv.hpp>
 
 class DHCamera:public Camera{
@@ -40,7 +41,7 @@ private:
     bool thread_running;
     bool init_success;
     bool is_energy;
-    
+    std::mutex pimg_lock;
     
 
 public:

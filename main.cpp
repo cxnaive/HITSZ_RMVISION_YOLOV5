@@ -1,5 +1,6 @@
 #include <armor_finder/armor_finder.h>
 #include <camera/dh_cam_wrapper.h>
+#include <camera/hk_cam_wrapper.h>
 #include <camera/video_wrapper.h>
 #include <energy.h>
 #include <glog/logging.h>

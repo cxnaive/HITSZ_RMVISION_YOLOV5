@@ -9,8 +9,6 @@
 #include <thread>
 
 
-std::mutex mtx;
-
 void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
                  int nImageWidth, int nImageHeight, int nPixelFormat,
                  int nPixelColorFilter) {
@@ -102,19 +100,19 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         // cv::cuda::cvtColor(cam->resize_gpu,cam->resize_gpu,cv::COLOR_RGB2BGR);
         if(cam->is_energy){
             memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
-            mtx.lock();
+            cam->pimg_lock.lock();
             cv::resize(cam->p_energy,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
             cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
-            mtx.unlock();
+            cam->pimg_lock.unlock();
         }
         else{
-            mtx.lock();
+            cam->pimg_lock.lock();
             // cv::resize(cam->full,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
             // cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
             // cam->resize_gpu.download(cam->p_img);
             memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
             cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
-            mtx.unlock();
+            cam->pimg_lock.unlock();
         }
         auto end = std::chrono::steady_clock::now();
         cam->frame_cnt ++;
@@ -145,16 +143,16 @@ void getRGBImage(DHCamera *cam) {
         if(cam->is_energy){
             //LOG(INFO) << cam->g_frameBuffer->nWidth << " " << cam->g_frameBuffer->nHeight << " " << cam->nPayLoadSize;
             memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
-            mtx.lock();
+            cam->pimg_lock.lock();
             cv::resize(cam->p_energy,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
             cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
-            mtx.unlock();
+            cam->pimg_lock.unlock();
         }
         else{
-            mtx.lock();
+            cam->pimg_lock.lock();
             memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
             cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
-            mtx.unlock();
+            cam->pimg_lock.unlock();
         }
         GXQBuf(cam->g_hDevice, cam->g_frameBuffer);
         auto end = std::chrono::steady_clock::now();
@@ -294,9 +292,9 @@ void DHCamera::stop() {
 bool DHCamera::init_is_successful() { return init_success; }
 
 bool DHCamera::read(cv::Mat &src) {
-    mtx.lock();
+    pimg_lock.lock();
     // p_img.copyTo(src);
     cv::swap(p_img, src);
-    mtx.unlock();
+    pimg_lock.unlock();
     return true;
 }
