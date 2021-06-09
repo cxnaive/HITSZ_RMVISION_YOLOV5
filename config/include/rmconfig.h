@@ -68,6 +68,8 @@ public:
     int ENEMY_COLOR = ENEMY_RED;
     double ENERGY_SMALL_SPEED = 60;
     double ENERGY_DELAY_TIME = 270;
+    double ENERGY_EXTRA_DELTA_Y = 5;
+    double ENERGY_EXTRA_DELTA_X = 0;
     int ANTI_TOP = 0;
     int ARMOR_H = 58;
     int ARMOR_W = 230;

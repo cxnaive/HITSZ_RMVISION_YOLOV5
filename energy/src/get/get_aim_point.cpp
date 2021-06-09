@@ -18,11 +18,11 @@ void Energy::getAimPoint(cv::Point target_point_) {
     if(config.show_info) LOG(INFO) << "AimTarget polar angle:" << target_polar_angle_;
 
     if (target_polar_angle_ > 0 && target_polar_angle_ <= 90) {
-        extra_delta_x = EXTRA_DELTA_X * (90 - target_polar_angle_) / 90;
-        extra_delta_y = -EXTRA_DELTA_Y * target_polar_angle_ / 90;
+        extra_delta_x = config.ENERGY_EXTRA_DELTA_X * (90 - target_polar_angle_) / 90;
+        extra_delta_y = config.ENERGY_EXTRA_DELTA_Y * target_polar_angle_ / 90;
     } else if (target_polar_angle_ > 90 && target_polar_angle_ < 180) {
-        extra_delta_x = -EXTRA_DELTA_X * (target_polar_angle_ - 90) / 90;
-        extra_delta_y = -EXTRA_DELTA_Y * (180 - target_polar_angle_) / 90;
+        extra_delta_x = -config.ENERGY_EXTRA_DELTA_X * (target_polar_angle_ - 90) / 90;
+        extra_delta_y = -config.ENERGY_EXTRA_DELTA_Y * (180 - target_polar_angle_) / 90;
     } else {
         extra_delta_x = 0;
         extra_delta_y = 0;
