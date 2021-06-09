@@ -3,8 +3,8 @@
 	{
 		"cx" : 303.92727183847512,
 		"cy" : 307.00937071223274,
-		"fx" : 811.72293646509797,
-		"fy" : 812.08878700531454,
+		"fx" : 1286.2355718475283,
+		"fy" : 1285.3731557738465,
 		"k1" : -0.23008069888906263,
 		"k2" : 0.53017452547602162,
 		"k3" : -1.2392524907626943,
@@ -12,7 +12,7 @@
 		"p2" : -0.0026143012397772166,
 		"roi_height" : 640,
 		"roi_offset_x" : 320,
-		"roi_offset_y" : 0,
+		"roi_offset_y" : 384,
 		"roi_width" : 640
 	},
 	"config" : 
@@ -39,7 +39,7 @@
 		"show_origin" : false,
 		"show_pnp_axies" : false,
 		"show_process" : false,
-		"uart_port" : "/dev/ttyTHS0",
+		"uart_port" : "/dev/ttyTHS1",
 		"use_pnp" : false,
 		"use_video" : false,
 		"video_path" : "../../test_video/R10.mp4",
@@ -59,13 +59,13 @@
 		"ARMOR_DELTA_Y" : 192.0,
 		"ARMOR_PITCH_DELTA_B" : 
 		[
-			4.4000000000000004,
+			4.4,
 			1.7
 		],
 		"ARMOR_PITCH_DELTA_K" : 
 		[
-			0.0040000000000000001,
-			0.00023000000000000001
+			0.0025,
+			0.00014375
 		],
 		"ARMOR_PITCH_KD" : 0.0,
 		"ARMOR_PITCH_KI" : 0.0,
