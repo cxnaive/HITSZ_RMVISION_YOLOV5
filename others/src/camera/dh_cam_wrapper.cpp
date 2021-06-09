@@ -1,13 +1,13 @@
 //
 // Created by erc on 1/3/20.
 //
-
+#ifdef USE_DH
 #include <camera/dh_cam_wrapper.h>
-#include <chrono>
 #include <glog/logging.h>
+
+#include <chrono>
 #include <mutex>
 #include <thread>
-
 
 void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
                  int nImageWidth, int nImageHeight, int nPixelFormat,
@@ -93,34 +93,43 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
                     cam->g_pRGBframeData, pFrame->nWidth, pFrame->nHeight,
                     pFrame->nPixelFormat, cam->g_nColorFilter);
 
-        
         // cam->full_gpu.upload(cam->full);
-        
+
         // cv::cuda::resize(cam->full_gpu,cam->resize_gpu,cv::Size(640,640));
         // cv::cuda::cvtColor(cam->resize_gpu,cam->resize_gpu,cv::COLOR_RGB2BGR);
-        if(cam->is_energy){
-            memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+        if (cam->is_energy) {
+            memcpy(cam->p_energy.data, cam->g_pRGBframeData,
+                   3 * (cam->nPayLoadSize));
             cam->pimg_lock.lock();
-            cv::resize(cam->p_energy,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
-            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            cv::resize(cam->p_energy, cam->p_img, cv::Size(640, 640),
+                       cv::INTER_NEAREST);
+            cv::cvtColor(cam->p_img, cam->p_img, cv::COLOR_RGB2BGR);
             cam->pimg_lock.unlock();
-        }
-        else{
+        } else {
             cam->pimg_lock.lock();
             // cv::resize(cam->full,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
             // cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
             // cam->resize_gpu.download(cam->p_img);
-            memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
-            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            memcpy(cam->p_img.data, cam->g_pRGBframeData,
+                   3 * (cam->nPayLoadSize));
+            cv::cvtColor(cam->p_img, cam->p_img, cv::COLOR_RGB2BGR);
             cam->pimg_lock.unlock();
         }
         auto end = std::chrono::steady_clock::now();
-        cam->frame_cnt ++;
-        cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        if(cam->frame_cnt == 500){
-            //std::cout << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt << std::endl;
-            LOG(INFO) << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt;
+        cam->frame_cnt++;
+        cam->frame_get_time +=
+            std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+                .count();
+        if (cam->frame_cnt == 500) {
+            double fps_time_interval =
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    end - cam->fps_time_point)
+                    .count();
+            LOG(INFO) << "average hkcamera delay(ms):"
+                      << cam->frame_get_time / cam->frame_cnt
+                      << " acq fps:" << 1000.0 / (fps_time_interval / 500.0);
             cam->frame_get_time = cam->frame_cnt = 0;
+            cam->fps_time_point = end;
         }
     }
     return;
@@ -132,34 +141,40 @@ void getRGBImage(DHCamera *cam) {
             return;
         }
         GX_STATUS status;
-        status = GXDQBuf(cam->g_hDevice,&cam->g_frameBuffer,1000);
+        status = GXDQBuf(cam->g_hDevice, &cam->g_frameBuffer, 1000);
         auto start = std::chrono::steady_clock::now();
-        //cam->g_frameBuffer.
-        
+        // cam->g_frameBuffer.
+
         ProcessData(cam->g_frameBuffer->pImgBuf, cam->g_pRaw8Buffer,
-                cam->g_pRGBframeData, cam->g_frameBuffer->nWidth,
-                cam->g_frameBuffer->nHeight, cam->g_frameBuffer->nPixelFormat,
-                cam->g_nColorFilter);
-        if(cam->is_energy){
-            //LOG(INFO) << cam->g_frameBuffer->nWidth << " " << cam->g_frameBuffer->nHeight << " " << cam->nPayLoadSize;
-            memcpy(cam->p_energy.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
+                    cam->g_pRGBframeData, cam->g_frameBuffer->nWidth,
+                    cam->g_frameBuffer->nHeight,
+                    cam->g_frameBuffer->nPixelFormat, cam->g_nColorFilter);
+        if (cam->is_energy) {
+            // LOG(INFO) << cam->g_frameBuffer->nWidth << " " <<
+            // cam->g_frameBuffer->nHeight << " " << cam->nPayLoadSize;
+            memcpy(cam->p_energy.data, cam->g_pRGBframeData,
+                   3 * (cam->nPayLoadSize));
             cam->pimg_lock.lock();
-            cv::resize(cam->p_energy,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
-            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            cv::resize(cam->p_energy, cam->p_img, cv::Size(640, 640),
+                       cv::INTER_NEAREST);
+            cv::cvtColor(cam->p_img, cam->p_img, cv::COLOR_RGB2BGR);
             cam->pimg_lock.unlock();
-        }
-        else{
+        } else {
             cam->pimg_lock.lock();
-            memcpy(cam->p_img.data, cam->g_pRGBframeData, 3 * (cam->nPayLoadSize));
-            cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
+            memcpy(cam->p_img.data, cam->g_pRGBframeData,
+                   3 * (cam->nPayLoadSize));
+            cv::cvtColor(cam->p_img, cam->p_img, cv::COLOR_RGB2BGR);
             cam->pimg_lock.unlock();
         }
         GXQBuf(cam->g_hDevice, cam->g_frameBuffer);
         auto end = std::chrono::steady_clock::now();
-        cam->frame_cnt ++;
-        cam->frame_get_time += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        if(cam->frame_cnt == 500){
-            std::cout << "average camera delay(ms):" << cam->frame_get_time / cam->frame_cnt << std::endl;
+        cam->frame_cnt++;
+        cam->frame_get_time +=
+            std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+                .count();
+        if (cam->frame_cnt == 500) {
+            std::cout << "average camera delay(ms):"
+                      << cam->frame_get_time / cam->frame_cnt << std::endl;
             cam->frame_get_time = cam->frame_cnt = 0;
         }
     }
@@ -172,7 +187,8 @@ DHCamera::DHCamera(std::string sn)
       thread_running(false),
       frame_cnt(0),
       frame_get_time(0),
-      init_success(false) {
+      init_success(false),
+      is_energy(false) {
     p_img = cv::Mat(640, 640, CV_8UC3);
     p_energy = cv::Mat(1024, 1024, CV_8UC3);
 };
@@ -193,7 +209,7 @@ DHCamera::~DHCamera() {
 std::string gc_device_typename[5] = {
     "GX_DEVICE_CLASS_UNKNOWN", "GX_DEVICE_CLASS_USB2", "GX_DEVICE_CLASS_GEV",
     "GX_DEVICE_CLASS_U3V", "GX_DEVICE_CLASS_SMART"};
-bool DHCamera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
+bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
     GXInitLib();
     GXUpdateDeviceList(&nDeviceNum, 1000);
     if (nDeviceNum >= 1) {
@@ -204,7 +220,8 @@ bool DHCamera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
         for (int i = 0; i < nDeviceNum; ++i) {
             std::cout << "device: SN:" << pBaseinfo[i].szSN
                       << " NAME:" << pBaseinfo[i].szDisplayName << " TYPE:"
-                      << gc_device_typename[pBaseinfo[i].deviceClass] <<std::endl;
+                      << gc_device_typename[pBaseinfo[i].deviceClass]
+                      << std::endl;
             if (std::string(pBaseinfo[i].szSN) == sn) found_device = true;
         }
         if (!found_device) {
@@ -220,14 +237,18 @@ bool DHCamera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
         GXGetInt(g_hDevice, GX_INT_SENSOR_WIDTH, &g_SensorWidth);
         GXGetInt(g_hDevice, GX_INT_SENSOR_HEIGHT, &g_SensorHeight);
         std::cout << "DHCamera Sensor: " << g_SensorWidth << " X "
-                     << g_SensorHeight << std::endl;
-        
+                  << g_SensorHeight << std::endl;
+
         bool roi_exit = false;
-        if(GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS) roi_exit = true;
-        if(GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS) roi_exit = true;
-        if(GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS) roi_exit = true;
-        if(GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS) roi_exit = true;
-        if(roi_exit) return false;
+        if (GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS)
+            roi_exit = true;
+        if (GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS)
+            roi_exit = true;
+        if (GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS)
+            roi_exit = true;
+        if (GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS)
+            roi_exit = true;
+        if (roi_exit) return false;
 
         GXSetEnum(g_hDevice, GX_ENUM_EXPOSURE_AUTO, GX_EXPOSURE_AUTO_OFF);
         GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF);
@@ -249,7 +270,8 @@ bool DHCamera::init(int roi_x,int roi_y,int roi_w,int roi_h,bool isEnergy) {
         GX_FLOAT_RANGE gainRange;
         GXGetFloatRange(g_hDevice, GX_FLOAT_GAIN, &gainRange);
         std::cout << "DHCamera Gain Range: " << gainRange.dMin << "~"
-                     << gainRange.dMax << " step size:" << gainRange.dInc << std::endl;
+                  << gainRange.dMax << " step size:" << gainRange.dInc
+                  << std::endl;
         GXGetInt(g_hDevice, GX_INT_PAYLOAD_SIZE, &nPayLoadSize);
 
         g_frameData.pImgBuf = malloc(nPayLoadSize);
@@ -277,6 +299,8 @@ void DHCamera::setParam(int exposureInput, int gainInput) {
 }
 void DHCamera::start() {
     if (init_success) {
+        frame_cnt = frame_get_time = 0;
+        fps_time_point = std::chrono::steady_clock::now();
         GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_START);
     }
@@ -298,3 +322,4 @@ bool DHCamera::read(cv::Mat &src) {
     pimg_lock.unlock();
     return true;
 }
+#endif

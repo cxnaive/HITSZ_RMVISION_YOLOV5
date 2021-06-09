@@ -1,16 +1,25 @@
+#ifdef USE_HK
 #include <camera/hk_cam_wrapper.h>
 #include <glog/logging.h>
 
 #include <iomanip>
-HKCamera::HKCamera(std::string sn) {
+#include <chrono>
+#include <thread>
+HKCamera::HKCamera(std::string cam_sn) {
     p_img = cv::Mat(640, 640, CV_8UC3);
     p_energy = cv::Mat(1024, 1024, CV_8UC3);
     exposure = 4000;
     gain = 8;
+    sn = cam_sn;
+    m_handle = NULL;
+    init_success = false;
+    is_energy = false;
+    thread_running = false;
 }
 
 HKCamera::~HKCamera() {
     if (!m_handle) return;
+    stop();
     nRet = MV_CC_CloseDevice(m_handle);
     if (nRet != MV_OK) {
         printf("error: CloseDevice fail [%x]\n", nRet);
@@ -24,10 +33,13 @@ HKCamera::~HKCamera() {
     }
 }
 
-void update_bool(int code, bool& flag) {
-    if (code != MV_OK) flag = true;
+void update_bool(int code, bool& flag, const std::string& w_str = "") {
+    if (code != MV_OK) {
+        flag = true;
+        LOG(INFO) << w_str << " set failed!";
+    }
 }
-#define UPDB(x) (update_bool(x, set_failed))
+#define UPDB(x,wstr) (update_bool(x, set_failed,wstr))
 
 bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
     unsigned int nTLayerType = MV_GIGE_DEVICE | MV_USB_DEVICE;
@@ -59,7 +71,7 @@ bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
         }
     }
     if (target_device == NULL) {
-        LOG(ERROR) << "SN number not found!";
+        LOG(ERROR) << "SN number not found! target SN:" << sn;
         return false;
     }
     //创建句柄
@@ -84,19 +96,20 @@ bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
               << m_SensorHeight.nMax << " nInc:" << m_SensorWidth.nInc;
 
     bool set_failed = false;
-    UPDB(MV_CC_SetIntValue(m_handle, "Width", roi_w));
-    UPDB(MV_CC_SetIntValue(m_handle, "Height", roi_h));
-    UPDB(MV_CC_SetIntValue(m_handle, "OffsetX", roi_x));
-    UPDB(MV_CC_SetIntValue(m_handle, "OffsetY", roi_y));
-    UPDB(MV_CC_SetEnumValue(m_handle, "TriggerMode", MV_TRIGGER_MODE_OFF));
+    UPDB(MV_CC_SetIntValue(m_handle, "Width", roi_w),"Width");
+    UPDB(MV_CC_SetIntValue(m_handle, "Height", roi_h),"Height");
+    UPDB(MV_CC_SetIntValue(m_handle, "OffsetX", roi_x),"OffsetX");
+    UPDB(MV_CC_SetIntValue(m_handle, "OffsetY", roi_y),"OffsetY");
+    UPDB(MV_CC_SetEnumValue(m_handle, "TriggerMode", MV_TRIGGER_MODE_OFF),"TriggerMode");
     UPDB(MV_CC_SetEnumValue(m_handle, "ExposureMode",
-                            MV_EXPOSURE_AUTO_MODE_OFF));
-    UPDB(MV_CC_SetEnumValue(m_handle, "GainAuto", MV_GAIN_MODE_OFF));
-    UPDB(MV_CC_SetBoolValue(m_handle, "BlackLevelEnable", false));
+                            MV_EXPOSURE_AUTO_MODE_OFF),"ExposureMode");
+    UPDB(MV_CC_SetEnumValue(m_handle, "GainAuto", MV_GAIN_MODE_OFF),"GainAuto");
+    UPDB(MV_CC_SetBoolValue(m_handle, "BlackLevelEnable", false),"BlackLevelEnable");
     UPDB(MV_CC_SetEnumValue(m_handle, "BalanceWhiteAuto",
-                            MV_BALANCEWHITE_AUTO_CONTINUOUS));
+                            MV_BALANCEWHITE_AUTO_CONTINUOUS),"BalanceWhiteAuto");
     UPDB(MV_CC_SetEnumValue(m_handle, "AcquisitionMode",
-                            MV_ACQ_MODE_CONTINUOUS));
+                            MV_ACQ_MODE_CONTINUOUS),"AcquisitionMode");
+    UPDB(MV_CC_SetBoolValue(m_handle,"AcquisitionFrameRateEnable",false),"AcquisitionFrameRateEnable");
 
     //获取实际增益值范围
     MV_CC_GetFloatValue(m_handle, "Gain", &m_GainRange);
@@ -108,18 +121,17 @@ bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
     LOG(INFO) << "HKCamera Pixel Format: " << std::hex
               << m_PixelFormat.nCurValue;
 
-    UPDB(MV_CC_SetFloatValue(m_handle, "ExposureTime", exposure));
-    UPDB(MV_CC_SetFloatValue(m_handle, "Gain", gain));
-    UPDB(MV_CC_SetFloatValue(m_handle, "BlackLevel", 0));
+    UPDB(MV_CC_SetFloatValue(m_handle, "ExposureTime", exposure),"ExposureTime");
+    UPDB(MV_CC_SetFloatValue(m_handle, "Gain", gain),"Gain");
 
     if (set_failed) {
         LOG(ERROR) << "failed to set some parameters!";
         return false;
     }
 
-    init_success = true;
-    thread_running = false;
     is_energy = isEnergy;
+    init_success = true;
+    LOG(INFO) << "HKCamera init done!";
     return true;
 }
 
@@ -131,10 +143,10 @@ void getRGBImage(HKCamera* cam) {
         cam->nRet = MV_CC_GetImageBuffer(cam->m_handle, &cam->stOutFrame, 1000);
         if (cam->nRet == MV_OK) {
             auto start = std::chrono::steady_clock::now();
-            printf("Get One Frame: Width[%d], Height[%d], nFrameNum[%d]\n",
-                   cam->stOutFrame.stFrameInfo.nWidth,
-                   cam->stOutFrame.stFrameInfo.nHeight,
-                   cam->stOutFrame.stFrameInfo.nFrameNum);
+            // printf("Get One Frame: Width[%d], Height[%d], nFrameNum[%d]\n",
+            //        cam->stOutFrame.stFrameInfo.nWidth,
+            //        cam->stOutFrame.stFrameInfo.nHeight,
+            //        cam->stOutFrame.stFrameInfo.nFrameNum);
             //像素格式转换
             stImageInfo = cam->stOutFrame.stFrameInfo;
             stConvertParam.nWidth = stImageInfo.nWidth;
@@ -181,9 +193,13 @@ void getRGBImage(HKCamera* cam) {
                                                                       start)
                     .count();
             if (cam->frame_cnt == 500) {
+                double fps_time_interval = std::chrono::duration_cast<std::chrono::milliseconds>(end - cam->fps_time_point).count();
                 LOG(INFO) << "average hkcamera delay(ms):"
-                          << cam->frame_get_time / cam->frame_cnt;
+                          << cam->frame_get_time / cam->frame_cnt
+                          << " acq fps:"
+                          << 1000.0 / (fps_time_interval / 500.0);
                 cam->frame_get_time = cam->frame_cnt = 0;
+                cam->fps_time_point = end;
             }
 
         } else {
@@ -208,15 +224,17 @@ void HKCamera::start() {
             LOG(ERROR) << "failed to start grabbing image!";
             return;
         }
+        frame_cnt = frame_get_time = 0;
+        fps_time_point = std::chrono::steady_clock::now();
         thread_running = true;
         hkcam_thread = std::thread(getRGBImage, this);
     }
 }
 void HKCamera::stop() {
-    if (init_success) {
+    if (init_success && thread_running) {
         thread_running = false;
         hkcam_thread.join();
-        nRet = MV_CC_StartGrabbing(m_handle);
+        nRet = MV_CC_StopGrabbing(m_handle);
         if (nRet != MV_OK) {
             LOG(ERROR) << "failed to stop grabbing image!";
             return;
@@ -232,3 +250,4 @@ bool HKCamera::read(cv::Mat& src) {
     pimg_lock.unlock();
     return true;
 }
+#endif

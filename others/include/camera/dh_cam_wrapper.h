@@ -42,7 +42,7 @@ private:
     bool init_success;
     bool is_energy;
     std::mutex pimg_lock;
-    
+    std::chrono::steady_clock::time_point fps_time_point;
 
 public:
     DHCamera(std::string sn);			        // constructor, p_img is a pointer towards a 640*640 8uc3 Mat type

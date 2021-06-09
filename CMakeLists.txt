@@ -4,6 +4,8 @@ PROJECT(HITSZ-RM-CV)
 SET(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(use_u2_camera false)
+set(use_dh false)
+set(use_hk true)
 add_compile_options(-O3)
 
 # OpenCV
@@ -39,6 +41,17 @@ if (use_u2_camera)
     link_libraries(-ldx_image_proc -lGCBase_gcc40_v2_3 -lGenApi_gcc40_v2_3 -llog4cpp_gcc40_v2_3 -lLog_gcc40_v2_3 -lMathParser_gcc40_v2_3)
 endif ()
 
+if (use_dh)
+    message(STATUS "Linking DaHeng camera lib on linux...")
+    add_definitions("-DUSE_DH")
+    link_libraries(-lgxiapi)
+endif ()
+
+if (use_hk)
+    message(STATUS "Linking HKROBOT camera lib on linux...")
+    add_definitions("-DUSE_HK")
+    link_libraries(-lMvCameraControl)
+endif ()
 # Resources
 
 file(GLOB_RECURSE resources "${PROJECT_SOURCE_DIR}/resources/*")
@@ -67,6 +80,6 @@ add_executable(calibrate calibrate_get_imgs.cpp ${calfiles})
 #add_executable(mcusend test_mcu_send.cpp ${sourcefiles})
 
 
-target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lgxiapi -lpthread -lMvCameraControl libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
-target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread -lMvCameraControl)
+target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lpthread  libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
+target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lpthread -lMvCameraControl)
 #target_link_libraries(mcusend  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)

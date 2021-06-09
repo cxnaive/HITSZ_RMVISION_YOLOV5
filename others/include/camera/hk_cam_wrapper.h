@@ -3,6 +3,7 @@
 #include "cam_wrapper.h"
 #include <MvCameraControl.h>
 #include <thread>
+#include <chrono>
 
 class HKCamera:public Camera{
     friend void getRGBImage(HKCamera *cam);
@@ -26,6 +27,7 @@ private:
     std::mutex pimg_lock;
     int64_t frame_cnt;
     double frame_get_time;
+    std::chrono::steady_clock::time_point fps_time_point;
 public:
     HKCamera(std::string sn);
     ~HKCamera();

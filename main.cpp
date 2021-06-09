@@ -54,7 +54,7 @@ static void OnInit(const char* cmd) {
         video = new VideoWrapper(config.video_path);
         video->init();
     } else {
-        cam = new DHCamera(config.camera_sn);
+        cam = new HKCamera(config.camera_sn);
         if(config.RUNMODE == ARMOR_STATE){
             cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height,false);
         }
@@ -78,7 +78,14 @@ static void OnInit(const char* cmd) {
     lastRunMode = config.RUNMODE;
 }
 
-static void OnClose() { config.write_to_file(); }
+static void OnClose() {
+    config.write_to_file();
+    cam->stop();
+    if(cam != NULL) delete cam;
+    if(armor_finder != NULL) delete armor_finder;
+    if(energy != NULL) delete energy;
+    if(video != NULL) delete video;
+}
 
 void update_config() {
     receive_mtx.lock();
