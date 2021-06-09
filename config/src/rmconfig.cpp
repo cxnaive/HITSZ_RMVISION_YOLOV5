@@ -74,6 +74,7 @@ void RmConfig::init_from_file() {
     ENERGY_CAMERA_GAIN = data["ENERGY_CAMERA_GAIN"].asInt();
     ENERGY_CAMERA_EXPOSURE = data["ENERGY_CAMERA_EXPOSURE"].asInt();
     ENEMY_COLOR = data["ENEMY_COLOR"].asInt();
+    ENERGY_DELAY_TIME = data["ENERGY_DELAY_TIME"].asDouble();
     ANTI_TOP = data["ANTI_TOP"].asInt();
     MANUAL_DELTA_X = data["MANUAL_DELTA_X"].asDouble();
     MANUAL_DELTA_Y = data["MANUAL_DELTA_Y"].asDouble();
@@ -179,6 +180,7 @@ void RmConfig::write_to_file() {
     data["ENERGY_CAMERA_GAIN"] = ENERGY_CAMERA_GAIN;
     data["ENERGY_CAMERA_EXPOSURE"] = ENERGY_CAMERA_EXPOSURE;
     data["ENEMY_COLOR"] = ENEMY_COLOR;
+    data["ENERGY_DELAY_TIME"] = ENERGY_DELAY_TIME;
     data["ANTI_TOP"] = ANTI_TOP;
     data["MANUAL_DELTA_X"] = MANUAL_DELTA_X;
     data["MANUAL_DELTA_Y"] = MANUAL_DELTA_Y;
