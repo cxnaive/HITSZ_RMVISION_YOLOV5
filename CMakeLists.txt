@@ -4,8 +4,8 @@ PROJECT(HITSZ-RM-CV)
 SET(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(use_u2_camera false)
-set(use_dh false)
-set(use_hk true)
+set(use_dh true)
+set(use_hk false)
 add_compile_options(-O3)
 
 # OpenCV
@@ -81,5 +81,5 @@ add_executable(calibrate calibrate_get_imgs.cpp ${calfiles})
 
 
 target_link_libraries(rmcv ${OpenCV_LIBS} -lglog -lpthread  libtinytrt.so nvinfer nvinfer_plugin nvparsers nvonnxparser)
-target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lpthread -lMvCameraControl)
+target_link_libraries(calibrate  ${OpenCV_LIBS} -lglog -lpthread)
 #target_link_libraries(mcusend  ${OpenCV_LIBS} -lglog -lgxiapi -lpthread nvinfer cudart myplugins)

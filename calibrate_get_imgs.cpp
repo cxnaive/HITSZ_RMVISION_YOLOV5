@@ -1,4 +1,5 @@
 #include<camera/hk_cam_wrapper.h>
+#include<camera/dh_cam_wrapper.h>
 #include<glog/logging.h>
 #include<opencv2/opencv.hpp>
 #include<string>
@@ -12,7 +13,7 @@ int main(int argc, char** argv){
     google::InitGoogleLogging(argv[0]);
     RmConfig config;
     config.init_from_file();
-    HKCamera cam(config.camera_sn);
+    DHCamera cam(config.camera_sn);
     cam.init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height,false);
     if(!cam.init_is_successful()){
         LOG(ERROR) << "unable to open camera";
