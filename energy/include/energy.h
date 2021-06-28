@@ -80,6 +80,8 @@ private:
     EnergyEKF ekf;
 
     double time_start_guess;//进入猜测模式的时间
+    double shoot_delay; //两次发弹时间间隔
+    double last_shoot_time_point; //上次发弹时间
 
     cv::RotatedRect centerR;//风车中心字母R的可能候选区
     cv::RotatedRect flow_strip;//图像中所有流动条（理论上只有一个）

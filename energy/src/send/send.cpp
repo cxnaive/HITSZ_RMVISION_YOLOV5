@@ -23,7 +23,8 @@ void Energy::sendEnergy() {
     // double tmp_pitch = pitch_rotation;
     // /* yaw_rotation = YAW_AIM_KP * yaw_rotation + YAW_AIM_KI * sum_yaw +
     //                 YAW_AIM_KD * (yaw_rotation - last_yaw);
-    //  pitch_rotation = PITCH_AIM_KP * pitch_rotation + PITCH_AIM_KI * sum_pitch +
+    //  pitch_rotation = PITCH_AIM_KP * pitch_rotation + PITCH_AIM_KI *
+    //  sum_pitch +
     //                   PITCH_AIM_KD * (pitch_rotation - last_pitch);
     //                   */
 
@@ -39,12 +40,12 @@ void Energy::sendEnergy() {
         last_time = now_time;
     }
     if (change_target) {
-        sendTarget(serial, yaw_rotation, pitch_rotation, 3, 0);  //表示目标切换
+        sendTarget(serial, yaw_rotation, pitch_rotation, 0, 3);  //表示目标切换
     } else if (is_guessing) {
-        sendTarget(serial, yaw_rotation, pitch_rotation, 4, 0);  //表示猜测模式
+        sendTarget(serial, yaw_rotation, pitch_rotation, 0, 4);  //表示猜测模式
     } else {
-        sendTarget(serial, yaw_rotation, pitch_rotation, shoot,
-                   0);  //跟随或发弹
+        sendTarget(serial, yaw_rotation, pitch_rotation, 0,
+                   shoot);  //跟随或发弹
     }
 }
 
@@ -78,6 +79,6 @@ void Energy::sendTarget(RmSerial &serial, float x, float y, float z,
     // buff[8] = static_cast<char>((u >> 0) & 0xFF);
     // buff[9] = 'e';
     // serial.send_data(buff, sizeof(buff));
-    
+
     //    LOGM(STR_CTR(WORD_LIGHT_PURPLE, "send"));
 }

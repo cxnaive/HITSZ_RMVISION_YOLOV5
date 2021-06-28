@@ -15,6 +15,7 @@ void Energy::changeTarget() {
         change_target = false;
     } else {
         change_target = true;
+        last_shoot_time_point = -1000;
     }
     last_target_polar_angle_judge_change = target_polar_angle;
 }

@@ -12,7 +12,12 @@ using namespace cv;
 // ---------------------------------------------------------------------------------------------------------------------
 void Energy::judgeShoot() {
     if (abs(yaw_rotation) < 0.7 && abs(pitch_rotation) < 0.7) {
-        shoot = 2;
+        double time_now = rmTime.milliseconds();
+        if (time_now - last_shoot_time_point > shoot_delay) {
+            shoot = 2;
+        } else {
+            shoot = 1;
+        }
         //        is_predicting = false;
         //        is_guessing = true;
         //        start_guess = true;
