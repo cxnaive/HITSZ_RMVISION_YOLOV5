@@ -89,7 +89,7 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
     yaw = YawPID.updateError(yaw);
     pitch = PitchPID.updateError(pitch);
 
-    return sendTarget(serial, yaw, -pitch, 1, shoot_delay);
+    return sendTarget(serial, yaw, -pitch, dist, 1);
 }
 
 bool ArmorFinder::sendLostBox() { 
