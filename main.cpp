@@ -55,36 +55,43 @@ static void OnInit(const char* cmd) {
         video->init();
     } else {
         cam = new DHCamera(config.camera_sn);
-        if(config.RUNMODE == ARMOR_STATE){
-            cam->init(config.camConfig.roi_offset_x,config.camConfig.roi_offset_y,config.camConfig.roi_width,config.camConfig.roi_height,false);
+        if (config.RUNMODE == ARMOR_STATE) {
+            cam->init(config.camConfig.roi_offset_x,
+                      config.camConfig.roi_offset_y, config.camConfig.roi_width,
+                      config.camConfig.roi_height, false);
+        } else {
+            cam->init(128, 0, 1024, 1024, true);
         }
-        else{
-            cam->init(128,0,1024,1024,true);
-        }
-        
+
         if (!cam->init_is_successful()) {
             LOG(ERROR) << "Camera Init Failed!";
             keepRunning = false;
             return;
         }
-        if(config.RUNMODE == ARMOR_STATE) cam->setParam(config.ARMOR_CAMERA_EXPOSURE, config.ARMOR_CAMERA_GAIN);
-        else cam->setParam(config.ENERGY_CAMERA_EXPOSURE,config.ENERGY_CAMERA_GAIN);
+        if (config.RUNMODE == ARMOR_STATE)
+            cam->setParam(config.ARMOR_CAMERA_EXPOSURE,
+                          config.ARMOR_CAMERA_GAIN);
+        else
+            cam->setParam(config.ENERGY_CAMERA_EXPOSURE,
+                          config.ENERGY_CAMERA_GAIN);
         cam->start();
     }
 
-    armor_finder =
-        new ArmorFinder(config.ENEMY_COLOR, rmSerial, config.ANTI_TOP);
-    energy = new Energy(rmSerial, config.ENEMY_COLOR);
+    if (config.RUNMODE == ARMOR_STATE)
+        armor_finder =
+            new ArmorFinder(config.ENEMY_COLOR, rmSerial, config.ANTI_TOP);
+    else
+        energy = new Energy(rmSerial, config.ENEMY_COLOR);
     lastRunMode = config.RUNMODE;
 }
 
 static void OnClose() {
     config.write_to_file();
     cam->stop();
-    if(cam != NULL) delete cam;
-    if(armor_finder != NULL) delete armor_finder;
-    if(energy != NULL) delete energy;
-    if(video != NULL) delete video;
+    if (cam != NULL) delete cam;
+    if (armor_finder != NULL) delete armor_finder;
+    if (energy != NULL) delete energy;
+    if (video != NULL) delete video;
 }
 
 void update_config() {
@@ -104,9 +111,8 @@ void check_mode_and_run(cv::Mat& src) {
     update_config();
     if (lastRunMode == ARMOR_STATE && (config.RUNMODE == SMALL_ENERGY_STATE ||
                                        config.RUNMODE == BIG_ENERGY_STATE)) {
-        
         LOG(WARNING) << "Change to Energy mode:" << config.RUNMODE;
-        if (!config.use_video){
+        if (!config.use_video) {
             config.write_to_file();
             keepRunning = false;
         }
@@ -116,7 +122,7 @@ void check_mode_and_run(cv::Mat& src) {
     if ((lastRunMode == SMALL_ENERGY_STATE ||
          lastRunMode == BIG_ENERGY_STATE) &&
         config.RUNMODE == ARMOR_STATE) {
-        if (!config.use_video){
+        if (!config.use_video) {
             config.write_to_file();
             keepRunning = false;
         }
@@ -129,7 +135,7 @@ void check_mode_and_run(cv::Mat& src) {
          config.RUNMODE == BIG_ENERGY_STATE)) {
         energy->setEnergyInit();
     }
-    
+
     if (config.RUNMODE == ARMOR_STATE) {
         armor_finder->run(src);
     }
@@ -164,7 +170,7 @@ int main(int argc, char** argv) {
             // cv::waitKey(1);
         }
         check_mode_and_run(src);
-        //cv::waitKey(9);
+        // cv::waitKey(9);
         if (config.has_show) cv::waitKey(1);
     }
     LOG(INFO) << "exiting...";

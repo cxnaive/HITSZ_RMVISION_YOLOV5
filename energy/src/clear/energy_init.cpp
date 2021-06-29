@@ -31,7 +31,7 @@ void Energy::initEnergy() {
     last_mode = -1;  //既不是大符也不是小符
     extra_delta_y = 0;
     extra_delta_x = 0;
-    shoot_delay = 300;
+    shoot_delay = 600;
 
     target_polar_angle = -1000;
     last_target_polar_angle_judge_change = -1000;
