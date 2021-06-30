@@ -54,7 +54,12 @@ static void OnInit(const char* cmd) {
         video = new VideoWrapper(config.video_path);
         video->init();
     } else {
+#ifdef USE_HK
+        cam = new HKCamera(config.camera_sn);
+#endif
+#ifdef USE_DH
         cam = new DHCamera(config.camera_sn);
+#endif
         if (config.RUNMODE == ARMOR_STATE) {
             cam->init(config.camConfig.roi_offset_x,
                       config.camConfig.roi_offset_y, config.camConfig.roi_width,
