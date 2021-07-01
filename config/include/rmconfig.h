@@ -71,7 +71,7 @@ public:
     double ENERGY_EXTRA_DELTA_Y = 5;
     double ENERGY_EXTRA_DELTA_X = 0;
     int ANTI_TOP = 0;
-    int ARMOR_H = 58;
+    int ARMOR_H = 125;
     int ARMOR_W = 230;
     int IMAGE_CENTER_X = 320;
     int IMAGE_CENTER_Y = 320;
