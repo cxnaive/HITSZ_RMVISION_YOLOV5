@@ -4,7 +4,7 @@
 
 #ifndef _CAM_DRIVER_DH_CAMWRAPPER_H
 #define _CAM_DRIVER_DH_CAMWRAPPER_H
-
+#ifdef USE_DH
 #include <thread>
 #include "GxIAPI.h"
 #include "DxImageProc.h"
@@ -56,5 +56,5 @@ public:
     bool init_is_successful() final;				            // return video is available or not
     bool read(cv::Mat &src) final;
 };
-
+#endif
 #endif //RM2020_CAM_DRIVER_CAMWRAPPER_H

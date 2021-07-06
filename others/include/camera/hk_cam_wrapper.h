@@ -1,5 +1,6 @@
 #ifndef _DRIVER_HK_CAM_WRAPPER_H
 #define _DRIVER_HK_CAM_WRAPPER_H
+#ifdef USE_HK
 #include "cam_wrapper.h"
 #include <MvCameraControl.h>
 #include <thread>
@@ -39,5 +40,5 @@ public:
     bool init_is_successful() final;				            // return video is available or not
     bool read(cv::Mat &src) final;
 };
-
+#endif
 #endif
