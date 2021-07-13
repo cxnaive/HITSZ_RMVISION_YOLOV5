@@ -2,14 +2,12 @@
 #include <camera/hk_cam_wrapper.h>
 #include <glog/logging.h>
 
-#include <iomanip>
 #include <chrono>
+#include <iomanip>
 #include <thread>
 HKCamera::HKCamera(std::string cam_sn) {
     p_img = cv::Mat(640, 640, CV_8UC3);
     p_energy = cv::Mat(1024, 1024, CV_8UC3);
-    exposure = 4000;
-    gain = 8;
     sn = cam_sn;
     m_handle = NULL;
     init_success = false;
@@ -39,9 +37,10 @@ void update_bool(int code, bool& flag, const std::string& w_str = "") {
         LOG(INFO) << w_str << " set failed!";
     }
 }
-#define UPDB(x,wstr) (update_bool(x, set_failed,wstr))
+#define UPDB(x, wstr) (update_bool(x, set_failed, wstr))
 
-bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
+bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, float exposure,
+                    float gain, bool isEnergy) {
     unsigned int nTLayerType = MV_GIGE_DEVICE | MV_USB_DEVICE;
     MV_CC_DEVICE_INFO_LIST m_stDevList = {0};
     nRet = MV_CC_EnumDevices(nTLayerType, &m_stDevList);
@@ -96,20 +95,31 @@ bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
               << m_SensorHeight.nMax << " nInc:" << m_SensorWidth.nInc;
 
     bool set_failed = false;
-    UPDB(MV_CC_SetIntValue(m_handle, "Width", roi_w),"Width");
-    UPDB(MV_CC_SetIntValue(m_handle, "Height", roi_h),"Height");
-    UPDB(MV_CC_SetIntValue(m_handle, "OffsetX", roi_x),"OffsetX");
-    UPDB(MV_CC_SetIntValue(m_handle, "OffsetY", roi_y),"OffsetY");
-    UPDB(MV_CC_SetEnumValue(m_handle, "TriggerMode", MV_TRIGGER_MODE_OFF),"TriggerMode");
-    UPDB(MV_CC_SetEnumValue(m_handle, "ExposureMode",
-                            MV_EXPOSURE_AUTO_MODE_OFF),"ExposureMode");
-    UPDB(MV_CC_SetEnumValue(m_handle, "GainAuto", MV_GAIN_MODE_OFF),"GainAuto");
-    UPDB(MV_CC_SetBoolValue(m_handle, "BlackLevelEnable", false),"BlackLevelEnable");
+    UPDB(MV_CC_SetIntValue(m_handle, "Width", roi_w), "Width");
+    UPDB(MV_CC_SetIntValue(m_handle, "Height", roi_h), "Height");
+    UPDB(MV_CC_SetIntValue(m_handle, "OffsetX", roi_x), "OffsetX");
+    UPDB(MV_CC_SetIntValue(m_handle, "OffsetY", roi_y), "OffsetY");
+    UPDB(MV_CC_SetEnumValue(m_handle, "TriggerMode", MV_TRIGGER_MODE_OFF),
+         "TriggerMode");
+    UPDB(
+        MV_CC_SetEnumValue(m_handle, "ExposureMode", MV_EXPOSURE_AUTO_MODE_OFF),
+        "ExposureMode");
+    UPDB(MV_CC_SetEnumValue(m_handle, "GainAuto", MV_GAIN_MODE_OFF),
+         "GainAuto");
+    UPDB(MV_CC_SetBoolValue(m_handle, "BlackLevelEnable", false),
+         "BlackLevelEnable");
     UPDB(MV_CC_SetEnumValue(m_handle, "BalanceWhiteAuto",
-                            MV_BALANCEWHITE_AUTO_CONTINUOUS),"BalanceWhiteAuto");
-    UPDB(MV_CC_SetEnumValue(m_handle, "AcquisitionMode",
-                            MV_ACQ_MODE_CONTINUOUS),"AcquisitionMode");
-    UPDB(MV_CC_SetBoolValue(m_handle,"AcquisitionFrameRateEnable",false),"AcquisitionFrameRateEnable");
+                            MV_BALANCEWHITE_AUTO_CONTINUOUS),
+         "BalanceWhiteAuto");
+    UPDB(
+        MV_CC_SetEnumValue(m_handle, "AcquisitionMode", MV_ACQ_MODE_CONTINUOUS),
+        "AcquisitionMode");
+    UPDB(MV_CC_SetBoolValue(m_handle, "AcquisitionFrameRateEnable", false),
+         "AcquisitionFrameRateEnable");
+
+    UPDB(MV_CC_SetFloatValue(m_handle, "ExposureTime", exposure),
+         "ExposureTime");
+    UPDB(MV_CC_SetFloatValue(m_handle, "Gain", gain), "Gain");
 
     //获取实际增益值范围
     MV_CC_GetFloatValue(m_handle, "Gain", &m_GainRange);
@@ -121,8 +131,7 @@ bool HKCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
     LOG(INFO) << "HKCamera Pixel Format: " << std::hex
               << m_PixelFormat.nCurValue;
 
-    UPDB(MV_CC_SetFloatValue(m_handle, "ExposureTime", exposure),"ExposureTime");
-    UPDB(MV_CC_SetFloatValue(m_handle, "Gain", gain),"Gain");
+    
 
     if (set_failed) {
         LOG(ERROR) << "failed to set some parameters!";
@@ -161,7 +170,7 @@ void getRGBImage(HKCamera* cam) {
                 stConvertParam.pDstBuffer = cam->p_img.data;
             stConvertParam.nDstBufferSize =
                 stImageInfo.nWidth * stImageInfo.nHeight * 3;
-            //1024*1024
+            // 1024*1024
             if (cam->is_energy) {
                 cam->nRet =
                     MV_CC_ConvertPixelType(cam->m_handle, &stConvertParam);
@@ -173,7 +182,7 @@ void getRGBImage(HKCamera* cam) {
                            cv::INTER_NEAREST);
                 cam->pimg_lock.unlock();
             } else {
-                //640*640
+                // 640*640
                 cam->pimg_lock.lock();
                 cam->nRet =
                     MV_CC_ConvertPixelType(cam->m_handle, &stConvertParam);
@@ -193,10 +202,12 @@ void getRGBImage(HKCamera* cam) {
                                                                       start)
                     .count();
             if (cam->frame_cnt == 500) {
-                double fps_time_interval = std::chrono::duration_cast<std::chrono::milliseconds>(end - cam->fps_time_point).count();
+                double fps_time_interval =
+                    std::chrono::duration_cast<std::chrono::milliseconds>(
+                        end - cam->fps_time_point)
+                        .count();
                 LOG(INFO) << "average hkcamera delay(ms):"
-                          << cam->frame_get_time / cam->frame_cnt
-                          << " acq fps:"
+                          << cam->frame_get_time / cam->frame_cnt << " acq fps:"
                           << 1000.0 / (fps_time_interval / 500.0);
                 cam->frame_get_time = cam->frame_cnt = 0;
                 cam->fps_time_point = end;
@@ -208,10 +219,8 @@ void getRGBImage(HKCamera* cam) {
     }
 }
 
-void HKCamera::setParam(int exposureInput, int gainInput) {
+void HKCamera::setParam(float exposure, float gain) {
     if (init_success) {
-        exposure = exposureInput;
-        gain = gainInput;
         MV_CC_SetFloatValue(m_handle, "ExposureTime", exposure);
         MV_CC_SetFloatValue(m_handle, "Gain", gain);
     }

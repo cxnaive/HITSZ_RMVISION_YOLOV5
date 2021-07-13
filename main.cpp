@@ -63,9 +63,11 @@ static void OnInit(const char* cmd) {
         if (config.RUNMODE == ARMOR_STATE) {
             cam->init(config.camConfig.roi_offset_x,
                       config.camConfig.roi_offset_y, config.camConfig.roi_width,
-                      config.camConfig.roi_height, false);
+                      config.camConfig.roi_height, config.ARMOR_CAMERA_EXPOSURE,
+                      config.ARMOR_CAMERA_GAIN, false);
         } else {
-            cam->init(128, 0, 1024, 1024, true);
+            cam->init(128, 0, 1024, 1024, config.ENERGY_CAMERA_EXPOSURE,
+                      config.ENERGY_CAMERA_GAIN, true);
         }
 
         if (!cam->init_is_successful()) {
@@ -73,12 +75,6 @@ static void OnInit(const char* cmd) {
             keepRunning = false;
             return;
         }
-        if (config.RUNMODE == ARMOR_STATE)
-            cam->setParam(config.ARMOR_CAMERA_EXPOSURE,
-                          config.ARMOR_CAMERA_GAIN);
-        else
-            cam->setParam(config.ENERGY_CAMERA_EXPOSURE,
-                          config.ENERGY_CAMERA_GAIN);
         cam->start();
     }
 

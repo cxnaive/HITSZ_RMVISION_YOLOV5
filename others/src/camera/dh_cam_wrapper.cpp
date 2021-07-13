@@ -9,6 +9,14 @@
 #include <mutex>
 #include <thread>
 
+void update_bool(GX_STATUS status, bool &flag, const std::string &w_str = "") {
+    if (status != GX_STATUS_SUCCESS) {
+        flag = true;
+        LOG(INFO) << w_str << " set failed!";
+    }
+}
+#define UPDB(x, wstr) (update_bool(x, set_failed, wstr))
+
 void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
                  int nImageWidth, int nImageHeight, int nPixelFormat,
                  int nPixelColorFilter) {
@@ -182,8 +190,6 @@ void getRGBImage(DHCamera *cam) {
 
 DHCamera::DHCamera(std::string sn)
     : sn(sn),
-      exposure(5000),
-      gain(0),
       thread_running(false),
       frame_cnt(0),
       frame_get_time(0),
@@ -209,7 +215,8 @@ DHCamera::~DHCamera() {
 std::string gc_device_typename[5] = {
     "GX_DEVICE_CLASS_UNKNOWN", "GX_DEVICE_CLASS_USB2", "GX_DEVICE_CLASS_GEV",
     "GX_DEVICE_CLASS_U3V", "GX_DEVICE_CLASS_SMART"};
-bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
+bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, float exposure,
+                    float gain, bool isEnergy) {
     GXInitLib();
     GXUpdateDeviceList(&nDeviceNum, 1000);
     if (nDeviceNum >= 1) {
@@ -239,33 +246,45 @@ bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
         std::cout << "DHCamera Sensor: " << g_SensorWidth << " X "
                   << g_SensorHeight << std::endl;
 
-        bool roi_exit = false;
-        if (GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x) != GX_STATUS_SUCCESS)
-            roi_exit = true;
-        if (GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y) != GX_STATUS_SUCCESS)
-            roi_exit = true;
-        if (GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w) != GX_STATUS_SUCCESS)
-            roi_exit = true;
-        if (GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h) != GX_STATUS_SUCCESS)
-            roi_exit = true;
-        if (roi_exit) return false;
+        bool set_failed = false;
+        UPDB(GXSetInt(g_hDevice, GX_INT_OFFSET_X, roi_x), "ROI_X");
+        UPDB(GXSetInt(g_hDevice, GX_INT_OFFSET_Y, roi_y), "ROI_Y");
+        UPDB(GXSetInt(g_hDevice, GX_INT_WIDTH, roi_w), "ROI_W");
+        UPDB(GXSetInt(g_hDevice, GX_INT_HEIGHT, roi_h), "ROI_H");
+        UPDB(GXSetEnum(g_hDevice, GX_ENUM_EXPOSURE_AUTO, GX_EXPOSURE_AUTO_OFF),
+             "ExposureAuto");
+        UPDB(GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF),
+             "GainAuto");
+        UPDB(GXSetEnum(g_hDevice, GX_ENUM_BLACKLEVEL_AUTO,
+                       GX_BLACKLEVEL_AUTO_OFF),
+             "BlacklevelAuto");
+        UPDB(GXSetEnum(g_hDevice, GX_ENUM_BALANCE_WHITE_AUTO,
+                       GX_BALANCE_WHITE_AUTO_CONTINUOUS),
+             "BalanceWhiteAuto");
 
-        GXSetEnum(g_hDevice, GX_ENUM_EXPOSURE_AUTO, GX_EXPOSURE_AUTO_OFF);
-        GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF);
-        GXSetEnum(g_hDevice, GX_ENUM_BLACKLEVEL_AUTO, GX_BLACKLEVEL_AUTO_OFF);
-        GXSetEnum(g_hDevice, GX_ENUM_BALANCE_WHITE_AUTO,
-                  GX_BALANCE_WHITE_AUTO_CONTINUOUS);
-        GXSetEnum(g_hDevice, GX_ENUM_DEAD_PIXEL_CORRECT,
-                  GX_DEAD_PIXEL_CORRECT_OFF);
+        UPDB(GXSetEnum(g_hDevice, GX_ENUM_DEAD_PIXEL_CORRECT,
+                       GX_DEAD_PIXEL_CORRECT_OFF),
+             "DeadPixelCorrect");
 
-        GXSetEnum(g_hDevice, GX_ENUM_ACQUISITION_MODE, GX_ACQ_MODE_CONTINUOUS);
-        GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4);
+        UPDB(GXSetEnum(g_hDevice, GX_ENUM_ACQUISITION_MODE,
+                       GX_ACQ_MODE_CONTINUOUS),
+             "AcquisitionMode");
+        UPDB(GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4),
+             "AcquisitionSpeed");
 
-        GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
-        GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
-        GXSetFloat(g_hDevice, GX_FLOAT_BLACKLEVEL, 0);
+        UPDB(GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure),
+             "Exposure");
+        UPDB(GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain), "Gain");
+        UPDB(GXSetFloat(g_hDevice, GX_FLOAT_BLACKLEVEL, 0), "Blacklevel");
         //设置增益模式
-        GXSetEnum(g_hDevice, GX_ENUM_GAIN_SELECTOR, GX_GAIN_SELECTOR_ALL);
+        UPDB(GXSetEnum(g_hDevice, GX_ENUM_GAIN_SELECTOR, GX_GAIN_SELECTOR_ALL),
+             "GainSelector");
+
+        if (set_failed) {
+            LOG(ERROR) << "failed to set some parameters!";
+            return false;
+        }
+
         //获取实际增益范围
         GX_FLOAT_RANGE gainRange;
         GXGetFloatRange(g_hDevice, GX_FLOAT_GAIN, &gainRange);
@@ -289,10 +308,8 @@ bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, bool isEnergy) {
     }
 }
 
-void DHCamera::setParam(int exposureInput, int gainInput) {
+void DHCamera::setParam(float exposure, float gain) {
     if (init_success) {
-        exposure = exposureInput;
-        gain = gainInput;
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
     }

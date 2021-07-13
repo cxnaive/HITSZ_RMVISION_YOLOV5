@@ -21,12 +21,12 @@ int main(int argc, char** argv) {
     DHCamera cam(config.camera_sn);
 #endif
     cam.init(config.camConfig.roi_offset_x, config.camConfig.roi_offset_y,
-             config.camConfig.roi_width, config.camConfig.roi_height, false);
+             config.camConfig.roi_width, config.camConfig.roi_height, 4000, 12,
+             false);
     if (!cam.init_is_successful()) {
         LOG(ERROR) << "unable to open camera";
         return 0;
     }
-    cam.setParam(4000, 12);
     cam.start();
     cv::Mat src(640, 640, CV_8UC3);
     int cnt = 0;
