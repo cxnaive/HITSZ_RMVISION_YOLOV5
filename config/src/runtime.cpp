@@ -8,6 +8,7 @@ double getPointLength(const cv::Point2f &p) {
 cudaVideoWriter initVideoWriter(const std::string &filename_prefix) {
     std::string file_name = filename_prefix + ".avi";
     cudaVideoWriter video = cv::cudacodec::createVideoWriter(file_name,cv::Size(640,640),60);
+    return video;
 }
 std::map<std::string,cudaVideoWriter> video_writers;
 cudaVideoWriter getVideoWriter(std::string prefix){
