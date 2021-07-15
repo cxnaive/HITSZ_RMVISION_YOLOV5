@@ -9,8 +9,10 @@
 #include <mutex>
 #include <thread>
 
-void update_bool(GX_STATUS status, bool &flag, const std::string &w_str = "") {
-    if (status != GX_STATUS_SUCCESS) {
+void update_bool(GX_STATUS status, bool &flag, const std::string &w_str = "")
+{
+    if (status != GX_STATUS_SUCCESS)
+    {
         flag = true;
         LOG(INFO) << w_str << " set failed!";
     }
@@ -19,82 +21,86 @@ void update_bool(GX_STATUS status, bool &flag, const std::string &w_str = "") {
 
 void ProcessData(void *pImageBuf, void *pImageRaw8Buf, void *pImageRGBBuf,
                  int nImageWidth, int nImageHeight, int nPixelFormat,
-                 int nPixelColorFilter) {
-    switch (nPixelFormat) {
-        //当数据格式为12位时，位数转换为4-11
-        case GX_PIXEL_FORMAT_BAYER_GR12:
-        case GX_PIXEL_FORMAT_BAYER_RG12:
-        case GX_PIXEL_FORMAT_BAYER_GB12:
-        case GX_PIXEL_FORMAT_BAYER_BG12:
-            //将12位格式的图像转换为8位格式
-            DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
-                          DX_BIT_4_11);
-            //将Raw8图像转换为RGB图像以供显示
-            DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
-                          nImageHeight, RAW2RGB_NEIGHBOUR,
-                          DX_PIXEL_COLOR_FILTER(nPixelColorFilter), false);
-            break;
+                 int nPixelColorFilter)
+{
+    switch (nPixelFormat)
+    {
+    //当数据格式为12位时，位数转换为4-11
+    case GX_PIXEL_FORMAT_BAYER_GR12:
+    case GX_PIXEL_FORMAT_BAYER_RG12:
+    case GX_PIXEL_FORMAT_BAYER_GB12:
+    case GX_PIXEL_FORMAT_BAYER_BG12:
+        //将12位格式的图像转换为8位格式
+        DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
+                      DX_BIT_4_11);
+        //将Raw8图像转换为RGB图像以供显示
+        DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
+                      nImageHeight, RAW2RGB_NEIGHBOUR,
+                      DX_PIXEL_COLOR_FILTER(nPixelColorFilter), false);
+        break;
 
-            //当数据格式为10位时，位数转换为2-9
-        case GX_PIXEL_FORMAT_BAYER_GR10:
-        case GX_PIXEL_FORMAT_BAYER_RG10:
-        case GX_PIXEL_FORMAT_BAYER_GB10:
-        case GX_PIXEL_FORMAT_BAYER_BG10:
-            ////将10位格式的图像转换为8位格式,有效位数2-9
-            DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
-                          DX_BIT_2_9);
-            //将Raw8图像转换为RGB图像以供显示
-            DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
-                          nImageHeight, RAW2RGB_NEIGHBOUR,
-                          DX_PIXEL_COLOR_FILTER(nPixelColorFilter), false);
-            break;
+        //当数据格式为10位时，位数转换为2-9
+    case GX_PIXEL_FORMAT_BAYER_GR10:
+    case GX_PIXEL_FORMAT_BAYER_RG10:
+    case GX_PIXEL_FORMAT_BAYER_GB10:
+    case GX_PIXEL_FORMAT_BAYER_BG10:
+        ////将10位格式的图像转换为8位格式,有效位数2-9
+        DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
+                      DX_BIT_2_9);
+        //将Raw8图像转换为RGB图像以供显示
+        DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
+                      nImageHeight, RAW2RGB_NEIGHBOUR,
+                      DX_PIXEL_COLOR_FILTER(nPixelColorFilter), false);
+        break;
 
-        case GX_PIXEL_FORMAT_BAYER_GR8:
-        case GX_PIXEL_FORMAT_BAYER_RG8:
-        case GX_PIXEL_FORMAT_BAYER_GB8:
-        case GX_PIXEL_FORMAT_BAYER_BG8:
-            //将Raw8图像转换为RGB图像以供显示
+    case GX_PIXEL_FORMAT_BAYER_GR8:
+    case GX_PIXEL_FORMAT_BAYER_RG8:
+    case GX_PIXEL_FORMAT_BAYER_GB8:
+    case GX_PIXEL_FORMAT_BAYER_BG8:
+        //将Raw8图像转换为RGB图像以供显示
 
-            DxRaw8toRGB24(pImageBuf, pImageRGBBuf, nImageWidth, nImageHeight,
-                          RAW2RGB_NEIGHBOUR,
-                          DX_PIXEL_COLOR_FILTER(nPixelColorFilter),
-                          false);  // RAW2RGB_ADAPTIVE
-            break;
+        DxRaw8toRGB24(pImageBuf, pImageRGBBuf, nImageWidth, nImageHeight,
+                      RAW2RGB_NEIGHBOUR,
+                      DX_PIXEL_COLOR_FILTER(nPixelColorFilter),
+                      false); // RAW2RGB_ADAPTIVE
+        break;
 
-        case GX_PIXEL_FORMAT_MONO12:
-            //将12位格式的图像转换为8位格式
-            DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
-                          DX_BIT_4_11);
-            //将Raw8图像转换为RGB图像以供显示
-            DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
-                          nImageHeight, RAW2RGB_NEIGHBOUR,
-                          DX_PIXEL_COLOR_FILTER(NONE), false);
-            break;
+    case GX_PIXEL_FORMAT_MONO12:
+        //将12位格式的图像转换为8位格式
+        DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
+                      DX_BIT_4_11);
+        //将Raw8图像转换为RGB图像以供显示
+        DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
+                      nImageHeight, RAW2RGB_NEIGHBOUR,
+                      DX_PIXEL_COLOR_FILTER(NONE), false);
+        break;
 
-        case GX_PIXEL_FORMAT_MONO10:
-            //将10位格式的图像转换为8位格式
-            DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
-                          DX_BIT_4_11);
-            //将Raw8图像转换为RGB图像以供显示
-            DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
-                          nImageHeight, RAW2RGB_NEIGHBOUR,
-                          DX_PIXEL_COLOR_FILTER(NONE), false);
-            break;
+    case GX_PIXEL_FORMAT_MONO10:
+        //将10位格式的图像转换为8位格式
+        DxRaw16toRaw8(pImageBuf, pImageRaw8Buf, nImageWidth, nImageHeight,
+                      DX_BIT_4_11);
+        //将Raw8图像转换为RGB图像以供显示
+        DxRaw8toRGB24(pImageRaw8Buf, pImageRGBBuf, nImageWidth,
+                      nImageHeight, RAW2RGB_NEIGHBOUR,
+                      DX_PIXEL_COLOR_FILTER(NONE), false);
+        break;
 
-        case GX_PIXEL_FORMAT_MONO8:
-            //将Raw8图像转换为RGB图像以供显示
-            DxRaw8toRGB24(pImageBuf, pImageRGBBuf, nImageWidth, nImageHeight,
-                          RAW2RGB_NEIGHBOUR, DX_PIXEL_COLOR_FILTER(NONE),
-                          false);
-            break;
+    case GX_PIXEL_FORMAT_MONO8:
+        //将Raw8图像转换为RGB图像以供显示
+        DxRaw8toRGB24(pImageBuf, pImageRGBBuf, nImageWidth, nImageHeight,
+                      RAW2RGB_NEIGHBOUR, DX_PIXEL_COLOR_FILTER(NONE),
+                      false);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
-void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
-    if (pFrame->status == GX_FRAME_STATUS_SUCCESS) {
+void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame)
+{
+    if (pFrame->status == GX_FRAME_STATUS_SUCCESS)
+    {
         DHCamera *cam = (DHCamera *)pFrame->pUserParam;
         auto start = std::chrono::steady_clock::now();
         ProcessData((void *)pFrame->pImgBuf, cam->g_pRaw8Buffer,
@@ -105,7 +111,8 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
 
         // cv::cuda::resize(cam->full_gpu,cam->resize_gpu,cv::Size(640,640));
         // cv::cuda::cvtColor(cam->resize_gpu,cam->resize_gpu,cv::COLOR_RGB2BGR);
-        if (cam->is_energy) {
+        if (cam->is_energy)
+        {
             memcpy(cam->p_energy.data, cam->g_pRGBframeData,
                    3 * (cam->nPayLoadSize));
             cam->pimg_lock.lock();
@@ -113,7 +120,9 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
                        cv::INTER_NEAREST);
             cv::cvtColor(cam->p_img, cam->p_img, cv::COLOR_RGB2BGR);
             cam->pimg_lock.unlock();
-        } else {
+        }
+        else
+        {
             cam->pimg_lock.lock();
             // cv::resize(cam->full,cam->p_img,cv::Size(640,640),cv::INTER_NEAREST);
             // cv::cvtColor(cam->p_img,cam->p_img,cv::COLOR_RGB2BGR);
@@ -128,7 +137,8 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
         cam->frame_get_time +=
             std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                 .count();
-        if (cam->frame_cnt == 500) {
+        if (cam->frame_cnt == 500)
+        {
             double fps_time_interval =
                 std::chrono::duration_cast<std::chrono::milliseconds>(
                     end - cam->fps_time_point)
@@ -143,9 +153,12 @@ void GX_STDC OnFrameCallbackFun(GX_FRAME_CALLBACK_PARAM *pFrame) {
     return;
 }
 
-void getRGBImage(DHCamera *cam) {
-    while (1) {
-        if (!cam->thread_running) {
+void getRGBImage(DHCamera *cam)
+{
+    while (1)
+    {
+        if (!cam->thread_running)
+        {
             return;
         }
         GX_STATUS status;
@@ -157,7 +170,8 @@ void getRGBImage(DHCamera *cam) {
                     cam->g_pRGBframeData, cam->g_frameBuffer->nWidth,
                     cam->g_frameBuffer->nHeight,
                     cam->g_frameBuffer->nPixelFormat, cam->g_nColorFilter);
-        if (cam->is_energy) {
+        if (cam->is_energy)
+        {
             // LOG(INFO) << cam->g_frameBuffer->nWidth << " " <<
             // cam->g_frameBuffer->nHeight << " " << cam->nPayLoadSize;
             memcpy(cam->p_energy.data, cam->g_pRGBframeData,
@@ -167,7 +181,9 @@ void getRGBImage(DHCamera *cam) {
                        cv::INTER_NEAREST);
             cv::cvtColor(cam->p_img, cam->p_img, cv::COLOR_RGB2BGR);
             cam->pimg_lock.unlock();
-        } else {
+        }
+        else
+        {
             cam->pimg_lock.lock();
             memcpy(cam->p_img.data, cam->g_pRGBframeData,
                    3 * (cam->nPayLoadSize));
@@ -180,7 +196,8 @@ void getRGBImage(DHCamera *cam) {
         cam->frame_get_time +=
             std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                 .count();
-        if (cam->frame_cnt == 500) {
+        if (cam->frame_cnt == 500)
+        {
             std::cout << "average camera delay(ms):"
                       << cam->frame_get_time / cam->frame_cnt << std::endl;
             cam->frame_get_time = cam->frame_cnt = 0;
@@ -194,18 +211,23 @@ DHCamera::DHCamera(std::string sn)
       frame_cnt(0),
       frame_get_time(0),
       init_success(false),
-      is_energy(false) {
+      is_energy(false)
+{
     p_img = cv::Mat(640, 640, CV_8UC3);
     p_energy = cv::Mat(1024, 1024, CV_8UC3);
 };
 
-DHCamera::~DHCamera() {
-    if (init_success) {
+DHCamera::~DHCamera()
+{
+    if (init_success)
+    {
         stop();
-        if (g_frameData.pImgBuf != NULL) {
+        if (g_frameData.pImgBuf != NULL)
+        {
             free(g_frameData.pImgBuf);
         }
-        if (g_pRGBframeData != NULL) {
+        if (g_pRGBframeData != NULL)
+        {
             free(g_pRGBframeData);
         }
         GXCloseDevice(g_hDevice);
@@ -216,22 +238,27 @@ std::string gc_device_typename[5] = {
     "GX_DEVICE_CLASS_UNKNOWN", "GX_DEVICE_CLASS_USB2", "GX_DEVICE_CLASS_GEV",
     "GX_DEVICE_CLASS_U3V", "GX_DEVICE_CLASS_SMART"};
 bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, float exposure,
-                    float gain, bool isEnergy) {
+                    float gain, bool isEnergy)
+{
     GXInitLib();
     GXUpdateDeviceList(&nDeviceNum, 1000);
-    if (nDeviceNum >= 1) {
+    if (nDeviceNum >= 1)
+    {
         GX_DEVICE_BASE_INFO pBaseinfo[nDeviceNum];
         size_t nSize = nDeviceNum * sizeof(GX_DEVICE_BASE_INFO);
         status = GXGetAllDeviceBaseInfo(pBaseinfo, &nSize);
         bool found_device = false;
-        for (int i = 0; i < nDeviceNum; ++i) {
+        for (int i = 0; i < nDeviceNum; ++i)
+        {
             std::cout << "device: SN:" << pBaseinfo[i].szSN
                       << " NAME:" << pBaseinfo[i].szDisplayName << " TYPE:"
                       << gc_device_typename[pBaseinfo[i].deviceClass]
                       << std::endl;
-            if (std::string(pBaseinfo[i].szSN) == sn) found_device = true;
+            if (std::string(pBaseinfo[i].szSN) == sn)
+                found_device = true;
         }
-        if (!found_device) {
+        if (!found_device)
+        {
             std::cerr << "No device found with SN:" << sn << std::endl;
             return false;
         }
@@ -255,32 +282,33 @@ bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, float exposure,
              "ExposureAuto");
         UPDB(GXSetEnum(g_hDevice, GX_ENUM_GAIN_AUTO, GX_GAIN_AUTO_OFF),
              "GainAuto");
-        UPDB(GXSetEnum(g_hDevice, GX_ENUM_BLACKLEVEL_AUTO,
-                       GX_BLACKLEVEL_AUTO_OFF),
-             "BlacklevelAuto");
+        //UPDB(GXSetEnum(g_hDevice, GX_ENUM_BLACKLEVEL_AUTO,
+        //              GX_BLACKLEVEL_AUTO_OFF),
+        //    "BlacklevelAuto");
         UPDB(GXSetEnum(g_hDevice, GX_ENUM_BALANCE_WHITE_AUTO,
                        GX_BALANCE_WHITE_AUTO_CONTINUOUS),
              "BalanceWhiteAuto");
 
-        UPDB(GXSetEnum(g_hDevice, GX_ENUM_DEAD_PIXEL_CORRECT,
-                       GX_DEAD_PIXEL_CORRECT_OFF),
-             "DeadPixelCorrect");
+        //UPDB(GXSetEnum(g_hDevice, GX_ENUM_DEAD_PIXEL_CORRECT,
+        //              GX_DEAD_PIXEL_CORRECT_OFF),
+        //   "DeadPixelCorrect");
 
         UPDB(GXSetEnum(g_hDevice, GX_ENUM_ACQUISITION_MODE,
                        GX_ACQ_MODE_CONTINUOUS),
              "AcquisitionMode");
-        UPDB(GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4),
-             "AcquisitionSpeed");
+        //UPDB(GXSetInt(g_hDevice, GX_INT_ACQUISITION_SPEED_LEVEL, 4),
+        //    "AcquisitionSpeed");
 
         UPDB(GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure),
              "Exposure");
         UPDB(GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain), "Gain");
-        UPDB(GXSetFloat(g_hDevice, GX_FLOAT_BLACKLEVEL, 0), "Blacklevel");
+        //UPDB(GXSetFloat(g_hDevice, GX_FLOAT_BLACKLEVEL, 0), "Blacklevel");
         //设置增益模式
         UPDB(GXSetEnum(g_hDevice, GX_ENUM_GAIN_SELECTOR, GX_GAIN_SELECTOR_ALL),
              "GainSelector");
 
-        if (set_failed) {
+        if (set_failed)
+        {
             LOG(ERROR) << "failed to set some parameters!";
             return false;
         }
@@ -303,19 +331,25 @@ bool DHCamera::init(int roi_x, int roi_y, int roi_w, int roi_h, float exposure,
         thread_running = false;
         is_energy = isEnergy;
         return true;
-    } else {
+    }
+    else
+    {
         return false;
     }
 }
 
-void DHCamera::setParam(float exposure, float gain) {
-    if (init_success) {
+void DHCamera::setParam(float exposure, float gain)
+{
+    if (init_success)
+    {
         GXSetFloat(g_hDevice, GX_FLOAT_EXPOSURE_TIME, exposure);
         GXSetFloat(g_hDevice, GX_FLOAT_GAIN, gain);
     }
 }
-void DHCamera::start() {
-    if (init_success) {
+void DHCamera::start()
+{
+    if (init_success)
+    {
         frame_cnt = frame_get_time = 0;
         fps_time_point = std::chrono::steady_clock::now();
         GXRegisterCaptureCallback(g_hDevice, this, OnFrameCallbackFun);
@@ -323,8 +357,10 @@ void DHCamera::start() {
     }
 }
 
-void DHCamera::stop() {
-    if (init_success) {
+void DHCamera::stop()
+{
+    if (init_success)
+    {
         GXSendCommand(g_hDevice, GX_COMMAND_ACQUISITION_STOP);
         GXUnregisterCaptureCallback(g_hDevice);
     }
@@ -332,7 +368,8 @@ void DHCamera::stop() {
 
 bool DHCamera::init_is_successful() { return init_success; }
 
-bool DHCamera::read(cv::Mat &src) {
+bool DHCamera::read(cv::Mat &src)
+{
     pimg_lock.lock();
     // p_img.copyTo(src);
     cv::swap(p_img, src);
