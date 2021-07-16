@@ -11,10 +11,11 @@ using namespace cv;
 // 此函数用于判断云台坐标系下是否可以发弹
 // ---------------------------------------------------------------------------------------------------------------------
 void Energy::judgeShoot() {
-    if (abs(yaw_rotation) < 0.7 && abs(pitch_rotation) < 0.7) {
+    if (abs(yaw_rotation) < 1 && abs(pitch_rotation) < 1) {
         double time_now = rmTime.milliseconds();
         if (time_now - last_shoot_time_point > shoot_delay) {
             shoot = 2;
+            last_shoot_time_point = time_now;
         } else {
             shoot = 1;
         }
