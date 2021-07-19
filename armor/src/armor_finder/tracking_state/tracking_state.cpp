@@ -25,7 +25,7 @@ bool ArmorFinder::stateTrackingTarget(cv::Mat &src) {
         }
     }
     //猜测目标（神经网络id判断失误
-    if(target.bbox == cv::Rect() && lost_possible_target.bbox != cv::Rect() && lost_dist_min < last_box.rect.height / 1.5){
+    if(target.bbox == cv::Rect() && lost_possible_target.bbox != cv::Rect() && lost_dist_min < last_box.rect.height){
         target = lost_possible_target;
     }
     //脱离追踪
