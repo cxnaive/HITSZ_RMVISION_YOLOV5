@@ -4,8 +4,8 @@ PROJECT(HITSZ-RM-CV)
 SET(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(use_u2_camera false)
-set(use_dh true)
-set(use_hk false)
+set(use_dh false)
+set(use_hk true)
 add_compile_options(-O3)
 
 # OpenCV
@@ -29,6 +29,7 @@ include_directories(../tiny-tensorrt)
 
 #Link
 link_directories(/opt/MVS/lib/64)
+link_directories(/opt/MVS/lib/aarch64)
 link_directories(../tiny-tensorrt/build)
 
 
