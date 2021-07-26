@@ -38,6 +38,7 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
     static int fps_cnt = 0;
     static double last_time = 0;
 
+    int config_index = bullet_speed_config_index();
     cv::Point3d trans;
     double dist;
     double yaw, pitch;
@@ -50,12 +51,12 @@ bool ArmorFinder::sendBoxPosition(uint16_t shoot_delay) {
     } else {
         dist = target_box.getBoxDistance();
         cv::Point2f center = target_box.getCenter();
-        yaw = atan((center.x - config.IMAGE_CENTER_X + config.ARMOR_DELTA_X) / config.camConfig.fx) *
+        yaw = atan((center.x - config.IMAGE_CENTER_X + config.ARMOR_DELTA_X[config_index]) / config.camConfig.fx) *
               180 / PI;
         pitch = atan((center.y - config.IMAGE_CENTER_Y + config.ARMOR_DELTA_Y) / config.camConfig.fy) *
                 180 / PI;
     }
-    int config_index = bullet_speed_config_index();
+    
     double dpitch = config.ARMOR_PITCH_DELTA_K[config_index] * dist + config.ARMOR_PITCH_DELTA_B[config_index];
     pitch -= dpitch;
     

@@ -1,6 +1,7 @@
 #include <rmconfig.h>
 
-void CameraConfig::init() {
+void CameraConfig::init()
+{
     mtx = (cv::Mat_<double>(3, 3) << fx, 0, cx, 0, fy, cy, 0, 0, 1);
     dist = (cv::Mat_<double>(1, 5) << k1, k2, p1, p2, k3);
     cv::initUndistortRectifyMap(mtx, dist, cv::noArray(), mtx,
@@ -8,10 +9,12 @@ void CameraConfig::init() {
     FOCUS_PIXEL = (fx + fy) / 2;
 }
 
-void RmConfig::init_from_file() {
+void RmConfig::init_from_file()
+{
     std::ifstream ifs;
     ifs.open(configPath);
-    if (!ifs.is_open()) {
+    if (!ifs.is_open())
+    {
         LOG(WARNING) << "config file not found! use default values";
         return;
     }
@@ -19,7 +22,8 @@ void RmConfig::init_from_file() {
     Json::CharReaderBuilder readerBuilder;
     Json::Value root;
 
-    if (!Json::parseFromStream(readerBuilder, ifs, &root, &errs)) {
+    if (!Json::parseFromStream(readerBuilder, ifs, &root, &errs))
+    {
         LOG(WARNING) << "reader parse error: " << errs;
         LOG(WARNING) << "config file load error! use default values.";
         return;
@@ -53,7 +57,8 @@ void RmConfig::init_from_file() {
                show_energy_extra || show_process || show_net_box;
     ignore_types.clear();
     std::string ignore_info = "";
-    for (int i = 0; i < config["ignore_types"].size(); ++i) {
+    for (int i = 0; i < config["ignore_types"].size(); ++i)
+    {
         std::string ignore_item = config["ignore_types"][i].asString();
         ignore_types.insert(ignore_item);
         ignore_info = ignore_info + ignore_item + " ";
@@ -63,12 +68,16 @@ void RmConfig::init_from_file() {
     Json::Value data = root["config_data"];
     std::string mode_sting = data["RUNMODE"].asString();
     LOG(INFO) << "mode string:" << mode_sting;
-    if(mode_sting.length() == 1){
+    if (mode_sting.length() == 1)
+    {
         char op = mode_sting[0];
-        if(op == ARMOR_STATE || op == SMALL_ENERGY_STATE || op == BIG_ENERGY_STATE) RUNMODE = op;
-        else RUNMODE = ARMOR_STATE;
-    } 
-    else RUNMODE = ARMOR_STATE;
+        if (op == ARMOR_STATE || op == SMALL_ENERGY_STATE || op == BIG_ENERGY_STATE)
+            RUNMODE = op;
+        else
+            RUNMODE = ARMOR_STATE;
+    }
+    else
+        RUNMODE = ARMOR_STATE;
     ARMOR_CAMERA_GAIN = data["ARMOR_CAMERA_GAIN"].asInt();
     ARMOR_CAMERA_EXPOSURE = data["ARMOR_CAMERA_EXPOSURE"].asInt();
     ENERGY_CAMERA_GAIN = data["ENERGY_CAMERA_GAIN"].asInt();
@@ -80,7 +89,7 @@ void RmConfig::init_from_file() {
     ANTI_TOP = data["ANTI_TOP"].asInt();
     MANUAL_DELTA_X = data["MANUAL_DELTA_X"].asDouble();
     MANUAL_DELTA_Y = data["MANUAL_DELTA_Y"].asDouble();
-    ARMOR_DELTA_X = data["ARMOR_DELTA_X"].asDouble();
+    //ARMOR_DELTA_X = data["ARMOR_DELTA_X"].asDouble();
     ARMOR_DELTA_Y = data["ARMOR_DELTA_Y"].asDouble();
     // ARMOR_PITCH_DELTA_K = data["ARMOR_PITCH_DELTA_K"].asDouble();
     // ARMOR_PITCH_DELTA_B = data["ARMOR_PITCH_DELTA_B"].asDouble();
@@ -95,28 +104,38 @@ void RmConfig::init_from_file() {
     std::string k_info = "";
     std::string b_info = "";
     std::string s_info = "";
+    std::string delta_x_info = "";
     if (data["ARMOR_PITCH_DELTA_K"].size() !=
             data["ARMOR_PITCH_DELTA_B"].size() ||
         data["ARMOR_PITCH_DELTA_K"].size() !=
             data["ARMOR_BULLET_SPEED_SET"].size() ||
-        data["ARMOR_PITCH_DELTA_K"].size() == 0) {
+        data["ARMOR_PITCH_DELTA_K"].size() != data["ARMOR_DELTA_X"].size() ||
+        data["ARMOR_PITCH_DELTA_K"].size() == 0)
+    {
         LOG(ERROR) << "Invalid armor pitch settings!";
-        k_info = b_info = s_info = "0";
-    } else {
+        k_info = b_info = s_info = delta_x_info = "0";
+    }
+    else
+    {
         ARMOR_PITCH_DELTA_K.clear();
         ARMOR_PITCH_DELTA_B.clear();
         ARMOR_BULLET_SPEED_SET.clear();
+        ARMOR_DELTA_X.clear();
 
-        for (int i = 0; i < data["ARMOR_PITCH_DELTA_K"].size(); ++i) {
+        for (int i = 0; i < data["ARMOR_PITCH_DELTA_K"].size(); ++i)
+        {
             double nowk = data["ARMOR_PITCH_DELTA_K"][i].asDouble();
             double nowb = data["ARMOR_PITCH_DELTA_B"][i].asDouble();
             double nows = data["ARMOR_BULLET_SPEED_SET"][i].asDouble();
+            double now_delta_x = data["ARMOR_DELTA_X"][i].asDouble();
             ARMOR_PITCH_DELTA_K.push_back(nowk);
             ARMOR_PITCH_DELTA_B.push_back(nowb);
             ARMOR_BULLET_SPEED_SET.push_back(nows);
+            ARMOR_DELTA_X.push_back(now_delta_x);
             k_info = k_info + std::to_string(nowk) + " ";
             b_info = b_info + std::to_string(nowb) + " ";
             s_info = s_info + std::to_string(nows) + " ";
+            delta_x_info = delta_x_info + std::to_string(now_delta_x);
         }
     }
     LOG(WARNING) << "NOTE: pitch delta k: " << k_info;
@@ -143,7 +162,8 @@ void RmConfig::init_from_file() {
     ifs.close();
 }
 
-void RmConfig::write_to_file() {
+void RmConfig::write_to_file()
+{
     Json::Value root;
     // config
     Json::Value config;
@@ -170,13 +190,14 @@ void RmConfig::write_to_file() {
     config["video_path"] = video_path;
     config["camera_sn"] = camera_sn;
     config["ignore_types"].clear();
-    for (auto &item : ignore_types) {
+    for (auto &item : ignore_types)
+    {
         config["ignore_types"].append(item);
     }
 
     // data
     Json::Value data;
-    data["RUNMODE"] = std::string(1,RUNMODE);
+    data["RUNMODE"] = std::string(1, RUNMODE);
     data["ARMOR_CAMERA_GAIN"] = ARMOR_CAMERA_GAIN;
     data["ARMOR_CAMERA_EXPOSURE"] = ARMOR_CAMERA_EXPOSURE;
     data["ENERGY_CAMERA_GAIN"] = ENERGY_CAMERA_GAIN;
@@ -188,7 +209,7 @@ void RmConfig::write_to_file() {
     data["ANTI_TOP"] = ANTI_TOP;
     data["MANUAL_DELTA_X"] = MANUAL_DELTA_X;
     data["MANUAL_DELTA_Y"] = MANUAL_DELTA_Y;
-    data["ARMOR_DELTA_X"] = ARMOR_DELTA_X;
+    //data["ARMOR_DELTA_X"] = ARMOR_DELTA_X;
     data["ARMOR_DELTA_Y"] = ARMOR_DELTA_Y;
     // data["ARMOR_PITCH_DELTA_K"] = ARMOR_PITCH_DELTA_K;
     // data["ARMOR_PITCH_DELTA_B"] = ARMOR_PITCH_DELTA_B;
@@ -199,10 +220,12 @@ void RmConfig::write_to_file() {
     data["ARMOR_PITCH_KI"] = ARMOR_PITCH_KI;
     data["ARMOR_PITCH_KD"] = ARMOR_PITCH_KD;
     data["PROG_DELAY"] = PROG_DELAY;
-    for (int i = 0; i < ARMOR_PITCH_DELTA_K.size(); ++i) {
+    for (int i = 0; i < ARMOR_PITCH_DELTA_K.size(); ++i)
+    {
         data["ARMOR_PITCH_DELTA_K"].append(ARMOR_PITCH_DELTA_K[i]);
         data["ARMOR_PITCH_DELTA_B"].append(ARMOR_PITCH_DELTA_B[i]);
         data["ARMOR_BULLET_SPEED_SET"].append(ARMOR_BULLET_SPEED_SET[i]);
+        data["ARMOR_DELTA_X"].append(ARMOR_DELTA_X[i]);
     }
 
     // camera

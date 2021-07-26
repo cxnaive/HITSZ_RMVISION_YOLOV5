@@ -83,13 +83,14 @@ public:
     double MANUAL_DELTA_X = 0;
     double MANUAL_DELTA_Y = 0;
     float BULLET_SPEED = 0;
-    double ARMOR_DELTA_X = 0;
+    //double ARMOR_DELTA_X = 0;
     double ARMOR_DELTA_Y = 0;
     //double ARMOR_PITCH_DELTA_K = 0;
     //double ARMOR_PITCH_DELTA_B = 0;
     std::vector<double> ARMOR_PITCH_DELTA_K = {0};
     std::vector<double> ARMOR_PITCH_DELTA_B = {0};
     std::vector<double> ARMOR_BULLET_SPEED_SET = {0};
+    std::vector<double> ARMOR_DELTA_X = {0};
     double ARMOR_PITCH_KP = 1;
     double ARMOR_PITCH_KI = 0;
     double ARMOR_PITCH_KD = 0;
