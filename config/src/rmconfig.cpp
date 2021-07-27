@@ -141,7 +141,7 @@ void RmConfig::init_from_file()
     LOG(WARNING) << "NOTE: pitch delta k: " << k_info;
     LOG(WARNING) << "NOTE: pitch delta b: " << b_info;
     LOG(WARNING) << "NOTE: bullet speed set: " << s_info;
-    LOG(WARNING) << "NOTE: delta x set: " << delta_x_info;
+    LOG(WARNING) << "NOTE: delta x set:" << delta_x_info;
 
     // camera
     Json::Value camera = root["camera"];
