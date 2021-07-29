@@ -29,7 +29,7 @@ void Energy::initImage(cv::Mat &src) {
         // threshold(src, src, energy_part_param_.RED_GRAY_THRESH, 255,
         //           THRESH_BINARY);
         cv::cvtColor(src, src, COLOR_BGR2HSV);
-        std::vector<int> lower = {78, 130, 130};
+        std::vector<int> lower = {68, 130, 130};
         std::vector<int> upper = {124, 255, 255};
         cv::inRange(src, lower, upper, src);
 
@@ -38,12 +38,12 @@ void Energy::initImage(cv::Mat &src) {
         //           THRESH_BINARY);
         cv::Mat hsv_src, mask1;
         cv::cvtColor(src, hsv_src, COLOR_BGR2HSV);
-        std::vector<int> lower = {0, 130, 130};
-        std::vector<int> upper = {34, 255, 255};
+        std::vector<int> lower = {6, 130, 130};
+        std::vector<int> upper = {30, 255, 255};
         cv::inRange(hsv_src, lower, upper, src);
-        lower[0] = 156;
-        upper[0] = 180;
-        cv::inRange(hsv_src, lower, upper, mask1);
+        //lower[0] = 156;
+        //upper[0] = 180;
+        //cv::inRange(hsv_src, lower, upper, mask1);
         src += mask1;
     }
     if (config.show_process) imshow("bin", src);
