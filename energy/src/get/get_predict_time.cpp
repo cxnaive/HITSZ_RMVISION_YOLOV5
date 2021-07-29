@@ -77,6 +77,7 @@ void Energy::getTargetTime() {
         }
         last_target_polar_angle_predict_time = target_polar_angle;
         last_target_polar_angle_time_point = time_now;
+        LOG(INFO) << "predict time: " << predict_time;
     }
     // predict_time_init = false;
 }
