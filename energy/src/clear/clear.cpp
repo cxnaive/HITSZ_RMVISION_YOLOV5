@@ -25,7 +25,7 @@ void Energy::initImage(cv::Mat &src) {
     // if (src.type() == CV_8UC3) {
     //     cvtColor(src, src, COLOR_BGR2GRAY);
     // }
-    if (config.ENEMY_COLOR == ENEMY_BLUE) {
+    if (config.ENEMY_COLOR == ENEMY_RED) {
         // threshold(src, src, energy_part_param_.RED_GRAY_THRESH, 255,
         //           THRESH_BINARY);
         cv::cvtColor(src, src, COLOR_BGR2HSV);
@@ -33,7 +33,7 @@ void Energy::initImage(cv::Mat &src) {
         std::vector<int> upper = {124, 255, 255};
         cv::inRange(src, lower, upper, src);
 
-    } else if (config.ENEMY_COLOR == ENEMY_RED) {
+    } else if (config.ENEMY_COLOR == ENEMY_BLUE) {
         // threshold(src, src, energy_part_param_.BLUE_GRAY_THRESH, 255,
         //           THRESH_BINARY);
         cv::Mat hsv_src, mask1;
@@ -44,7 +44,7 @@ void Energy::initImage(cv::Mat &src) {
         //lower[0] = 156;
         //upper[0] = 180;
         //cv::inRange(hsv_src, lower, upper, mask1);
-        src += mask1;
+        //src += mask1;
     }
     if (config.show_process) imshow("bin", src);
     if (config.show_energy_extra || config.show_process) waitKey(1);
