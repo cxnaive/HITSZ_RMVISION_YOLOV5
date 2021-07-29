@@ -92,7 +92,7 @@ void showArmorBox(std::string windows_name, const cv::Mat &src,
     }
     imshow(windows_name, image2show);
     if (config.save_video) {
-        saveVideos(image2show, "ArmorBox");
+        //saveVideos(image2show, "ArmorBox");
     }
 }
 
