@@ -35,7 +35,7 @@ void Energy::sendEnergy() {
     double now_time = rmTime.seconds();
     fps_cnt += 1;
     if (now_time - last_time > 2) {
-        LOG(INFO) << "energy fps:" << fps_cnt / (now_time - last_time);
+        LOG(INFO) << "energy send fps:" << fps_cnt / (now_time - last_time);
         fps_cnt = 0;
         last_time = now_time;
     }
