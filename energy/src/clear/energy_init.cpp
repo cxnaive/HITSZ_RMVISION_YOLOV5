@@ -80,8 +80,8 @@ void Energy::initEnergy() {
 // 此函数对能量机关参数进行初始化
 // ---------------------------------------------------------------------------------------------------------------------
 void Energy::initEnergyPartParam() {
-    energy_part_param_.RED_GRAY_THRESH = 180;   // game
-    energy_part_param_.BLUE_GRAY_THRESH = 100;  // game
+    energy_part_param_.RED_GRAY_THRESH = 80;   // game
+    energy_part_param_.BLUE_GRAY_THRESH = 80;  // game
     energy_part_param_.SPLIT_GRAY_THRESH = 180;
 
     energy_part_param_.FAN_CONTOUR_AREA_MAX = 5000;
