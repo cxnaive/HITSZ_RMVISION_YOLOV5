@@ -15,7 +15,7 @@ bool Energy::isValidFanContour(cv::Mat &src,
     double cur_contour_area = contourArea(fan_contour);
     if (cur_contour_area > energy_part_param_.FAN_CONTOUR_AREA_MAX ||
         cur_contour_area < energy_part_param_.FAN_CONTOUR_AREA_MIN) {
-        LOG(WARNING) << cur_contour_area<<" "<<energy_part_param_.FAN_CONTOUR_AREA_MIN<<" "<<energy_part_param_.FAN_CONTOUR_AREA_MAX<<"fan area fail."<<endl;
+        //LOG(WARNING) << cur_contour_area<<" "<<energy_part_param_.FAN_CONTOUR_AREA_MIN<<" "<<energy_part_param_.FAN_CONTOUR_AREA_MAX<<"fan area fail."<<endl;
         return false;
         //选区面积大小不合适
     }
@@ -176,7 +176,7 @@ bool Energy::isValidFlowStripFanContour(
     double cur_contour_area = contourArea(flow_strip_fan_contour);
     if (cur_contour_area > energy_part_param_.FLOW_STRIP_FAN_CONTOUR_AREA_MAX ||
         cur_contour_area < energy_part_param_.FLOW_STRIP_FAN_CONTOUR_AREA_MIN) {
-        LOG(WARNING) << cur_contour_area << " " << energy_part_param_.FLOW_STRIP_FAN_CONTOUR_AREA_MIN << " " << energy_part_param_.FLOW_STRIP_FAN_CONTOUR_AREA_MAX << "flow area fail";
+        // LOG(WARNING) << cur_contour_area << " " << energy_part_param_.FLOW_STRIP_FAN_CONTOUR_AREA_MIN << " " << energy_part_param_.FLOW_STRIP_FAN_CONTOUR_AREA_MAX << "flow area fail";
         // cout<<"area fail."<<endl;
         //        cout << "area: " << cur_contour_area << '\t' << endl;
         return false;

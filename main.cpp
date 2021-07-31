@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
   while (keepRunning) {
     if (config.use_video) {
       if (!video->read(src)) break;
-      cv::resize(src, src, cv::Size(640, 640));
+      cv::resize(src, src, cv::Size(400, 400));
     } else {
       cam->read(src);
       // if(src.empty()) continue;
@@ -181,7 +181,7 @@ int main(int argc, char **argv) {
       saveVideos(src, "record");
     }
     check_mode_and_run(src);
-    cv::waitKey(20);
+    //cv::waitKey(27);
     if (config.has_show) cv::waitKey(1);
   }
   LOG(INFO) << "exiting...";

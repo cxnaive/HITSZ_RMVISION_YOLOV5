@@ -47,7 +47,7 @@ void Energy::getTargetTime() {
             double calc_spd = fabs(p2.x - p1.x) / (p2.y - p1.y) * 1000;
             if(energy_rotation_direction == CLOCKWISE) calc_spd *= -1;
             double calc_predict_time = calc_time_point - ekf.update(calc_spd);
-            //LOG(INFO) << "calc_predict_time: " << calc_predict_time;
+            LOG(INFO) << "calc_predict_time: " << calc_predict_time;
             temp_predict_times.push_back(calc_predict_time);
             if (temp_predict_times.size() > 40) {
                 temp_predict_times.pop_front();
@@ -78,7 +78,7 @@ void Energy::getTargetTime() {
         }
         last_target_polar_angle_predict_time = target_polar_angle;
         last_target_polar_angle_time_point = time_now;
-        //LOG(INFO) << "predict time: " << predict_time;
+        LOG(INFO) << "predict time: " << predict_time;
     }
     // predict_time_init = false;
 }
