@@ -183,7 +183,7 @@ int main(int argc, char **argv) {
       saveVideos(src, "record");
     }
     check_mode_and_run(src);
-    cv::waitKey(37);
+    //cv::waitKey(37);
     if (config.has_show) cv::waitKey(1);
   }
   LOG(INFO) << "exiting...";
