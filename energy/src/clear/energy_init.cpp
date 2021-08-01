@@ -95,7 +95,7 @@ void Energy::initEnergyPartParam() {
     energy_part_param_.FAN_CONTOUR_AREA_RATIO_MIN = 0.6;
 
     energy_part_param_.ARMOR_CONTOUR_AREA_MAX = 500;
-    energy_part_param_.ARMOR_CONTOUR_AREA_MIN = 180;
+    energy_part_param_.ARMOR_CONTOUR_AREA_MIN = 100;
     energy_part_param_.ARMOR_CONTOUR_LENGTH_MIN = 10;
     energy_part_param_.ARMOR_CONTOUR_LENGTH_MAX = 50;
     energy_part_param_.ARMOR_CONTOUR_WIDTH_MIN = 0;

@@ -138,15 +138,15 @@ void check_mode_and_run(cv::Mat &src) {
     armor_finder->run(src);
   }
   if (config.RUNMODE == SMALL_ENERGY_STATE) {
-    cv::resize(src,src_energy,cv::Size(400,400),cv::INTER_NEAREST);
-    //src.copyTo(src_energy);
+    //cv::resize(src,src_energy,cv::Size(640,640),cv::INTER_NEAREST);
+    src.copyTo(src_energy);
     energy->is_big = false;
     energy->is_small = true;
     energy->run(src_energy);
   }
   if (config.RUNMODE == BIG_ENERGY_STATE) {
-    //src.copyTo(src_energy);
-    cv::resize(src,src_energy,cv::Size(400,400),cv::INTER_NEAREST);
+    src.copyTo(src_energy);
+    //cv::resize(src,src_energy,cv::Size(640,640),cv::INTER_NEAREST);
     energy->is_big = true;
     energy->is_small = false;
     energy->run(src_energy);
