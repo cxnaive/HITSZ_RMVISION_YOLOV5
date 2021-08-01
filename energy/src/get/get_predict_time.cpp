@@ -49,10 +49,10 @@ void Energy::getTargetTime() {
             double calc_predict_time = calc_time_point - ekf.update(calc_spd);
             LOG(INFO) << "calc_predict_time: " << calc_predict_time;
             temp_predict_times.push_back(calc_predict_time);
-            if (temp_predict_times.size() > 40) {
+            if (temp_predict_times.size() > 20) {
                 temp_predict_times.pop_front();
             }
-            if (temp_predict_times.size() == 40) {
+            if (temp_predict_times.size() == 20) {
                 //计算最大值，最小值，均值
                 double vsum = 0, vmax = -10000000, vmin = 10000000;
                 for (auto& value : temp_predict_times) {
@@ -60,7 +60,7 @@ void Energy::getTargetTime() {
                     vmax = std::max(vmax, value);
                     vmin = std::min(vmin, value);
                 }
-                if (vmax - vmin < 0.2) {
+                if (vmax - vmin < 0.5) {
                     double valid_time_predict =
                         vsum / temp_predict_times.size();
                     if (predict_time_init) {

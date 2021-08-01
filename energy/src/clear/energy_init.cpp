@@ -56,7 +56,7 @@ void Energy::initEnergy() {
     predict_time = 0;
     predict_time_cnt = 0;
     predict_time_sum = 0;
-    moving_average_cnt = 30;
+    moving_average_cnt = 10;
     ekf.init(config.PROG_DELAY / 1000,func_acc,func_speed);
 
     circle_center_point = Point(0, 0);
